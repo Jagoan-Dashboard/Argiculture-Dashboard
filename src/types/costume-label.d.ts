@@ -1,0 +1,1 @@
+export interface CostumeLabelProps { x: number, y: number, width: number, value: number }
