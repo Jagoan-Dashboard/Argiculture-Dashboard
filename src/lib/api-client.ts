@@ -3,12 +3,11 @@ import axios, { AxiosRequestConfig } from "axios";
 import { toast } from "sonner";
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8081",
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
-    // Global cache disable headers
     "Cache-Control": "no-cache, no-store, must-revalidate",
     Pragma: "no-cache",
     Expires: "0",
@@ -66,13 +65,13 @@ apiClient.interceptors.response.use(
             description: "Silakan login kembali untuk melanjutkan",
           });
 
-          // Redirect to login (after a short delay to show toast)
-          setTimeout(() => {
-            // Only redirect if not already on login page
-            if (!window.location.pathname.includes("/login")) {
-              window.location.href = "/login";
-            }
-          }, 1000);
+          // // Redirect to login (after a short delay to show toast)
+          // setTimeout(() => {
+          //   // Only redirect if not already on login page
+          //   if (!window.location.pathname.includes("/login")) {
+          //     window.location.href = "/login";
+          //   }
+          // }, 1000);
 
           break;
 

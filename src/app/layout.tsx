@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "sonner";
 
 // Initialize Poppins font with desired weights and subsets
 const poppins = Poppins({
@@ -50,6 +51,13 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             {children}
+            <Toaster 
+              position="top-right" 
+              richColors 
+              closeButton 
+              expand={false}
+              duration={4000}
+            />
           </AuthProvider>
         </ThemeProvider>
       </body>
