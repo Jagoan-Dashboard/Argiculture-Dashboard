@@ -31,7 +31,7 @@ export const CommodityChartSection = ({ commodityData }: CommodityChartSectionPr
   const maxValue = Math.max(...commodityData?.map(item => item.value) || []);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white h-fit md:h-[39.5rem] rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className=" p-6 ">
         <div className="flex items-center gap-3">
@@ -46,7 +46,7 @@ export const CommodityChartSection = ({ commodityData }: CommodityChartSectionPr
 
       {/* Chart Container */}
       <div className="p-6">
-        <div className="h-80 mb-4">
+        <div className="h-[30rem] mb-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={commodityData}

@@ -46,7 +46,7 @@ const AspirationCard = ({ item }: { item: AspirationItem }) => {
 
 export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border  border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="p-6 ">
         <div className="flex items-center gap-3">

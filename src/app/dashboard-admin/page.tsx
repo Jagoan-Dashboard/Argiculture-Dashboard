@@ -138,7 +138,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Aspirations Section - Tinggi normal */}
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-6 ">
               <AspirationsSection data={aspirasiData} />
               <StatusChart statusData={statusData} />
             </div>
