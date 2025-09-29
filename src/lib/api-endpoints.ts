@@ -1,5 +1,6 @@
 export class ENDPOINTS{
     static LOGIN = "login";
     static LOGOUT = "logout";
-     static EQUIPMENT_STATS = "/api/v1/agriculture/equipment/stats";
+    static EQUIPMENT_STATS = "/api/v1/agriculture/equipment/stats";
+    static LAND_IRRIGATION_STATS = "/api/v1/agriculture/land-irrigation/stats";
 }
