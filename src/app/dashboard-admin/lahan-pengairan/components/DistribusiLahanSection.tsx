@@ -37,7 +37,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 export const DistribusiLahanSection = ({ distribusiData }: DistribusiLahanSectionProps) => {
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl min-h-[10rem] max-h-[32rem] h-full shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center gap-3">
@@ -60,9 +60,9 @@ export const DistribusiLahanSection = ({ distribusiData }: DistribusiLahanSectio
               data={distribusiData}
               margin={{
                 top: 20,
-                right: 30,
-                left: 20,
-                bottom: 60,
+                right: 0,
+                left: 0,
+                bottom: 10,
               }}
               barCategoryGap="10%"
             >

@@ -97,7 +97,7 @@ const KomoditasListPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Komoditas</BreadcrumbPage>
+                <BreadcrumbPage className="text-gray-600 font-medium">Komoditas</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -136,21 +136,21 @@ const KomoditasListPage = () => {
             <CardStats statsData={statsData} />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+          <div className="grid grid-cols-1 h-full min-h-[10rem] max-h-[32rem] sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
             {/* Map Section - key insight */}
-            <div className="lg:col-span-2 flex flex-col gap-6">
+            <div className="lg:col-span-2 flex flex-col h-max gap-6">
               <MapSection />
             </div>
             <div className="lg:col-span-1">
               <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />
             </div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
+          <div className="grid grid-cols-1  h-[32rem] sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
             <div className="lg:col-span-2">
               <ProductivityChartSection productivityData={productivityData} />
             </div>
             <div className="lg:col-span-1">
-              <KeyComponent data={keyInsight} title="Key Strategy" description="Strategi penting untuk pertanian" />
+              <KeyComponent  data={keyInsight} title="Key Strategy" description="Strategi penting untuk pertanian" />
             </div>
           </div>
         </div>

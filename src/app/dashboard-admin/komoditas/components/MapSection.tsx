@@ -5,7 +5,7 @@ import React from 'react'
 
 export const MapSection = () => {
   return (
-    <div className="bg-white col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
+    <div className="bg-white col-span-2 p-6 rounded-xl h-full min-h-[10rem] max-h-[32rem] shadow-sm border border-gray-100">
       <div className="flex items-center gap-2 mb-4">
         <Icon icon={"bxs:map"} className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">Peta Persebaran Komoditas Pertanian</h2>

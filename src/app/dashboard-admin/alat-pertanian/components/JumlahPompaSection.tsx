@@ -49,7 +49,7 @@ export const JumlahPompaSection = ({ jumlahPompaData = [] }: JumlahPompaSectionP
   // Handle empty or undefined data
   if (!jumlahPompaData || jumlahPompaData.length === 0) {
     return (
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+      <div className="bg-white rounded-2xl  shadow-sm border border-gray-100 p-6">
         <p className="text-gray-500 text-center">No productivity data available</p>
       </div>
     );
@@ -60,7 +60,7 @@ export const JumlahPompaSection = ({ jumlahPompaData = [] }: JumlahPompaSectionP
   const maxValue = Math.max(...values);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl min-h-[10rem] max-h-[32rem] h-full  shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r p-6 border-b border-gray-100">
         <div className="flex items-center gap-3">

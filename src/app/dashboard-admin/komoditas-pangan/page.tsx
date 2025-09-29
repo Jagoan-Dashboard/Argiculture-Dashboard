@@ -135,7 +135,7 @@ const KomoditasPanganPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Komoditas Pangan</BreadcrumbPage>
+                <BreadcrumbPage className="text-gray-600 font-medium">Komoditas Pangan</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

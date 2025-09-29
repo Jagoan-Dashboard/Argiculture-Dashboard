@@ -125,7 +125,7 @@ const AlatPertanianPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CardStats statsData={statsData} />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grid-auto-flow-dense">
+          <div className="grid grid-cols-1 sm:grid-cols-2  lg:grid-cols-3 gap-6 grid-auto-flow-dense">
             {/* Map Section - key insight */}
             <div className="lg:col-span-2 flex flex-col gap-6">
               <MapSection />

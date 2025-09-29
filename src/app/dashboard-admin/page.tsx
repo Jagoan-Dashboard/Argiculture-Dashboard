@@ -97,7 +97,7 @@ export default function DashboardPage() {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Executive</BreadcrumbPage>
+                <BreadcrumbPage className="text-gray-600 font-medium">Executive</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
