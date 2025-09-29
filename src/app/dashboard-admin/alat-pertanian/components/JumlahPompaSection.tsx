@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 import { TooltipData } from '@/types/tooltip';
 import { CostumeLabelProps } from '@/types/costume-label';
 
-// Custom tooltip component
+
 const CustomTooltip = ({ active, payload, label }: TooltipData) => {
   if (active && payload && payload.length) {
     return (
@@ -19,16 +19,16 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
   }
   return null;
 };
-// Custom bar colors - highlight the highest value
-// Custom bar colors - highlight the highest value
+
+
 const getBarColor = (value: number, maxValue: number) => {
   if (value === maxValue) {
-    return '#22C55E'; // Darker green for highest value (2019)
+    return '#22C55E'; 
   }
-  return '#86EFAC'; // Lighter green for other values
+  return '#86EFAC'; 
 };
 
-// Custom label component untuk menampilkan nilai di atas bar
+
 const CustomLabel = (props: unknown) => {
   const { x, y, width, value } = props as CostumeLabelProps 
   return (
@@ -46,7 +46,7 @@ const CustomLabel = (props: unknown) => {
 };
 
 export const JumlahPompaSection = ({ jumlahPompaData = [] }: JumlahPompaSectionProps) => {
-  // Handle empty or undefined data
+  
   if (!jumlahPompaData || jumlahPompaData.length === 0) {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -60,10 +60,10 @@ export const JumlahPompaSection = ({ jumlahPompaData = [] }: JumlahPompaSectionP
     );
   }
 
-  // Filter data untuk hanya menampilkan yang memiliki nilai
+  
   const filteredData = jumlahPompaData.filter(item => item.value > 0);
   
-  // Jika setelah filter tidak ada data
+  
   if (filteredData.length === 0) {
     return (
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
@@ -77,15 +77,15 @@ export const JumlahPompaSection = ({ jumlahPompaData = [] }: JumlahPompaSectionP
     );
   }
 
-  // Calculate max value untuk coloring
+  
   const values = filteredData.map((item: JumlahPompaData) => item.value);
   const maxValue = Math.max(...values);
 
-  // Dynamic Y-axis domain based on actual data
+  
   const minValue = Math.min(...values);
   const yAxisDomain = [
-    Math.floor(minValue * 0.9), // 10% below minimum
-    Math.ceil(maxValue * 1.1)   // 10% above maximum
+    Math.floor(minValue * 0.9), 
+    Math.ceil(maxValue * 1.1)   
   ];
 
   return (

@@ -15,25 +15,25 @@ import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 
 const AlatPertanianPage = () => {
-  // Date state untuk filter
+  
   const [dateRange, setDateRange] = useState<{
     from: Date;
     to: Date;
   }>({
-    from: new Date(2024, 0, 1), // 1 Januari 2024
-    to: new Date(2024, 11, 31), // 31 Desember 2024
+    from: new Date(2024, 0, 1), 
+    to: new Date(2024, 11, 31), 
   });
 
-  // Format dates untuk API
+  
   const formattedParams = useMemo(() => ({
     start_date: format(dateRange.from, 'yyyy-MM-dd'),
     end_date: format(dateRange.to, 'yyyy-MM-dd'),
   }), [dateRange]);
 
-  // Fetch data menggunakan custom hook
+  
   const { data, loading, error, refetch } = useEquipmentStats(formattedParams);
 
-  // Transform data untuk stats cards
+  
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
     
@@ -81,7 +81,7 @@ const AlatPertanianPage = () => {
     ];
   }, [data]);
 
-  // Transform data untuk chart pompa air
+  
   const jumlahPompaData: JumlahPompaData[] = useMemo(() => {
     if (!data?.water_pump_trend) return [];
     
@@ -145,14 +145,14 @@ const AlatPertanianPage = () => {
     }
   ];
 
-  // Handle date range update
+  
   const handleDateUpdate = (values: { range: { from: Date; to: Date | undefined } }) => {
     if (values.range.to) {
       setDateRange({
         from: values.range.from,
         to: values.range.to,
       });
-      // Refetch data dengan parameter baru
+      
       refetch({
         start_date: format(values.range.from, 'yyyy-MM-dd'),
         end_date: format(values.range.to, 'yyyy-MM-dd'),
@@ -160,7 +160,7 @@ const AlatPertanianPage = () => {
     }
   };
 
-  // Loading state
+  
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -176,7 +176,7 @@ const AlatPertanianPage = () => {
     );
   }
 
-  // Error state
+  
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">

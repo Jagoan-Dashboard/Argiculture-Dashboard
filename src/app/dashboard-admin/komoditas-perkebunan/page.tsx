@@ -19,20 +19,20 @@ import { format } from 'date-fns';
 import { COMMODITY_OPTIONS, HarvestScheduleData } from './types/plantation-types';
 
 const KomoditasPerkebunanPage = () => {
-  // State untuk commodity filter
+  
   const [selectedCommodity, setSelectedCommodity] = useState<string>('kopi');
 
-  // Params untuk API
+  
   const apiParams = useMemo(() => ({
     start_date: format(new Date(2024, 0, 1), 'yyyy-MM-dd'),
     end_date: format(new Date(2024, 11, 31), 'yyyy-MM-dd'),
     commodity_name: selectedCommodity,
   }), [selectedCommodity]);
 
-  // Fetch data menggunakan custom hook
+  
   const { data, loading, error, refetch } = usePlantation(apiParams);
 
-  // Transform data untuk stats cards
+  
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
     
@@ -76,11 +76,11 @@ const KomoditasPerkebunanPage = () => {
     ];
   }, [data]);
 
-  // Transform data untuk growth phases (Proporsi Fase Pertumbuhan)
+  
   const proparsiData: GrowthPhaseData[] = useMemo(() => {
     if (!data?.growth_phases) return [];
     
-    // Color palette for phases
+    
     const colors = ['#EC4899', '#22C55E', '#FB923C', '#FBBF24', '#8B5CF6'];
     
     return data.growth_phases.map((phase, index) => ({
@@ -92,14 +92,14 @@ const KomoditasPerkebunanPage = () => {
     }));
   }, [data]);
 
-  // Transform data untuk pest dominance (Dominasi Hama)
+  
   const hamaData: HamaData[] = useMemo(() => {
     if (!data?.pest_dominance) return [];
     
-    // Color palette for pests
+    
     const colors = ['#22C55E', '#FB923C', '#FBBF24', '#EC4899', '#8B5CF6'];
     
-    // Map pest types to readable names
+    
     const pestNameMap: Record<string, string> = {
       'WERENG_COKLAT': 'Wereng Coklat',
       'TIKUS': 'Tikus',
@@ -116,7 +116,7 @@ const KomoditasPerkebunanPage = () => {
     }));
   }, [data]);
 
-  // Transform data untuk technology used
+  
   const teknologiData: TeknologiData[] = useMemo(() => {
     if (!data?.technology_used) return [];
     
@@ -127,7 +127,7 @@ const KomoditasPerkebunanPage = () => {
     }));
   }, [data]);
 
-  // Transform data untuk harvest schedule table
+  
   const harvestScheduleData: HarvestScheduleData[] = useMemo(() => {
     if (!data?.harvest_schedule) return [];
     
@@ -142,7 +142,7 @@ const KomoditasPerkebunanPage = () => {
     }));
   }, [data]);
 
-  // Handle commodity change
+  
   const handleCommodityChange = (value: string) => {
     setSelectedCommodity(value);
     refetch({
@@ -151,7 +151,7 @@ const KomoditasPerkebunanPage = () => {
     });
   };
 
-  // Loading state
+  
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -167,7 +167,7 @@ const KomoditasPerkebunanPage = () => {
     );
   }
 
-  // Error state
+  
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
