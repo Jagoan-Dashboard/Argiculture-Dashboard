@@ -219,6 +219,30 @@ export const TablePerkiraanSection = ({
         </div>
       )
     },
+    {
+  key: 'petani',
+  label: 'Petani',
+  sortable: true,
+  render: (value: unknown) => (
+    <span className="text-gray-700">{value || '-'}</span>
+  )
+},
+{
+  key: 'desa',
+  label: 'Desa',
+  sortable: true,
+  render: (value: unknown) => (
+    <span className="text-gray-700">{value || '-'}</span>
+  )
+},
+{
+  key: 'luasLahan',
+  label: 'Luas Lahan (Ha)',
+  sortable: true,
+  render: (value: unknown) => (
+    <span className="text-gray-700">{value ? `${value} Ha` : '-'}</span>
+  )
+},
   ];
 
 
