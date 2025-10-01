@@ -42,26 +42,6 @@ const userDropdownMenu: DropdownMenuItem[] = [
       </svg>
     )
   },
-  { 
-    label: "Billing", 
-    href: "/dashboard-admin/billing",
-    type: 'link',
-    icon: (
-      <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-      </svg>
-    )
-  },
-  { 
-    label: "Team", 
-    href: "/dashboard-admin/team",
-    type: 'link',
-    icon: (
-      <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-        <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
-      </svg>
-    )
-  },
 ];
 
 export default function UserDropdown() {

@@ -1,5 +1,12 @@
 import { Icon } from '@iconify/react';
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, PieLabelRenderProps } from 'recharts';
+interface StatusChartProps {
+  statusData: {
+    name: string;
+    value: number;
+    color: string;
+  }[];
+}
 
 export const StatusChart = ({ statusData }: StatusChartProps) => {
   // Handle empty data

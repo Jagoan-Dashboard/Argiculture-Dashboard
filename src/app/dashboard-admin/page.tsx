@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { StatsType } from "./types/stats";
 import { Home } from "lucide-react";
 import { MapSection } from "./components/MapSection";
-import { AspirationsData, AspirationsSection } from "./components/AspirationsSection";
+import { AspirationsSection } from "./components/AspirationsSection";
 import { StatusChart } from "./components/StatusChart";
 import CardStats from "./components/CardStats";
 import { CommodityChartSection } from "./components/ComodityChartSection";
@@ -16,7 +16,8 @@ import {
   COMMODITY_NAME_MAP, 
   LAND_STATUS_MAP, 
   CONSTRAINT_MAP, 
-  HOPE_MAP 
+  HOPE_MAP, 
+  AspirationsData
 } from "./types/executive";
 import { CommodityData } from "./types/comodity";
 

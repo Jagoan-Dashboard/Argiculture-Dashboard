@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { toast } from "sonner";
 
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8081",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
