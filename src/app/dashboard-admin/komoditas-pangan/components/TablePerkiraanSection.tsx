@@ -5,164 +5,8 @@ import { Icon } from '@iconify/react'
 import { Calendar } from 'lucide-react'
 import { KomoditasData, TablePerkiraanSectionProps } from '../types/table-perkiraan'
 
-// Mock data untuk contoh
-const defaultData: KomoditasData[] = [
-  {
-    id: '1',
-    no: 1,
-    komoditas: 'Padi Sawah',
-    estimasiPanen: '15 Januari 2025',
-  },
-  {
-    id: '2',
-    no: 2,
-    komoditas: 'Jagung',
-    estimasiPanen: '20 Januari 2025',
-
-  },
-  {
-    id: '3',
-    no: 3,
-    komoditas: 'Kedelai',
-    estimasiPanen: '25 Januari 2025',
-  },
-  {
-    id: '4',
-    no: 4,
-    komoditas: 'Ubi Jalar',
-    estimasiPanen: '30 Januari 2025',
-  },
-  {
-    id: '5',
-    no: 5,
-    komoditas: 'Kacang Tanah',
-    estimasiPanen: '5 Februari 2025',
-  }, {
-    id: '6',
-    no: 6,
-    komoditas: 'Padi Sawah',
-    estimasiPanen: '15 Januari 2025',
-  },
-  {
-    id: '7',
-    no: 7,
-    komoditas: 'Jagung',
-    estimasiPanen: '20 Januari 2025',
-
-  },
-  {
-    id: '8',
-    no: 8,
-    komoditas: 'Kedelai',
-    estimasiPanen: '25 Januari 2025',
-  },
-  {
-    id: '9',
-    no: 9,
-    komoditas: 'Ubi Jalar',
-    estimasiPanen: '30 Januari 2025',
-  },
-  {
-    id: '10',
-    no: 10,
-    komoditas: 'Kacang Tanah',
-    estimasiPanen: '5 Februari 2025',
-  }, {
-    id: '11',
-    no: 11,
-    komoditas: 'Padi Sawah',
-    estimasiPanen: '15 Januari 2025',
-  },
-  {
-    id: '12',
-    no: 12,
-    komoditas: 'Jagung',
-    estimasiPanen: '20 Januari 2025',
-
-  },
-  {
-    id: '13',
-    no: 13,
-    komoditas: 'Kedelai',
-    estimasiPanen: '25 Januari 2025',
-  },
-  {
-    id: '14',
-    no: 14,
-    komoditas: 'Ubi Jalar',
-    estimasiPanen: '30 Januari 2025',
-  },
-  {
-    id: '15',
-    no: 15,
-    komoditas: 'Kacang Tanah',
-    estimasiPanen: '5 Februari 2025',
-  }, {
-    id: '16',
-    no: 16,
-    komoditas: 'Padi Sawah',
-    estimasiPanen: '15 Januari 2025',
-  },
-  {
-    id: '17',
-    no: 17,
-    komoditas: 'Jagung',
-    estimasiPanen: '20 Januari 2025',
-
-  },
-  {
-    id: '18',
-    no: 18,
-    komoditas: 'Kedelai',
-    estimasiPanen: '25 Januari 2025',
-  },
-  {
-    id: '19',
-    no: 19,
-    komoditas: 'Ubi Jalar',
-    estimasiPanen: '30 Januari 2025',
-  },
-  {
-    id: '20',
-    no: 20,
-    komoditas: 'Kacang Tanah',
-    estimasiPanen: '5 Februari 2025',
-  }, {
-    id: '21',
-    no: 21,
-    komoditas: 'Padi Sawah',
-    estimasiPanen: '15 Januari 2025',
-  },
-  {
-    id: '22',
-    no: 22,
-    komoditas: 'Jagung',
-    estimasiPanen: '20 Januari 2025',
-
-  },
-  {
-    id: '23',
-    no: 23,
-    komoditas: 'Kedelai',
-    estimasiPanen: '25 Januari 2025',
-  },
-  {
-    id: '24',
-    no: 24,
-    komoditas: 'Ubi Jalar',
-    estimasiPanen: '30 Januari 2025',
-  },
-  {
-    id: '25',
-    no: 25,
-    komoditas: 'Kacang Tanah',
-    estimasiPanen: '5 Februari 2025',
-  }
-];
-
-
 export const TablePerkiraanSection = ({
-  data = defaultData,
+  data,
   loading = false,
   searchable = true,
   pagination = true
@@ -172,7 +16,7 @@ export const TablePerkiraanSection = ({
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter data berdasarkan search dan filter
-  const filteredData = data.filter(item => {
+  const filteredData = data?.filter(item => {
     const matchesSearch = !searchQuery ||
       item.komoditas.toLowerCase().includes(searchQuery.toLowerCase())
 
@@ -180,10 +24,10 @@ export const TablePerkiraanSection = ({
   });
 
   // Pagination data
-  const totalItems = filteredData.length;
+  const totalItems = filteredData?.length || 0;
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = pagination
-    ? filteredData.slice(startIndex, startIndex + pageSize)
+    ? filteredData?.slice(startIndex, startIndex + pageSize)
     : filteredData;
 
   const columns = [
@@ -220,29 +64,32 @@ export const TablePerkiraanSection = ({
       )
     },
     {
-  key: 'petani',
-  label: 'Petani',
-  sortable: true,
-  render: (value: unknown) => (
-    <span className="text-gray-700">{value || '-'}</span>
-  )
-},
-{
-  key: 'desa',
-  label: 'Desa',
-  sortable: true,
-  render: (value: unknown) => (
-    <span className="text-gray-700">{value || '-'}</span>
-  )
-},
-{
-  key: 'luasLahan',
-  label: 'Luas Lahan (Ha)',
-  sortable: true,
-  render: (value: unknown) => (
-    <span className="text-gray-700">{value ? `${value} Ha` : '-'}</span>
-  )
-},
+      key: 'petani',
+      label: 'Petani',
+      sortable: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      render: (value: any) => (
+        <span className="text-gray-700">{value || '-'}</span>
+      )
+    },
+    {
+      key: 'desa',
+      label: 'Desa',
+      sortable: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      render: (value: any) => (
+        <span className="text-gray-700">{value || '-'}</span>
+      )
+    },
+    {
+      key: 'luasLahan',
+      label: 'Luas Lahan (Ha)',
+      sortable: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      render: (value: any) => (
+        <span className="text-gray-700">{value || '-'}</span>
+      )
+    },
   ];
 
 
@@ -267,8 +114,8 @@ export const TablePerkiraanSection = ({
       <div className="p-6">
         <UniversalTable
           scrollable={true}
-          scrollHeight={290}  // Tinggi maksimum 500px
-          data={paginatedData}
+          scrollHeight={"32rem"}  // Tinggi maksimum 500px
+          data={paginatedData || []}
           columns={columns}
           loading={loading}
           searchable={searchable}
@@ -288,7 +135,7 @@ export const TablePerkiraanSection = ({
           emptyStateIcon={
             <Icon icon="material-symbols:agriculture-outline" className="w-12 h-12 text-gray-400" />
           }
-          className="mt-0"
+          className="mt-0 h-full"
         />
       </div>
 

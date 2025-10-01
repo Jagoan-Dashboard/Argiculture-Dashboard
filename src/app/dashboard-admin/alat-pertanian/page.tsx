@@ -76,7 +76,7 @@ const AlatPertanianPage = () => {
         change: `${data.water_pump.growth_percent >= 0 ? '+' : ''}${data.water_pump.growth_percent}%`,
         isPositive: data.water_pump.growth_percent >= 0,
         icon: "mdi:water-pump",
-        color: "text-blue-600"
+        color: "text-green-600"
       }
     ];
   }, [data]);

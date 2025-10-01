@@ -50,23 +50,23 @@ const LahanPengairanPage = () => {
       },
       {
         id: 2,
-        title: "Luas Lahan Beririgasi",
+        title: "Luas Lahan Sawah",
         value: data.irrigated_land_area.area.toFixed(2),
         unit: "Hektar (Ha)",
         change: `${data.irrigated_land_area.growth_percent >= 0 ? '+' : ''}${data.irrigated_land_area.growth_percent.toFixed(1)}%`,
         isPositive: data.irrigated_land_area.growth_percent >= 0,
         icon: "icon-park-outline:water",
-        color: "text-blue-600"
+        color: "text-green-600"
       },
       {
         id: 3,
-        title: "Luas Lahan Tidak Beririgasi",
+        title: "Luas Lahan Bukan Sawah",
         value: data.non_irrigated_land_area.area.toFixed(2),
         unit: "Hektar (Ha)",
         change: `${data.non_irrigated_land_area.growth_percent >= 0 ? '+' : ''}${data.non_irrigated_land_area.growth_percent.toFixed(1)}%`,
         isPositive: data.non_irrigated_land_area.growth_percent >= 0,
         icon: "material-symbols:water-drop-outline",
-        color: "text-orange-600"
+        color: "text-green-600"
       }
     ];
   }, [data]);
@@ -97,8 +97,8 @@ const LahanPengairanPage = () => {
       icon: "icon-park-outline:water",
       title: "Sistem Irigasi Berkembang",
       description: "Infrastruktur irigasi terus ditingkatkan",
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600"
+      bgColor: "bg-green-50",
+      iconColor: "text-green-600"
     },
     {
       id: 3,
@@ -116,8 +116,8 @@ const LahanPengairanPage = () => {
       icon: "material-symbols:water-pump",
       title: "Optimalisasi Sistem Irigasi",
       description: "Peningkatan efisiensi penggunaan air",
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600"
+      bgColor: "bg-green-50",
+      iconColor: "text-green-600"
     },
     {
       id: 2,

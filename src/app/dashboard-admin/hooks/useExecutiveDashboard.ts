@@ -38,7 +38,7 @@ export const useExecutiveDashboard = (initialParams?: ExecutiveDashboardParams) 
       fetchDashboard(initialParams);
       hasFetched.current = true;
     }
-  }, []); // Dependency array kosong - hanya run sekali saat mount
+  }, [fetchDashboard, initialParams]); // Dependency array kosong - hanya run sekali saat mount
 
   const refetch = useCallback((params?: ExecutiveDashboardParams) => {
     return fetchDashboard(params);
