@@ -135,6 +135,7 @@ const KomoditasPerkebunanPage = () => {
       id: `harvest-${index}`,
       no: index + 1,
       komoditas: item.commodity_detail,
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
       estimasiPanen: format(new Date(item.harvest_date), 'dd MMMM yyyy', { locale: require('date-fns/locale/id') }),
       petani: item.farmer_name,
       desa: item.village,
