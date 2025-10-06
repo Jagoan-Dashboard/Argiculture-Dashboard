@@ -3,6 +3,8 @@
 
 import { createContext, useState, ReactNode, useMemo, useEffect, useContext } from "react";
 import { User } from "@/types/user";
+import { setAuthData, clearAuthData, getAuthUser } from "@/lib/auth-helpers";
+import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   user: User | null;
@@ -17,45 +19,36 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    // Hanya berjalan di client side
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
-    
-    if (storedUser && storedToken) {
-      try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
-      } catch (error) {
-        console.error("AuthContext: Error parsing stored user:", error);
-        localStorage.removeItem("user");
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("token");
-      }
+    // Restore user dari localStorage jika ada
+    const storedUser = getAuthUser();
+
+    if (storedUser) {
+      setUser(storedUser);
     }
+
     setIsLoading(false);
   }, []);
 
   const login = (userData: User, token: string) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("user_id", userData.id.toString());
-    localStorage.setItem("token", token);
+    // Save ke localStorage DAN cookies
+    setAuthData(token, userData);
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("token");
+    // Clear localStorage DAN cookies
+    clearAuthData();
     setUser(null);
+
+    // Redirect ke login page
+    router.push("/login");
   };
 
   const isAuthenticated = useMemo(() => {
-    const hasUser = !!user;
-    // const hasToken = !!localStorage.getItem("token");
-    // return hasUser && hasToken;
-    return hasUser;
+    return !!user;
   }, [user]);
 
   const value = useMemo(
