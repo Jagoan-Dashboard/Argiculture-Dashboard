@@ -5,7 +5,7 @@ import { Home } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 import CardStats from '../components/CardStats';
 import { StatsType } from '../types/stats';
-import { MapSection } from '../components/MapSection';
+import { MapSection } from './components/MapSection';
 import { KeyComponent } from '../komoditas/components/KeyComponents';
 import { Key } from '../komoditas/types/key';
 import { DistribusiLahanData } from './types/distribusi-lahan';
@@ -82,6 +82,26 @@ const LahanPengairanPage = () => {
       ladang: item.ladang
     }));
   }, [data]);
+
+  const mapData = useMemo(() => {
+  if (!data?.individual_points) return [];
+  
+  return data.individual_points.map(item => ({
+    latitude: item.latitude,
+    longitude: item.longitude,
+    village: item.village,
+    district: item.district,
+    farmer_name: item.farmer_name,
+    total_land_area: item.total_land_area,
+    food_land_area: item.food_land_area,
+    horti_land_area: item.horti_land_area,
+    plantation_land_area: item.plantation_land_area,
+    water_access: item.water_access,
+    has_good_water_access: item.has_good_water_access,
+    primary_commodity: item.primary_commodity,
+    visit_date: item.visit_date
+  }));
+}, [data]);
 
   const keyInsight: Key[] = [
     {
@@ -241,7 +261,7 @@ const LahanPengairanPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grid-auto-flow-dense">
             {/* Map Section - key insight */}
             <div className="lg:col-span-2 flex flex-col gap-6">
-              <MapSection />
+              <MapSection individualPointsData={mapData} />
             </div>
             <div className="lg:col-span-1">
               <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />
