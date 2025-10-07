@@ -4,14 +4,13 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "sonner";
+import { LeafletLoader } from './leaflet-loader';
 
-// Initialize Poppins font with desired weights and subsets
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
-
 
 export const metadata: Metadata = {
   title: "Dashboard Ngawi",
@@ -37,8 +36,6 @@ export const viewport = {
   colorScheme: "light",
 };
 
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -48,6 +45,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}
         style={{ fontFamily: "var(--font-poppins), ui-sans-serif, system-ui, sans-serif" }}>
+        <LeafletLoader />
         <ThemeProvider>
           <AuthProvider>
             {children}
