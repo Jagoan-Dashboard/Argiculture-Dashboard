@@ -21,6 +21,17 @@ export interface EquipmentStatsResponse {
       count: number;
       growth_percent: number;
     };
+    // TAMBAHKAN FIELD INI ⬇️
+    individual_distribution: Array<{
+      latitude: number;
+      longitude: number;
+      village: string;
+      district: string;
+      farmer_name: string;
+      technology_type: string;
+      commodity: string;
+      visit_date: string;
+    }>;
     distribution_by_district: Array<{
       district: string;
       grain_processor: number;
