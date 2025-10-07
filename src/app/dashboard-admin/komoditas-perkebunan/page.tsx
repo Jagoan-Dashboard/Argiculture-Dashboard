@@ -16,6 +16,7 @@ import { TeknologiSection } from '../komoditas-pangan/components/TeknologiSectio
 import { usePlantation } from './hooks/usePlantation';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
+import { id as localeId } from 'date-fns/locale'; // TAMBAHKAN INI
 import { COMMODITY_OPTIONS, HarvestScheduleData } from './types/plantation-types';
 
 const KomoditasPerkebunanPage = () => {
@@ -74,6 +75,21 @@ const KomoditasPerkebunanPage = () => {
         color: "text-green-600"
       }
     ];
+  }, [data]);
+
+  // Transform data untuk map - TAMBAHKAN INI
+  const mapData = useMemo(() => {
+    if (!data?.distribution_map) return [];
+    
+    return data.distribution_map.map(item => ({
+      latitude: item.latitude,
+      longitude: item.longitude,
+      village: item.village,
+      district: item.district,
+      commodity: item.commodity,
+      commodity_type: item.commodity_type,
+      land_area: item.land_area
+    }));
   }, [data]);
 
   
@@ -135,8 +151,7 @@ const KomoditasPerkebunanPage = () => {
       id: `harvest-${index}`,
       no: index + 1,
       komoditas: item.commodity_detail,
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      estimasiPanen: format(new Date(item.harvest_date), 'dd MMMM yyyy', { locale: require('date-fns/locale/id') }),
+      estimasiPanen: format(new Date(item.harvest_date), 'dd MMMM yyyy', { locale: localeId }), // PERBAIKI INI
       petani: item.farmer_name,
       desa: item.village,
       luasLahan: item.land_area
@@ -246,8 +261,8 @@ const KomoditasPerkebunanPage = () => {
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Map Section */}
-            <MapSection />
+            {/* Map Section - PASS mapData */}
+            <MapSection cropMapData={mapData} />
 
             {/* Proporsi Fase Pertumbuhan Section */}
             <ProporsiSection growthPhaseData={proparsiData} />
