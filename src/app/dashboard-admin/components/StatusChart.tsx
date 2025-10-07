@@ -36,7 +36,7 @@ export const StatusChart = ({ statusData }: StatusChartProps) => {
       </div>
 
       {/* Pie Chart */}
-      <div className="h-72">
+      <div className="h-[26.5rem]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -67,7 +67,6 @@ export const StatusChart = ({ statusData }: StatusChartProps) => {
             />
             <Legend
               verticalAlign="bottom"
-              height={36}
               formatter={(value, entry) => (
                 <span style={{ color: entry.color }}>{value}</span>
               )}

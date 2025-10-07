@@ -6,7 +6,7 @@ export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
   // Handle empty data
   if (!data.categories || data.categories.length === 0) {
     return (
-      <div className="bg-white rounded-2xl min-h-[32rem] max-h-full h-full shadow-sm border border-gray-100 overflow-hidden">
+      <div className="bg-white rounded-2xl min-h-[32rem] max-h-[80vh] h-full shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 h-full">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-green-50 p-2 rounded-xl">
@@ -28,7 +28,7 @@ export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
   }
 
   return (
-    <div className="bg-white rounded-2xl min-h-[32rem] h-full max-h-full shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl min-h-[32rem] h-full max-h-[80vh] shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="p-6">
         <div className="flex items-center gap-3">
@@ -42,7 +42,7 @@ export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-8">
+      <div className="p-6 space-y-8 max-h-[32rem] overflow-y-auto">
         {data.categories.map((category, categoryIndex) => (
           <div key={categoryIndex} className="space-y-4">
             {/* Category Title */}
