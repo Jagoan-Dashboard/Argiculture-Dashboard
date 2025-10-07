@@ -60,6 +60,8 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
         commoditySummary: []
       };
     }
+
+    
     
     // Group by lat/lng to combine duplicate locations
     const grouped = cropMapData.reduce((acc, item) => {

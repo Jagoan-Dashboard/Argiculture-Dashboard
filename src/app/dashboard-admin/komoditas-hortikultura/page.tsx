@@ -78,6 +78,23 @@ const KomoditasHorticulturaPage = () => {
   }, [data]);
 
   
+
+  // Transform data untuk map - TAMBAHKAN INI
+  const mapData = useMemo(() => {
+    if (!data?.distribution_map) return [];
+    
+    return data.distribution_map.map(item => ({
+      latitude: item.latitude,
+      longitude: item.longitude,
+      village: item.village,
+      district: item.district,
+      commodity: item.commodity,
+      commodity_type: item.commodity_type,
+      land_area: item.land_area
+    }));
+  }, [data]);
+
+  
   const proparsiData: GrowthPhaseData[] = useMemo(() => {
     if (!data?.growth_phases) return [];
     
@@ -249,8 +266,8 @@ const KomoditasHorticulturaPage = () => {
 
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Map Section */}
-            <MapSection />
+            {/* Map Section - PASS mapData */}
+            <MapSection cropMapData={mapData} />
 
             {/* Proporsi Fase Pertumbuhan Section */}
             <ProporsiSection growthPhaseData={proparsiData} />
