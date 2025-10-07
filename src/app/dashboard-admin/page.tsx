@@ -258,7 +258,7 @@ export default function DashboardPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grid-auto-flow-dense">
             {/* Map Section - Bisa tinggi besar */}
             <div className="lg:col-span-2 flex flex-col gap-6">
-              <MapSection commodityMapData={data?.commodity_map} />
+              <MapSection commodityMapData={data?.commodity_map || []} />
               <CommodityChartSection commodityData={commodityData} />
             </div>
 
