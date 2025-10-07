@@ -32,13 +32,14 @@ export default function DashboardPage() {
 
   // Transform data untuk stats cards
   const statsData: StatsType[] = useMemo(() => {
-    if (!data) return [];
+    // ✅ Tambah null safety checks
+    if (!data || !data.total_land_area) return [];
     
     return [
       {
         id: 1,
         title: "Total Luas Lahan",
-        value: data.total_land_area.toLocaleString('id-ID'),
+        value: (data.total_land_area || 0).toLocaleString('id-ID'),
         unit: "Hektar (Ha)",
         change: "+2.1%",
         isPositive: true,
@@ -48,7 +49,7 @@ export default function DashboardPage() {
       {
         id: 2,
         title: "Jumlah Laporan Hama/Penyakit",
-        value: data.pest_disease_reports.toString(),
+        value: (data.pest_disease_reports || 0).toString(),
         unit: "Laporan",
         change: "5.3%",
         isPositive: false,
@@ -58,7 +59,7 @@ export default function DashboardPage() {
       {
         id: 3,
         title: "Total Laporan Penyuluh",
-        value: data.total_extension_reports.toString(),
+        value: (data.total_extension_reports || 0).toString(),
         unit: "Laporan",
         change: "+5.1%",
         isPositive: true,
@@ -70,7 +71,8 @@ export default function DashboardPage() {
 
   // Transform data untuk commodity chart
   const commodityData: CommodityData[] = useMemo(() => {
-    if (!data) return [];
+    // ✅ Tambah null safety checks
+    if (!data || !data.commodity_by_sector) return [];
     
     const allCommodities = [
       ...(data.commodity_by_sector.food_crops || []),
@@ -80,55 +82,57 @@ export default function DashboardPage() {
 
     return allCommodities.map(item => ({
       name: COMMODITY_NAME_MAP[item.name] || item.name,
-      value: item.count,
+      value: item.count || 0,
       fullName: COMMODITY_NAME_MAP[item.name] || item.name,
     }));
   }, [data]);
 
   // Transform data untuk status chart
   const statusData = useMemo(() => {
-    if (!data?.land_status_distribution) return [];
+    // ✅ Tambah null safety checks
+    if (!data?.land_status_distribution || !Array.isArray(data.land_status_distribution)) return [];
     
     const colors = ['#4F46E5', '#33AD5C', '#F97316'];
     
     return data.land_status_distribution.map((item, index) => ({
       name: LAND_STATUS_MAP[item.status] || item.status,
-      value: item.percentage,
+      value: item.percentage || 0,
       color: colors[index % colors.length],
     }));
   }, [data]);
 
   // Transform data untuk aspirasi
   const aspirasiData: AspirationsData = useMemo(() => {
+    // ✅ Tambah null safety checks
     if (!data) return { categories: [] };
 
     const categories = [];
 
     // Kendala Utama (hijau)
-    if (data.main_constraints && data.main_constraints.length > 0) {
+    if (data.main_constraints && Array.isArray(data.main_constraints) && data.main_constraints.length > 0) {
       categories.push({
         title: "Kendala Utama",
         color: "green" as const,
         items: data.main_constraints.map((item, index) => ({
           id: index + 1,
           title: CONSTRAINT_MAP[item.constraint] || item.constraint,
-          value: item.count,
-          percentage: item.percentage,
+          value: item.count || 0,
+          percentage: item.percentage || 0,
           color: "green" as const,
         })),
       });
     }
 
     // Harapan & Kebutuhan Petani (pink)
-    if (data.farmer_hopes_needs.hopes && data.farmer_hopes_needs.hopes.length > 0) {
+    if (data.farmer_hopes_needs?.hopes && Array.isArray(data.farmer_hopes_needs.hopes) && data.farmer_hopes_needs.hopes.length > 0) {
       categories.push({
         title: "Harapan & Kebutuhan Petani",
         color: "pink" as const,
         items: data.farmer_hopes_needs.hopes.map((item, index) => ({
           id: index + 100,
           title: HOPE_MAP[item.hope] || item.hope,
-          value: item.count,
-          percentage: item.percentage,
+          value: item.count || 0,
+          percentage: item.percentage || 0,
           color: "pink" as const,
         })),
       });
@@ -181,6 +185,20 @@ export default function DashboardPage() {
               >
                 Coba Lagi
               </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="container mx-auto max-w-7xl">
+        <div className="bg-gray-50 rounded-lg p-4 lg:p-6">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <p className="text-gray-600">Tidak ada data tersedia</p>
             </div>
           </div>
         </div>
