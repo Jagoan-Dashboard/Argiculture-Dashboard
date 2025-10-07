@@ -11,6 +11,16 @@ export interface CommodityAnalysisResponse {
     harvested_area_growth: number;
     productivity: number;
     productivity_growth: number;
+    production_distribution: Array<{
+      latitude: number;
+      longitude: number;
+      village: string;
+      district: string;
+      commodity: string;
+      land_area: number;
+      estimated_production: number;
+      farmer_name: string;
+    }>;
     production_by_district: Array<{
       district: string;
       production: number;
@@ -24,7 +34,7 @@ export interface CommodityAnalysisResponse {
       area: number;
     }>;
   };
-}
+} 
 
 export interface CommodityAnalysisParams {
   commodity_name?: string;

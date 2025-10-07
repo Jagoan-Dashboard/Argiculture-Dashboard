@@ -40,8 +40,10 @@ interface CommodityMapData {
   village: string;
   district: string;
   commodity: string;
-  commodity_type: string;
+  commodity_type: string; 
   land_area: number;
+  estimated_production?: number; 
+  farmer_name?: string; 
 }
 
 interface MapSectionProps {
@@ -276,31 +278,6 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
             </div>
           </div>
         )}
-
-        {/* Traditional Legend */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pt-2 border-t border-gray-200">
-          <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-2">Keterangan Warna</h3>
-            <div className="flex flex-wrap gap-3">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
-                <span className="text-sm text-gray-600">Perkebunan</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-yellow-500 rounded-full border-2 border-white shadow-sm"></div>
-                <span className="text-sm text-gray-600">Tanaman Pangan</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-orange-500 rounded-full border-2 border-white shadow-sm"></div>
-                <span className="text-sm text-gray-600">Hortikultura</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="text-sm text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
-            <span className="font-medium text-gray-900">{groupedData.length}</span> titik lokasi
-          </div>
-        </div>
       </div>
     </div>
   );

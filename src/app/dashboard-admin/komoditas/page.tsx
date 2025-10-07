@@ -87,6 +87,23 @@ const KomoditasListPage = () => {
     }));
   }, [data]);
 
+  // Transform data untuk map - TAMBAHKAN INI
+  const mapData = useMemo(() => {
+    if (!data?.production_distribution) return [];
+    
+    return data.production_distribution.map(item => ({
+      latitude: item.latitude,
+      longitude: item.longitude,
+      village: item.village,
+      district: item.district,
+      commodity: item.commodity,
+      commodity_type: item.commodity, // commodity_type sama dengan commodity
+      land_area: item.land_area,
+      estimated_production: item.estimated_production,
+      farmer_name: item.farmer_name
+    }));
+  }, [data]);
+
   // Key insights
   const keyInsight: Key[] = [
     {
@@ -267,9 +284,9 @@ const KomoditasListPage = () => {
           </div>
 
           <div className="grid grid-cols-1 h-full min-h-[10rem] max-h-[32rem] sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Map Section - key insight */}
+            {/* Map Section - PASS mapData */}
             <div className="lg:col-span-2 flex flex-col h-max gap-6">
-              <MapSection />
+              <MapSection commodityMapData={mapData} />
             </div>
             <div className="lg:col-span-1">
               <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />
