@@ -11,12 +11,12 @@ import { CommodityChartSection } from "./components/ComodityChartSection";
 import { useExecutiveDashboard } from "./hooks/useExecutiveDashboard";
 import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { useState, useMemo } from "react";
-import { 
-  SECTOR_OPTIONS, 
-  COMMODITY_NAME_MAP, 
-  LAND_STATUS_MAP, 
-  CONSTRAINT_MAP, 
-  HOPE_MAP, 
+import {
+  SECTOR_OPTIONS,
+  COMMODITY_NAME_MAP,
+  LAND_STATUS_MAP,
+  CONSTRAINT_MAP,
+  HOPE_MAP,
   AspirationsData
 } from "./types/executive";
 import { CommodityData } from "./types/comodity";
@@ -34,7 +34,7 @@ export default function DashboardPage() {
   const statsData: StatsType[] = useMemo(() => {
     // ✅ Tambah null safety checks
     if (!data || !data.total_land_area) return [];
-    
+
     return [
       {
         id: 1,
@@ -71,29 +71,53 @@ export default function DashboardPage() {
 
   // Transform data untuk commodity chart
   const commodityData: CommodityData[] = useMemo(() => {
-    // ✅ Tambah null safety checks
     if (!data || !data.commodity_by_sector) return [];
-    
+
     const allCommodities = [
       ...(data.commodity_by_sector.food_crops || []),
       ...(data.commodity_by_sector.horticulture || []),
       ...(data.commodity_by_sector.plantation || []),
     ];
 
-    return allCommodities.map(item => ({
-      name: COMMODITY_NAME_MAP[item.name] || item.name,
-      value: item.count || 0,
-      fullName: COMMODITY_NAME_MAP[item.name] || item.name,
+    // 1. Buat map untuk mengelompokkan berdasarkan nama yang dinormalisasi
+    const grouped = new Map<string, { total: number; displayName: string }>();
+
+    for (const item of allCommodities) {
+      if (!item.name || item.count == null) continue;
+
+      // Normalisasi key: lowercase + trim
+      const normalizedKey = item.name.toLowerCase().trim();
+
+      // Dapatkan nama tampilan (gunakan COMMODITY_NAME_MAP jika tersedia)
+      const displayName = COMMODITY_NAME_MAP[item.name] || item.name;
+
+      if (grouped.has(normalizedKey)) {
+        // Jika sudah ada, tambahkan count-nya
+        grouped.get(normalizedKey)!.total += item.count;
+      } else {
+        // Jika belum ada, buat entri baru
+        grouped.set(normalizedKey, {
+          total: item.count,
+          displayName, // Simpan nama tampilan dari entri pertama yang muncul
+        });
+      }
+    }
+
+    // 2. Ubah kembali ke array
+    return Array.from(grouped.values()).map(({ total, displayName }) => ({
+      name: displayName,
+      fullName: displayName,
+      value: total,
     }));
   }, [data]);
-
+  console.log(commodityData)
   // Transform data untuk status chart
   const statusData = useMemo(() => {
     // ✅ Tambah null safety checks
     if (!data?.land_status_distribution || !Array.isArray(data.land_status_distribution)) return [];
-    
+
     const colors = ['#4F46E5', '#33AD5C', '#F97316'];
-    
+
     return data.land_status_distribution.map((item, index) => ({
       name: LAND_STATUS_MAP[item.status] || item.status,
       value: item.percentage || 0,

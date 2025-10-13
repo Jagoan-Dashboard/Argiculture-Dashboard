@@ -78,7 +78,7 @@ export const CommodityChartSection = ({ commodityData }: CommodityChartSectionPr
                 textAnchor="end"
               />
               <YAxis
-                domain={[0, 12]}
+                domain={[0, 'dataMax + 1']}
                 tick={{ fontSize: 11, fill: '#6B7280', textAnchor: 'end' }}
                 axisLine={{ stroke: '#E5E7EB' }}
                 tickCount={7}
