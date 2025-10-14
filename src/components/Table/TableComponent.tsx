@@ -416,11 +416,11 @@ export function UniversalTable<T = Record<string, unknown>>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length + (selectable ? 1 : 0) + (hasActions ? 1 : 0)}
-                    className="h-24 text-center"
+                    className=" h-[32rem] text-center"
                   >
                     <div className="flex flex-col items-center justify-center space-y-2">
                       {emptyStateIcon}
-                      <p className="text-muted-foreground">{emptyStateMessage}</p>
+                      <p className="text-muted-foreground text-lg">{emptyStateMessage}</p>
                     </div>
                   </TableCell>
                 </TableRow>

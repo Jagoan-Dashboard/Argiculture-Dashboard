@@ -135,7 +135,7 @@ export const TablePerkiraanSection = ({
           emptyStateIcon={
             <Icon icon="material-symbols:agriculture-outline" className="w-12 h-12 text-gray-400" />
           }
-          className="mt-0 h-full"
+          className="mt-0 h-full min-h-[32rem]"
         />
       </div>
 
