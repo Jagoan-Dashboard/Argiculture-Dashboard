@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 // Lazy load map components with loading state
 const MapContainer = dynamic(
   () => import('react-leaflet').then((mod) => mod.MapContainer),
-  { 
+  {
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center h-full bg-gray-100">
@@ -40,10 +40,10 @@ interface CommodityMapData {
   village: string;
   district: string;
   commodity: string;
-  commodity_type: string; 
+  commodity_type: string;
   land_area: number;
-  estimated_production?: number; 
-  farmer_name?: string; 
+  estimated_production?: number;
+  farmer_name?: string;
 }
 
 interface MapSectionProps {
@@ -54,18 +54,32 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Calculate center, group coordinates, and get commodity summary
-  const { mapCenter, groupedData, commoditySummary } = useMemo(() => {
+  const { mapCenter, groupedData, commoditySummary, minArea, maxArea } = useMemo(() => {
     if (commodityMapData.length === 0) {
-      return { 
+      return {
         mapCenter: [-7.4098, 111.4461] as [number, number],
         groupedData: [],
-        commoditySummary: []
+        commoditySummary: [],
+        minArea: 0,
+        maxArea: 1
       };
     }
-    
+
     // Group by lat/lng to combine duplicate locations
     const grouped = commodityMapData.reduce((acc, item) => {
-      const key = `${item.latitude},${item.longitude}`;
+      // Validasi koordinat
+      if (
+        typeof item.latitude !== 'number' ||
+        typeof item.longitude !== 'number' ||
+        isNaN(item.latitude) ||
+        isNaN(item.longitude)
+      ) {
+        console.warn('Invalid coordinates for item:', item);
+        return acc;
+      }
+
+      const key = `${item.latitude.toFixed(5)},${item.longitude.toFixed(5)}`; // lebih presisi
+
       if (!acc[key]) {
         acc[key] = {
           ...item,
@@ -92,18 +106,46 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
 
     const avgLat = commodityMapData.reduce((sum, item) => sum + item.latitude, 0) / commodityMapData.length;
     const avgLng = commodityMapData.reduce((sum, item) => sum + item.longitude, 0) / commodityMapData.length;
-    
+
+    const allAreas = commodityMapData.map(item => item.land_area);
+    const minArea = Math.min(...allAreas);
+    const maxArea = Math.max(...allAreas);
+
+    console.log('📊 Grouped Data for Map:', Object.values(grouped));
+    console.log('📍 Map Center:', [avgLat, avgLng]);
+    console.log('📏 Min/Max Area:', minArea, maxArea);
+
     return {
       mapCenter: [avgLat, avgLng] as [number, number],
       groupedData: Object.values(grouped),
-      commoditySummary: Object.values(summary)
+      commoditySummary: Object.values(summary),
+      minArea,
+      maxArea
     };
+
+
   }, [commodityMapData]);
+
+
+  // Fungsi untuk menghitung radius berdasarkan area
+  const getRadius = (area: number): number => {
+    if (minArea === maxArea) return 8;
+
+    // Jika area = 0, tetap beri radius minimal
+    if (area <= 0) return 6;
+
+    const normalized = (area - minArea) / (maxArea - minArea);
+    const minRadius = 6;
+    const maxRadius = 20;
+    return Math.max(minRadius, minRadius + normalized * (maxRadius - minRadius));
+  };
+
+
 
   const getMarkerColor = (commodityType: string) => {
     // Normalize to uppercase for consistency
     const type = commodityType?.toUpperCase();
-    
+
     switch (type) {
       case 'PLANTATION':
         return '#22c55e'; // green-500
@@ -123,7 +165,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
 
   const getCommodityTypeLabel = (type: string) => {
     const normalized = type?.toUpperCase();
-    
+
     switch (normalized) {
       case 'PLANTATION':
         return 'Perkebunan';
@@ -142,7 +184,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
 
   const getCommodityTypeColor = (type: string) => {
     const normalized = type?.toUpperCase();
-    
+
     switch (normalized) {
       case 'PLANTATION':
         return 'bg-green-100 text-green-700 border-green-300';
@@ -169,7 +211,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
             Peta Persebaran Komoditas Pertanian
           </h2>
         </div>
-        
+
         <div className="min-h-[27rem] rounded-lg bg-gray-100 flex items-center justify-center">
           <p className="text-gray-500 h-full">Tidak ada data komoditas untuk ditampilkan</p>
         </div>
@@ -203,19 +245,28 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               maxZoom={19}
             />
-            
+
             {mapLoaded && groupedData.map((item, index) => (
               <CircleMarker
-                key={index}
+                key={`${item.latitude.toFixed(5)}-${item.longitude.toFixed(5)}`}
                 center={[item.latitude, item.longitude]}
-                radius={item.count > 1 ? 12 : 8}
+                radius={getRadius(item.totalArea)} // ✅ gunakan radius dinamis
                 fillColor={getMarkerColor(item.commodity_type)}
                 color="#fff"
-                weight={item.count > 1 ? 3 : 2}
+                weight={2}
                 opacity={1}
                 fillOpacity={0.8}
+                eventHandlers={{
+                  click: (e) => {
+                    e.target.openPopup();
+                  },
+                }}
               >
                 <Popup maxWidth={250}>
+                  {(() => {
+                    console.log('Popup data:', item); // <-- ini akan muncul saat popup dirender
+                    return null;
+                  })()}
                   <div className="text-sm p-1">
                     <p className="font-semibold text-base mb-2 text-green-700">{item.commodity}</p>
                     <div className="space-y-1 text-gray-700">
@@ -228,21 +279,13 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
                             📊 {item.count} lokasi lahan di titik ini
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            Rata-rata: {(item.totalArea / item.count).toLocaleString('id-ID', {maximumFractionDigits: 1})} Ha per lokasi
+                            Rata-rata: {(item.totalArea / item.count).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Ha per lokasi
                           </p>
                         </div>
                       )}
                     </div>
                   </div>
                 </Popup>
-                {/* Badge untuk multiple locations */}
-                {item.count > 1 && typeof window !== 'undefined' && (
-                  <Popup>
-                    <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white">
-                      {item.count}
-                    </div>
-                  </Popup>
-                )}
               </CircleMarker>
             ))}
           </MapContainer>
@@ -261,8 +304,8 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
                   key={index}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getCommodityTypeColor(item.type)}`}
                 >
-                  <div 
-                    className="w-3 h-3 rounded-full flex-shrink-0" 
+                  <div
+                    className="w-3 h-3 rounded-full flex-shrink-0"
                     style={{ backgroundColor: getMarkerColor(item.type) }}
                   ></div>
                   <div className="text-sm">

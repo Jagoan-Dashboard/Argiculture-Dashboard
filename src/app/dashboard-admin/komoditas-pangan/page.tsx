@@ -5,7 +5,7 @@ import { Home } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 import CardStats from './components/CardStats';
 import { StatsType } from './types/stats';
-import { MapSection } from './components/MapSection';
+import { MapSection } from '../components/MapSection';
 import { GrowthPhaseData } from './types/proparsi';
 import { ProporsiSection } from './components/ProparsiSection';
 import { TablePerkiraanSection } from './components/TablePerkiraanSection';
@@ -257,7 +257,7 @@ const KomoditasPanganPage = () => {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Map Section - PASS mapData */}
-            <MapSection cropMapData={mapData} />
+            <MapSection commodityMapData={mapData} />
 
             {/* Proporsi Fase Pertumbuhan Section */}
             <ProporsiSection growthPhaseData={proparsiData} />

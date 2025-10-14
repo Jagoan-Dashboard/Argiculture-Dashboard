@@ -165,6 +165,8 @@ export default function DashboardPage() {
     return { categories };
   }, [data]);
 
+  console.log(data)
+
   // Handler untuk perubahan sector
   const handleSectorChange = (value: string) => {
     setSelectedSector(value);
