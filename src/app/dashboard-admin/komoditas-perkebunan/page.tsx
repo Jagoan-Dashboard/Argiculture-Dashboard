@@ -8,7 +8,6 @@ import CardStats from '../komoditas-pangan/components/CardStats';
 import { GrowthPhaseData } from '../komoditas-pangan/types/proparsi';
 import { HamaData } from '../komoditas-pangan/types/dominasi';
 import { TeknologiData } from '../komoditas-pangan/types/teknologi';
-import { MapSection } from '../komoditas-pangan/components/MapSection';
 import { ProporsiSection } from '../komoditas-pangan/components/ProparsiSection';
 import { TablePerkiraanSection } from '../komoditas-pangan/components/TablePerkiraanSection';
 import { DominasiHamaSection } from '../komoditas-pangan/components/DominasiHamaSection';
@@ -18,6 +17,7 @@ import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale'; // TAMBAHKAN INI
 import { COMMODITY_OPTIONS, HarvestScheduleData } from './types/plantation-types';
+import { MapSection } from '../components/MapSection';
 
 const KomoditasPerkebunanPage = () => {
   
@@ -262,7 +262,7 @@ const KomoditasPerkebunanPage = () => {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Map Section - PASS mapData */}
-            <MapSection cropMapData={mapData} />
+            <MapSection commodityMapData={mapData} />
 
             {/* Proporsi Fase Pertumbuhan Section */}
             <ProporsiSection growthPhaseData={proparsiData} />

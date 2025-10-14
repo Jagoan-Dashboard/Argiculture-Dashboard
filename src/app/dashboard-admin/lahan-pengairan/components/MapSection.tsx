@@ -167,7 +167,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
 
   if (individualPointsData.length === 0) {
     return (
-      <div className="bg-white col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
+      <div className="bg-white h-[32rem] col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">
@@ -175,7 +175,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
           </h2>
         </div>
         
-        <div className="h-64 lg:h-80 rounded-lg bg-gray-100 flex items-center justify-center">
+        <div className="h-64 lg:h-[26rem] rounded-lg bg-gray-100 flex items-center justify-center">
           <p className="text-gray-500">Tidak ada data lahan untuk ditampilkan</p>
         </div>
       </div>

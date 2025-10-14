@@ -127,7 +127,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
 
   if (equipmentMapData.length === 0) {
     return (
-      <div className="bg-white col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
+      <div className="bg-white col-span-2 h-[32rem] p-6 rounded-xl shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">
@@ -135,7 +135,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
           </h2>
         </div>
         
-        <div className="h-64 lg:h-80 rounded-lg bg-gray-100 flex items-center justify-center">
+        <div className="h-64 lg:h-[26rem] rounded-lg bg-gray-100 flex items-center justify-center">
           <p className="text-gray-500">Tidak ada data alat pertanian untuk ditampilkan</p>
         </div>
       </div>
@@ -151,7 +151,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
         </h2>
       </div>
 
-      <div className="relative mb-4 h-64 lg:h-80 rounded-lg overflow-hidden border border-gray-200">
+      <div className="relative mb-4 h-64 lg:h-[26rem] rounded-lg overflow-hidden border border-gray-200">
         {typeof window !== 'undefined' && (
           <MapContainer
             center={mapCenter}

@@ -8,7 +8,7 @@ import CardStats from '../komoditas-pangan/components/CardStats';
 import { GrowthPhaseData } from '../komoditas-pangan/types/proparsi';
 import { HamaData } from '../komoditas-pangan/types/dominasi';
 import { TeknologiData } from '../komoditas-pangan/types/teknologi';
-import { MapSection } from '../komoditas-pangan/components/MapSection';
+import { MapSection } from './components/MapSection';
 import { ProporsiSection } from '../komoditas-pangan/components/ProparsiSection';
 import { TablePerkiraanSection } from '../komoditas-pangan/components/TablePerkiraanSection';
 import { DominasiHamaSection } from '../komoditas-pangan/components/DominasiHamaSection';
