@@ -15,28 +15,28 @@ import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 
 const AlatPertanianPage = () => {
-  
+
   const [dateRange, setDateRange] = useState<{
     from: Date;
     to: Date;
   }>({
-    from: new Date(2024, 0, 1), 
-    to: new Date(2025, 11, 31), 
+    from: new Date(2024, 0, 1),
+    to: new Date(2025, 11, 31),
   });
 
-  
+
   const formattedParams = useMemo(() => ({
     start_date: format(dateRange.from, 'yyyy-MM-dd'),
     end_date: format(dateRange.to, 'yyyy-MM-dd'),
   }), [dateRange]);
 
-  
+
   const { data, loading, error, refetch } = useEquipmentStats(formattedParams);
 
-  
+
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
-    
+
     return [
       {
         id: 1,
@@ -82,24 +82,24 @@ const AlatPertanianPage = () => {
   }, [data]);
 
   const mapData = useMemo(() => {
-  if (!data?.individual_distribution) return [];
-  
-  return data.individual_distribution.map(item => ({
-    latitude: item.latitude,
-    longitude: item.longitude,
-    village: item.village,
-    district: item.district,
-    farmer_name: item.farmer_name,
-    technology_type: item.technology_type,
-    commodity: item.commodity,
-    visit_date: item.visit_date
-  }));
-}, [data]);
+    if (!data?.individual_distribution) return [];
 
-  
+    return data.individual_distribution.map(item => ({
+      latitude: item.latitude,
+      longitude: item.longitude,
+      village: item.village,
+      district: item.district,
+      farmer_name: item.farmer_name,
+      technology_type: item.technology_type,
+      commodity: item.commodity,
+      visit_date: item.visit_date
+    }));
+  }, [data]);
+
+
   const jumlahPompaData: JumlahPompaData[] = useMemo(() => {
     if (!data?.water_pump_trend) return [];
-    
+
     return data.water_pump_trend.map(item => ({
       year: item.year,
       value: item.count
@@ -160,14 +160,14 @@ const AlatPertanianPage = () => {
     }
   ];
 
-  
+
   const handleDateUpdate = (values: { range: { from: Date; to: Date | undefined } }) => {
     if (values.range.to) {
       setDateRange({
         from: values.range.from,
         to: values.range.to,
       });
-      
+
       refetch({
         start_date: format(values.range.from, 'yyyy-MM-dd'),
         end_date: format(values.range.to, 'yyyy-MM-dd'),
@@ -175,7 +175,7 @@ const AlatPertanianPage = () => {
     }
   };
 
-  
+
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -191,7 +191,7 @@ const AlatPertanianPage = () => {
     );
   }
 
-  
+
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -261,7 +261,7 @@ const AlatPertanianPage = () => {
             <CardStats statsData={statsData} />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grid-auto-flow-dense">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
             {/* Map Section - key insight */}
             <div className="lg:col-span-2 flex flex-col gap-6">
               <MapSection equipmentMapData={mapData} />

@@ -147,6 +147,14 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
     const type = commodityType?.toUpperCase();
 
     switch (type) {
+      case 'PADI_LADANG':
+        return '#22c55e'; // green-500
+      case 'PADI_SAWAH':
+        return '#eab308'; // yellow-500
+      case 'JAGUNG':
+        return '#f97316'; // orange-500
+      case 'KEDELAI':
+        return '#ef4444'; // red-500
       case 'PLANTATION':
         return '#22c55e'; // green-500
       case 'FOOD':
@@ -167,6 +175,14 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
     const normalized = type?.toUpperCase();
 
     switch (normalized) {
+      case 'PADI_LADANG':
+        return 'Padi Ladang';
+      case 'PADI_SAWAH':
+        return 'Padi Sawah';
+      case 'JAGUNG':
+        return 'Jagung';
+      case 'KEDELAI':
+        return 'Kedelai';
       case 'PLANTATION':
         return 'Perkebunan';
       case 'FOOD':
@@ -186,6 +202,14 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
     const normalized = type?.toUpperCase();
 
     switch (normalized) {
+      case 'PADI_LADANG':
+        return 'bg-green-100 text-green-700 border-green-300';
+      case 'PADI_SAWAH':
+        return 'bg-yellow-100 text-yellow-700 border-yellow-300';
+      case 'JAGUNG':
+        return 'bg-orange-100 text-orange-700 border-orange-300';
+      case 'KEDELAI':
+        return 'bg-red-100 text-red-700 border-red-300';
       case 'PLANTATION':
         return 'bg-green-100 text-green-700 border-green-300';
       case 'FOOD':
@@ -220,7 +244,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
   }
 
   return (
-    <div className="bg-white col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
+    <div className="bg-white h-[32rem] col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
       <div className="flex items-center gap-2 mb-4">
         <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">
