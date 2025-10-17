@@ -21,7 +21,7 @@ const LahanPengairanPage = () => {
     to: Date;
   }>({
     from: new Date(2024, 0, 1), 
-    to: new Date(2024, 11, 31), 
+    to: new Date(2025, 11, 31), 
   });
 
   
@@ -70,6 +70,7 @@ const LahanPengairanPage = () => {
       }
     ];
   }, [data]);
+  console.log('data', data)
 
   
   const distribusiData: DistribusiLahanData[] = useMemo(() => {
@@ -77,11 +78,12 @@ const LahanPengairanPage = () => {
     
     return data.land_distribution.map(item => ({
       kecamatan: item.district,
-      sawah: item.sawah,
-      perkebunan: item.perkebunan,
-      ladang: item.ladang
+      sawah: item.food_crop_area,
+      perkebunan: item.plantation_area,
+      ladang: item.horti_area
     }));
   }, [data]);
+  console.log('distribusiData', distribusiData)
 
   const mapData = useMemo(() => {
   if (!data?.individual_points) return [];

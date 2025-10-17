@@ -24,7 +24,7 @@ const KomoditasListPage = () => {
     to: Date;
   }>({
     from: new Date(2024, 0, 1), // 1 Jan 2024
-    to: new Date(2024, 11, 31), // 31 Des 2024
+    to: new Date(2025, 11, 31), // 31 Des 2024
   });
 
   // API params

@@ -24,9 +24,9 @@ export interface LandIrrigationStatsResponse {
     }> | null;
     land_distribution: Array<{
       district: string;
-      sawah: number;
-      perkebunan: number;
-      ladang?: number;
+      food_crop_area: number;
+      plantation_area: number;
+      horti_area?: number;
     }> | null;
     // TAMBAHKAN FIELD INI ⬇️
     individual_points: Array<{

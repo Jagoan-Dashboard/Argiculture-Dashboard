@@ -25,13 +25,12 @@ const KomoditasHorticulturaPage = () => {
 
   
   const apiParams = useMemo(() => ({
-    start_date: format(new Date(2024, 0, 1), 'yyyy-MM-dd'),
-    end_date: format(new Date(2024, 11, 31), 'yyyy-MM-dd'),
     commodity_name: selectedCommodity,
   }), [selectedCommodity]);
 
   
   const { data, loading, error, refetch } = useHorticulture(apiParams);
+  console.log(data)
 
   
   const statsData: StatsType[] = useMemo(() => {

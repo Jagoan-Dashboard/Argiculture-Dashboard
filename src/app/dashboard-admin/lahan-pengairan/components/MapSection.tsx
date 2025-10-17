@@ -183,7 +183,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
   }
 
   return (
-    <div className="bg-white col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
+    <div className="bg-white h-[32rem] col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
       <div className="flex items-center gap-2 mb-4">
         <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">
@@ -191,7 +191,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
         </h2>
       </div>
 
-      <div className="relative mb-4 h-64 lg:h-80 rounded-lg overflow-hidden border border-gray-200">
+      <div className="relative mb-4 h-[72%] rounded-lg overflow-hidden border border-gray-200">
         {typeof window !== 'undefined' && (
           <MapContainer
             center={mapCenter}

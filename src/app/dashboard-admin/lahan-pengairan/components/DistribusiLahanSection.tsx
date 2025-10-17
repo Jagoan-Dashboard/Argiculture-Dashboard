@@ -15,7 +15,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-medium text-gray-900 mb-2">{label}</p>
+        <p className="font-medium text-gray-900 mb-2">Kecamatan {label}</p>
         {payload.map((entry: { value: number; color: string; dataKey: string }, index: number) => (
           <p key={index} className="text-sm">
             <span className="inline-block w-3 h-3 rounded mr-2" style={{ backgroundColor: entry.color }} />
@@ -26,7 +26,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
           </p>
         ))}
         <div className="border-t border-gray-200 mt-2 pt-2">
-          <p className="text-sm font-medium">Total: {totalLahan} Ha</p>
+          <p className="text-sm font-medium">Total: {totalLahan.toFixed(2)} Ha</p>
         </div>
       </div>
     );
@@ -35,6 +35,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 };
 
 export const DistribusiLahanSection = ({ distribusiData }: DistribusiLahanSectionProps) => {
+  // console.log('distribusiData', distribusiData)
 
   return (
     <div className="bg-white rounded-2xl min-h-[10rem] max-h-[32rem] h-full shadow-sm border border-gray-100 overflow-hidden">

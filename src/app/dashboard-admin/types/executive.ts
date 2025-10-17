@@ -32,6 +32,7 @@ export const LAND_STATUS_MAP: Record<string, string> = {
   'Sewa': 'Sewa',
   'PINJAM_BEBAS_SEWA': 'Pinjam/Bebas Sewa',
   'Pinjam/Bebas Sewa': 'Pinjam/Bebas Sewa',
+  "PINJAMBEBAS_SEWA": 'Pinjam/Bebas Sewa',
 };
 
 // Map untuk kendala utama
@@ -41,6 +42,11 @@ export const CONSTRAINT_MAP: Record<string, string> = {
   'HAMA_PENYAKIT': 'Hama & Penyakit',
   'MODAL_TERBATAS': 'Modal Terbatas',
   'TENAGA_KERJA': 'Tenaga Kerja',
+  'HARGA_RENDAH': 'Harga Rendah',
+  "IKLIM": "Iklim",
+  "HAMA": "Hama",
+  "PUPUK": "Pupuk",
+
 };
 
 // Map untuk harapan petani
@@ -50,6 +56,8 @@ export const HOPE_MAP: Record<string, string> = {
   'PELATIHAN': 'Pelatihan',
   'BANTUAN_MODAL': 'Bantuan Modal',
   'IRIGASI_LEBIH_BAIK': 'Irigasi Lebih Baik',
+  'HARGA_STABIL': 'Harga Stabil',
+  "BIBITPUPUK": "Bibit Pupuk",
 };
 
 export interface AspirationItem {
