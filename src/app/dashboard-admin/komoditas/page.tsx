@@ -278,22 +278,38 @@ const KomoditasListPage = () => {
             </div>
           </div>
 
-          {/* Stats Cards */}
+          {/* Stats Cards - Always first */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CardStats statsData={statsData} />
           </div>
 
-          <div className="grid grid-cols-1 h-full min-h-[10rem] max-h-[32rem] sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Map Section - PASS mapData */}
-            <div className="lg:col-span-2 flex flex-col h-max gap-6">
+          {/* Mobile layout: Stack components in desired order */}
+          <div className="space-y-6 sm:hidden">
+            <div>
               <MapSection commodityMapData={mapData} />
             </div>
-            <div className="lg:col-span-1">
+            <div>
+              <ProductivityChartSection productivityData={productivityData} />
+            </div>
+            <div>
+              <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />
+            </div>
+            <div>
+              <KeyComponent data={keyStrategy} title="Key Strategy" description="Strategi penting untuk pertanian" />
+            </div>
+          </div>
+
+          {/* Desktop layout: Side-by-side components */}
+          <div className="hidden sm:grid grid-cols-1 sm:h-full sm:min-h-[10rem] sm:max-h-[32rem] sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="sm:col-span-2 lg:col-span-2 flex flex-col h-max gap-6">
+              <MapSection commodityMapData={mapData} />
+            </div>
+            <div className="sm:col-span-1 lg:col-span-1">
               <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 h-[32rem] sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="hidden sm:grid grid-cols-1 h-[32rem] sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
               <ProductivityChartSection productivityData={productivityData} />
             </div>

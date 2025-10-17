@@ -31,6 +31,12 @@ export const GROWTH_PHASE_MAP: Record<string, string> = {
   'GENERATIF': 'Generatif',
   'PEMATANGAN': 'Pematangan',
   'PANEN': 'Panen',
+  "BERA":"Bera",
+  "GENERATIF_1":"Generatif 1",
+  "GENERATIF_2":"Generatif 2",
+  "GENERATIF_3":"Generatif 3",
+  "PANEN_PENUH":"Panen Penuh",
+  "BELUM_TANAM":"Belum Tanam",
 };
 
 
