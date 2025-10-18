@@ -21,7 +21,7 @@ export interface EquipmentStatsResponse {
       count: number;
       growth_percent: number;
     };
-    // TAMBAHKAN FIELD INI ⬇️
+
     individual_distribution: Array<{
       latitude: number;
       longitude: number;

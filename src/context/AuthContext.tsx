@@ -1,8 +1,19 @@
-// context/AuthContext.tsx
+
+
 "use client";
 
-import { createContext, useState, ReactNode, useMemo, useEffect, useContext } from "react";
+import {
+  createContext,
+  useState,
+  ReactNode,
+  useMemo,
+  useEffect,
+  useContext,
+  useCallback,
+} from "react";
 import { User } from "@/types/user";
+import { useRouter, usePathname } from "next/navigation";
+import { AuthService } from "@/app/login/service/auth-service";
 
 interface AuthContextType {
   user: User | null;
@@ -12,51 +23,105 @@ interface AuthContextType {
   isLoading: boolean;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const pathname = usePathname();
 
+  
   useEffect(() => {
-    // Hanya berjalan di client side
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
-    
-    if (storedUser && storedToken) {
+    const checkAuth = () => {
       try {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
+        const storedUser = localStorage.getItem("user");
+        const storedToken = localStorage.getItem("token");
+
+        if (storedUser && storedToken) {
+          
+          if (AuthService.isTokenExpired()) {
+            console.log("Token expired, clearing auth data");
+            AuthService.clearAuthData();
+            setUser(null);
+            
+            
+            if (pathname?.startsWith("/dashboard-admin")) {
+              router.push("/login");
+            }
+          } else {
+            
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+          }
+        } else {
+          
+          setUser(null);
+          
+          
+          if (pathname?.startsWith("/dashboard-admin")) {
+            router.push("/login");
+          }
+        }
       } catch (error) {
-        console.error("AuthContext: Error parsing stored user:", error);
-        localStorage.removeItem("user");
-        localStorage.removeItem("user_id");
-        localStorage.removeItem("token");
+        console.error("AuthContext: Error checking auth:", error);
+        AuthService.clearAuthData();
+        setUser(null);
+        
+        if (pathname?.startsWith("/dashboard-admin")) {
+          router.push("/login");
+        }
+      } finally {
+        setIsLoading(false);
       }
+    };
+
+    checkAuth();
+  }, [pathname, router]);
+
+  
+  const login = useCallback(
+    (userData: User, token: string) => {
+      setUser(userData);
+      
+    },
+    []
+  );
+
+  
+  const logout = useCallback(async () => {
+    try {
+      
+      await AuthService.logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      
+      setUser(null);
+      router.push("/login");
     }
-    setIsLoading(false);
-  }, []);
+  }, [router]);
 
-  const login = (userData: User, token: string) => {
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("user_id", userData.id.toString());
-    localStorage.setItem("token", token);
-    setUser(userData);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("token");
-    setUser(null);
-  };
-
+  
   const isAuthenticated = useMemo(() => {
-    const hasUser = !!user;
-    // const hasToken = !!localStorage.getItem("token");
-    // return hasUser && hasToken;
-    return hasUser;
+    return !!user && !AuthService.isTokenExpired();
   }, [user]);
+
+  
+  useEffect(() => {
+    if (!user) return;
+
+    const interval = setInterval(() => {
+      if (AuthService.isTokenExpired()) {
+        console.log("Token expired, logging out...");
+        logout();
+      }
+    }, 60000); 
+
+    return () => clearInterval(interval);
+  }, [user, logout]);
 
   const value = useMemo(
     () => ({
@@ -66,14 +131,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       isAuthenticated,
       isLoading,
     }),
-    [user, isAuthenticated, isLoading],
+    [user, login, logout, isAuthenticated, isLoading]
   );
 
+  
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500" />
-        <p className="ml-4 text-lg">Loading...</p>
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="text-center space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-400 mx-auto" />
+          <p className="text-lg text-muted-foreground">Loading...</p>
+        </div>
       </div>
     );
   }

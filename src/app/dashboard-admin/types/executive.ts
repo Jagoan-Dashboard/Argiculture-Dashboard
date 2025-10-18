@@ -1,4 +1,4 @@
-// Sector options untuk filter
+
 export const SECTOR_OPTIONS = [
   { value: 'pangan', label: 'Sektor Pangan' },
   { value: 'hortikultura', label: 'Sektor Hortikultura' },
@@ -7,7 +7,7 @@ export const SECTOR_OPTIONS = [
 
 export type SectorType = typeof SECTOR_OPTIONS[number]['value'];
 
-// Map untuk nama komoditas
+
 export const COMMODITY_NAME_MAP: Record<string, string> = {
   'PADI_SAWAH': 'Padi Sawah',
   'PADI_LADANG': 'Padi Ladang',
@@ -24,7 +24,7 @@ export const COMMODITY_NAME_MAP: Record<string, string> = {
   'Kelapa Sawit': 'Kelapa Sawit',
 };
 
-// Map untuk status lahan
+
 export const LAND_STATUS_MAP: Record<string, string> = {
   'MILIK_SENDIRI': 'Milik Sendiri',
   'Milik sendiri': 'Milik Sendiri',
@@ -35,7 +35,7 @@ export const LAND_STATUS_MAP: Record<string, string> = {
   "PINJAMBEBAS_SEWA": 'Pinjam/Bebas Sewa',
 };
 
-// Map untuk kendala utama
+
 export const CONSTRAINT_MAP: Record<string, string> = {
   'IRIGASI_SULIT': 'Irigasi Sulit',
   'AKSES_PASAR': 'Akses Pasar',
@@ -49,7 +49,7 @@ export const CONSTRAINT_MAP: Record<string, string> = {
 
 };
 
-// Map untuk harapan petani
+
 export const HOPE_MAP: Record<string, string> = {
   'BANTUAN_ALSINTAN': 'Bantuan Alsintan',
   'COLD_STORAGE': 'Cold Storage',

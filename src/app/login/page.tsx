@@ -1,36 +1,30 @@
 "use client";
 
-import React from 'react';
-import Image from 'next/image';
-import { assets } from '@/assets/assets';
+import React from "react";
+import Image from "next/image";
+import { assets } from "@/assets/assets";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Eye, EyeOff, Loader2, Shield } from 'lucide-react';
+import { Eye, EyeOff, Loader2, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useLogin } from './hooks/useLogin';
+import { useLogin } from "./hooks/useLogin";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
-
-
-const LoginPage = () => {
+const LoginPageContent = () => {
   const {
-    // State
     rememberMe,
     showPassword,
     isLoading,
     isSubmitting,
     errors,
-
-    // Actions
     setRememberMe,
     setShowPassword,
-
-    // Form methods
     register,
     handleSubmit,
     onSubmit,
-    handleInputChange
+    handleInputChange,
   } = useLogin();
 
   return (
@@ -54,7 +48,8 @@ const LoginPage = () => {
               Selamat Datang Dashboard Kami
             </h1>
             <p className="text-lg opacity-90 max-w-md">
-              Kelola data dan akses semua fitur dengan mudah melalui dashboard yang intuitif.
+              Kelola data dan akses semua fitur dengan mudah melalui dashboard
+              yang intuitif.
             </p>
             <div className="flex items-center space-x-4 text-sm opacity-75">
               <div className="flex items-center space-x-2">
@@ -77,7 +72,7 @@ const LoginPage = () => {
           <div className="text-left space-y-6">
             <div className="flex items-center justify-start">
               <div className="flex items-start space-x-3">
-                <div className=" flex justify-center items-center gap-2">
+                <div className="flex justify-center items-center gap-2">
                   <Image
                     src={assets.imageLogoNgawi}
                     alt="Logo Ngawi"
@@ -107,32 +102,42 @@ const LoginPage = () => {
 
           {/* Login Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* Email Field */}
+            {/* Show root error if any */}
+            {errors.root && (
+              <div className="p-3 rounded-lg bg-destructive/10 border border-destructive/20">
+                <p className="text-sm text-destructive text-center">
+                  {errors.root.message}
+                </p>
+              </div>
+            )}
+
+            {/* Email/Identifier Field - FIXED */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">
+              <Label htmlFor="identifier" className="text-sm font-medium">
                 Email Address
               </Label>
               <div className="relative">
                 <Input
-                  id="email"
+                  id="identifier"
                   type="email"
-                  {...register('email', {
-                    onChange: () => handleInputChange('email')
+                  {...register("identifier", {
+                    onChange: () => handleInputChange("identifier"),
                   })}
                   className={cn(
                     "pl-4 pr-4 py-3 text-base transition-all duration-200 bg-background/50 backdrop-blur-sm",
                     "border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20",
                     "hover:border-border shadow-sm hover:shadow-md",
-                    errors.email && "border-destructive focus:border-destructive focus:ring-destructive/20"
+                    errors.identifier &&
+                      "border-destructive focus:border-destructive focus:ring-destructive/20"
                   )}
                   placeholder="Enter your email address"
                   disabled={isLoading || isSubmitting}
                 />
               </div>
-              {errors.email && (
+              {errors.identifier && (
                 <p className="text-sm text-destructive flex items-center space-x-1 animate-in slide-in-from-left-1 duration-200">
                   <span className="w-1 h-1 bg-destructive rounded-full" />
-                  <span>{errors.email.message}</span>
+                  <span>{errors.identifier.message}</span>
                 </p>
               )}
             </div>
@@ -146,14 +151,15 @@ const LoginPage = () => {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  {...register('password', {
-                    onChange: () => handleInputChange('password')
+                  {...register("password", {
+                    onChange: () => handleInputChange("password"),
                   })}
                   className={cn(
                     "pl-4 pr-12 py-3 text-base transition-all duration-200 bg-background/50 backdrop-blur-sm",
                     "border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20",
                     "hover:border-border shadow-sm hover:shadow-md",
-                    errors.password && "border-destructive focus:border-destructive focus:ring-destructive/20"
+                    errors.password &&
+                      "border-destructive focus:border-destructive focus:ring-destructive/20"
                   )}
                   placeholder="Enter your password"
                   disabled={isLoading || isSubmitting}
@@ -187,8 +193,10 @@ const LoginPage = () => {
                 <Checkbox
                   id="remember"
                   checked={rememberMe}
-                  onCheckedChange={(checked) => setRememberMe(checked as boolean)}
-                  className="data-[state=checked]:bg-pink-400 data-[state=checked]:border-primar"
+                  onCheckedChange={(checked) =>
+                    setRememberMe(checked as boolean)
+                  }
+                  className="data-[state=checked]:bg-pink-400 data-[state=checked]:border-primary"
                   disabled={isLoading || isSubmitting}
                 />
                 <Label
@@ -208,19 +216,27 @@ const LoginPage = () => {
               className="bg-pink-400 hover:bg-pink-500 w-full py-3 text-base font-medium duration-200 disabled:opacity-50"
               disabled={isLoading || isSubmitting}
             >
-              {(isLoading || isSubmitting) ? (
+              {isLoading || isSubmitting ? (
                 <div className="flex items-center space-x-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   <span>Signing in...</span>
                 </div>
               ) : (
-                'Masuk'
+                "Masuk"
               )}
             </Button>
           </form>
         </div>
       </div>
     </div>
+  );
+};
+
+const LoginPage = () => {
+  return (
+    <ProtectedRoute>
+      <LoginPageContent />
+    </ProtectedRoute>
   );
 };
 

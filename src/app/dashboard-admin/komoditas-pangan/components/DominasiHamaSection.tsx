@@ -4,7 +4,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { Icon } from '@iconify/react';
 
 
-// Custom tooltip
+
 const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: HamaData }> }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
@@ -22,7 +22,7 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<
   return null;
 };
 
-// Custom legend item component
+
 const CustomLegendItem = ({ item }: { item: HamaData }) => {
   return (
     <div className="flex items-center gap-3 mb-3">
@@ -37,8 +37,8 @@ const CustomLegendItem = ({ item }: { item: HamaData }) => {
   );
 };
 
-// Custom label for pie chart
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
 const renderCustomizedLabel = (props: any) => {
   const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
   const RADIAN = Math.PI / 180;

@@ -3,7 +3,7 @@ import React from 'react'
 import { BarChart, Bar, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell } from 'recharts'
 import { TeknologiSectionProps } from '../types/teknologi';
 
-// Custom tooltip component
+
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) => {
   if (active && payload && payload.length) {
     return (
@@ -18,12 +18,12 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
   return null;
 };
 
-// Custom bar colors - highlight the highest value
+
 const getBarColor = (value: number, maxValue: number) => {
   if (value === maxValue) {
-    return '#33AD5C'; // Darker green for highest value
+    return '#33AD5C'; 
   }
-  return '#99D6AD'; // Lighter green for other values
+  return '#99D6AD'; 
 };
 
 export const TeknologiSection = ({ teknologiData }: TeknologiSectionProps) => {

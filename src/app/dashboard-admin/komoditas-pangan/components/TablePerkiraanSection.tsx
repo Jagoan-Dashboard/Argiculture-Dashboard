@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react'
-import { UniversalTable } from '@/components/Table/TableComponent' // Sesuaikan path import
+import { UniversalTable } from '@/components/Table/TableComponent' 
 import { Icon } from '@iconify/react'
 import { Calendar } from 'lucide-react'
 import { KomoditasData, TablePerkiraanSectionProps } from '../types/table-perkiraan'
@@ -15,7 +15,7 @@ export const TablePerkiraanSection = ({
   const [pageSize, setPageSize] = useState(10);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Filter data berdasarkan search dan filter
+  
   const filteredData = data?.filter(item => {
     const matchesSearch = !searchQuery ||
       item.komoditas.toLowerCase().includes(searchQuery.toLowerCase())
@@ -23,7 +23,7 @@ export const TablePerkiraanSection = ({
     return matchesSearch;
   });
 
-  // Pagination data
+  
   const totalItems = filteredData?.length || 0;
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = pagination
@@ -36,7 +36,7 @@ export const TablePerkiraanSection = ({
       label: 'No',
       className: 'w-16 text-center font-medium',
       headerClassName: 'text-center',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      
       render: (value: any) => <span className="font-medium">{value}</span>
     },
     {
@@ -44,7 +44,7 @@ export const TablePerkiraanSection = ({
       label: 'Komoditas',
       sortable: true,
       className: 'font-medium',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      
       render: (value: any) => (
         <div className="flex items-center gap-2">
           <span className="font-medium text-gray-900">{value}</span>
@@ -55,7 +55,7 @@ export const TablePerkiraanSection = ({
       key: 'estimasiPanen',
       label: 'Estimasi Panen',
       sortable: true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      
       render: (value: any) => (
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-blue-500" />
@@ -67,7 +67,7 @@ export const TablePerkiraanSection = ({
       key: 'petani',
       label: 'Petani',
       sortable: true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      
       render: (value: any) => (
         <span className="text-gray-700">{value || '-'}</span>
       )
@@ -76,7 +76,7 @@ export const TablePerkiraanSection = ({
       key: 'desa',
       label: 'Desa',
       sortable: true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      
       render: (value: any) => (
         <span className="text-gray-700">{value || '-'}</span>
       )
@@ -85,7 +85,7 @@ export const TablePerkiraanSection = ({
       key: 'luasLahan',
       label: 'Luas Lahan (Ha)',
       sortable: true,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      
       render: (value: any) => (
         <span className="text-gray-700">{value || '-'}</span>
       )
@@ -114,7 +114,7 @@ export const TablePerkiraanSection = ({
       <div className="p-6">
         <UniversalTable
           scrollable={true}
-          scrollHeight={"32rem"}  // Tinggi maksimum 500px
+          scrollHeight={"32rem"}  
           data={paginatedData || []}
           columns={columns}
           loading={loading}

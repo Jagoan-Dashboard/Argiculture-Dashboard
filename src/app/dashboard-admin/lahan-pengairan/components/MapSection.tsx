@@ -65,7 +65,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
       };
     }
     
-    // Group by lat/lng
+    
     const grouped = individualPointsData.reduce((acc, item) => {
       const key = `${item.latitude},${item.longitude}`;
       if (!acc[key]) {
@@ -87,7 +87,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
       return acc;
     }, {} as Record<string, IndividualPointData & { count: number; totalLandArea: number; totalFoodArea: number; totalHortiArea: number; totalPlantationArea: number }>);
 
-    // Count by water access type
+    
     const summary = individualPointsData.reduce((acc, item) => {
       const access = item.water_access;
       if (!acc[access]) {
@@ -109,24 +109,24 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
   }, [individualPointsData]);
 
   const getMarkerColor = (waterAccess: string, hasGoodAccess: boolean) => {
-    if (hasGoodAccess) return '#22c55e'; // green-500 - Baik
+    if (hasGoodAccess) return '#22c55e'; 
     
     const access = waterAccess?.toUpperCase();
     switch (access) {
       case 'BAIK':
       case 'IRIGASI_TEKNIS':
-        return '#22c55e'; // green-500
+        return '#22c55e'; 
       case 'IRIGASI_SEMI_TEKNIS':
       case 'CUKUP':
-        return '#84cc16'; // lime-500
+        return '#84cc16'; 
       case 'TERBATAS_MUSIMAN':
       case 'SEDANG':
-        return '#eab308'; // yellow-500
+        return '#eab308'; 
       case 'TIDAK_ADA':
       case 'KURANG':
-        return '#ef4444'; // red-500
+        return '#ef4444'; 
       default:
-        return '#f97316'; // orange-500
+        return '#f97316'; 
     }
   };
 

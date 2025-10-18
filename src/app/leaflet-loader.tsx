@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 
 export function LeafletLoader() {
   useEffect(() => {
-    // Pre-load leaflet CSS
     const link = document.createElement('link');
     link.rel = 'stylesheet';
     link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';

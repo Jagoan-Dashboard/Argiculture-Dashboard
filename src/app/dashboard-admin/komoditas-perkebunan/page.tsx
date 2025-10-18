@@ -15,7 +15,7 @@ import { TeknologiSection } from '../komoditas-pangan/components/TeknologiSectio
 import { usePlantation } from './hooks/usePlantation';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
-import { id as localeId } from 'date-fns/locale'; // TAMBAHKAN INI
+import { id as localeId } from 'date-fns/locale'; 
 import { COMMODITY_OPTIONS, HarvestScheduleData } from './types/plantation-types';
 import { MapSection } from '../components/MapSection';
 
@@ -77,7 +77,7 @@ const KomoditasPerkebunanPage = () => {
     ];
   }, [data]);
 
-  // Transform data untuk map - TAMBAHKAN INI
+  
   const mapData = useMemo(() => {
     if (!data?.distribution_map) return [];
     
@@ -151,7 +151,7 @@ const KomoditasPerkebunanPage = () => {
       id: `harvest-${index}`,
       no: index + 1,
       komoditas: item.commodity_detail,
-      estimasiPanen: format(new Date(item.harvest_date), 'dd MMMM yyyy', { locale: localeId }), // PERBAIKI INI
+      estimasiPanen: format(new Date(item.harvest_date), 'dd MMMM yyyy', { locale: localeId }), 
       petani: item.farmer_name,
       desa: item.village,
       luasLahan: item.land_area

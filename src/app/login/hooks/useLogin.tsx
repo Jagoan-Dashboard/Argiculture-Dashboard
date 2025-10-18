@@ -1,10 +1,12 @@
-// hooks/useLogin.ts
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema } from '../service/validation';
-import { useRouter } from 'next/navigation';
-import z from 'zod';
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema } from "../service/validation";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { AuthService } from "../service/auth-service";
+import { toast } from "sonner";
+import z from "zod";
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -13,66 +15,105 @@ export const useLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    clearErrors
+    clearErrors,
+    setError,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: ''
-    }
+      identifier: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    
+
     try {
-      router.push('/dashboard-admin');
-      // Add your login logic here
-      console.log('Login attempt:', { ...data, rememberMe });
       
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const response = await AuthService.login({
+        identifier: data.identifier,
+        password: data.password,
+      });
+
       
-      router.push('/dashboard-admin');
-      // Handle successful login
+      if (response.success && response.data) {
+        const { token, user, expires_in } = response.data;
+
+        
+        AuthService.saveAuthData(token, user, expires_in);
+        login(user, token);
+
+        
+        toast.success("Login Berhasil!", {
+          description: `Selamat datang, ${user.username}`,
+        });
+
+        
+        router.push("/dashboard-admin");
+      } else {
+        
+        toast.error("Login Gagal", {
+          description: response.message || "Terjadi kesalahan saat login",
+        });
+      }
+    } catch (error: any) {
+      console.error("Login error:", error);
+
       
-    } catch (error) {
-      console.error('Login error:', error);
-      // Handle login error (bisa menggunakan toast notification)
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.message ||
+        "Email atau password salah";
+
+      
+      setError("root", {
+        type: "manual",
+        message: errorMessage,
+      });
+
+      
+      toast.error("Login Gagal", {
+        description: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleInputChange = (field: keyof LoginFormData) => {
-    // Clear specific field error when user starts typing
+    
     if (errors[field]) {
       clearErrors(field);
+    }
+    
+    if (errors.root) {
+      clearErrors("root");
     }
   };
 
   return {
-    // State
+    
     rememberMe,
     showPassword,
     isLoading,
     isSubmitting,
     errors,
+
     
-    // Actions
     setRememberMe,
     setShowPassword,
     setIsLoading,
+
     
-    // Form methods
     register,
     handleSubmit,
     onSubmit,
-    handleInputChange
+    handleInputChange,
   };
 };

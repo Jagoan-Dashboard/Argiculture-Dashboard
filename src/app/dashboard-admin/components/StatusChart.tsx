@@ -9,7 +9,7 @@ interface StatusChartProps {
 }
 
 export const StatusChart = ({ statusData }: StatusChartProps) => {
-  // Handle empty data
+  
   if (!statusData || statusData.length === 0) {
     return (
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
