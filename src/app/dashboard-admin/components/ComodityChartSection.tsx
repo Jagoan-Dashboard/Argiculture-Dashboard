@@ -4,7 +4,7 @@ import { BarChart, Bar, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxi
 import { CommodityChartSectionProps } from '../types/comodity';
 import { TooltipData } from '@/types/tooltip';
 
-// Custom tooltip component
+
 const CustomTooltip = ({ active, payload, label }: TooltipData) => {
   if (active && payload && payload.length) {
     return (
@@ -19,12 +19,12 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
   return null;
 };
 
-// Custom bar colors - highlight the highest value
+
 const getBarColor = (value: number, maxValue: number) => {
   if (value === maxValue) {
-    return '#33AD5C'; // Darker green for highest value
+    return '#33AD5C'; 
   }
-  return '#99D6AD'; // Lighter green for other values
+  return '#99D6AD'; 
 };
 
 export const CommodityChartSection = ({ commodityData }: CommodityChartSectionProps) => {

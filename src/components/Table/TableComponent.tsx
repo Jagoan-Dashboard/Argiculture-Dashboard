@@ -35,7 +35,7 @@ import {
   MoreHorizontal,
 } from 'lucide-react'
 
-// Types
+
 interface Column<T = unknown> {
   key: string
   label: string
@@ -83,12 +83,12 @@ interface SortConfig {
 }
 
 interface UniversalTableProps<T = Record<string, unknown>> {
-  // Core required props
+  
   data: T[]
   columns: Column<T>[]
   loading?: boolean
 
-  // Optional features - semua fitur bersifat opsional
+  
   searchable?: boolean
   searchPlaceholder?: string
   onSearch?: (query: string) => void
@@ -102,30 +102,30 @@ interface UniversalTableProps<T = Record<string, unknown>> {
   filters?: Record<string, unknown>
   onFilter?: (filters: Record<string, unknown>) => void
 
-  // Pagination - sepenuhnya opsional
+  
   pagination?: PaginationConfig
   onPaginationChange?: (page: number, pageSize: number) => void
 
-  // Header actions - opsional
+  
   headerActions?: HeaderAction[]
   headerTitle?: string
   headerDescription?: string
 
-  // Row actions - opsional
+  
   rowActions?: RowAction<T>[]
 
-  // Scrollable feature - UPDATED PARAMETERS
+  
   scrollable?: boolean
   scrollHeight?: string | number
 
-  // Customization
+  
   className?: string
   tableClassName?: string
   headerClassName?: string
   emptyStateMessage?: string
   emptyStateIcon?: React.ReactNode
 
-  // Row selection - opsional
+  
   selectable?: boolean
   selectedRows?: string[]
   onSelectionChange?: (selectedIds: string[]) => void
@@ -136,37 +136,37 @@ export function UniversalTable<T = Record<string, unknown>>({
   data,
   columns,
   loading = false,
-  // Search features
+  
   searchable = false,
   searchPlaceholder = "Cari...",
   onSearch,
-  // Sort features  
+  
   sortable = false,
   sortConfig,
   onSort,
-  // Filter features
+  
   filterable = false,
   filterOptions = [],
   filters = {},
   onFilter,
-  // Pagination features
+  
   pagination,
   onPaginationChange,
-  // Header features
+  
   headerActions = [],
   headerTitle,
   headerDescription,
-  // Row action features
+  
   rowActions = [],
-  // Scrollable feature - UPDATED PARAMETERS
+  
   scrollHeight,
-  // Styling
+  
   className = "",
   tableClassName = "",
   headerClassName = "",
   emptyStateMessage = "Tidak ada data yang ditemukan",
   emptyStateIcon,
-  // Selection features
+  
   selectable = false,
   selectedRows = [],
   onSelectionChange,
@@ -176,7 +176,7 @@ export function UniversalTable<T = Record<string, unknown>>({
   const [localFilters, setLocalFilters] = useState<Record<string, unknown>>(filters)
   const [showFilters, setShowFilters] = useState(false)
 
-  // Handle search - hanya jalan jika searchable = true
+  
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query)
     if (searchable && onSearch) {
@@ -184,7 +184,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     }
   }, [searchable, onSearch])
 
-  // Handle sort - hanya jalan jika sortable = true
+  
   const handleSort = useCallback((key: string) => {
     if (!sortable || !onSort) return
 
@@ -193,7 +193,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     onSort({ key, direction })
   }, [sortable, sortConfig, onSort])
 
-  // Handle filter - hanya jalan jika filterable = true
+  
   const handleFilterChange = useCallback((key: string, value: unknown) => {
     if (!filterable || !onFilter) return
 
@@ -202,7 +202,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     onFilter(newFilters)
   }, [filterable, localFilters, onFilter])
 
-  // Handle row selection - hanya jalan jika selectable = true
+  
   const handleRowSelection = useCallback((rowId: string, selected: boolean) => {
     if (!selectable || !onSelectionChange) return
 
@@ -220,7 +220,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     onSelectionChange(selected ? allIds : [])
   }, [selectable, data, getRowId, onSelectionChange])
 
-  // Computed values
+  
   const hasActions = rowActions && rowActions.length > 0
   const hasHeaderContent = headerTitle || headerDescription || (headerActions && headerActions.length > 0)
   const isAllSelected = selectable && data.length > 0 && selectedRows.length === data.length
@@ -395,7 +395,7 @@ export function UniversalTable<T = Record<string, unknown>>({
           <Table className={`${tableClassName} min-w-max`}>
             <TableBody>
               {loading ? (
-                // Loading State
+                
                 Array.from({ length: 5 }).map((_, index) => (
                   <TableRow key={index}>
                     {selectable && <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>}
@@ -412,7 +412,7 @@ export function UniversalTable<T = Record<string, unknown>>({
                   </TableRow>
                 ))
               ) : data.length === 0 ? (
-                // Empty State
+                
                 <TableRow>
                   <TableCell
                     colSpan={columns.length + (selectable ? 1 : 0) + (hasActions ? 1 : 0)}
@@ -425,7 +425,7 @@ export function UniversalTable<T = Record<string, unknown>>({
                   </TableCell>
                 </TableRow>
               ) : (
-                // Data Rows
+                
                 data.map((row) => {
                   const rowId = getRowId(row)
                   const isSelected = selectable && selectedRows.includes(rowId)

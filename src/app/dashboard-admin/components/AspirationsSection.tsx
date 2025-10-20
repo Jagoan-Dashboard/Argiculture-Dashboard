@@ -3,7 +3,6 @@ import { AspirationCard } from './AspirationCard';
 import { AspirationsData } from '../types/aspiration';
 
 export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
-  // Handle empty data
   if (!data.categories || data.categories.length === 0) {
     return (
       <div className="bg-white rounded-2xl min-h-[32rem] max-h-[80vh] h-full shadow-sm border border-gray-100 overflow-hidden">

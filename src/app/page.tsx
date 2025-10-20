@@ -6,12 +6,12 @@ export default function RootPage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect ke halaman dashboard-admin atau login
+    
     router.push("/dashboard-admin");
-    // Atau jika ingin redirect ke login:
-    // router.push("/login");
-    // Atau ke halaman home baru:
-    // router.push("/home");
+    
+    
+    
+    
   }, [router]);
 
   return (

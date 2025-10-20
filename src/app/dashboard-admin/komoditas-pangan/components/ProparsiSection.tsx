@@ -3,10 +3,10 @@ import React from 'react'
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
 import { GrowthPhaseData, ProporsiSectionProps } from '../types/proparsi'
 
-// Data sesuai dengan desain yang diberikan
 
 
-// Custom tooltip
+
+
 const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: GrowthPhaseData }> }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
@@ -24,7 +24,7 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<
   return null;
 };
 
-// Custom legend item component
+
 const CustomLegendItem = ({ item }: { item: GrowthPhaseData }) => {
   return (
     <div className="flex items-center gap-3 mb-3">
@@ -39,8 +39,8 @@ const CustomLegendItem = ({ item }: { item: GrowthPhaseData }) => {
   );
 };
 
-// Custom label for pie chart
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+
 const renderCustomizedLabel = (props: any) => {
   const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
   const RADIAN = Math.PI / 180;
@@ -82,7 +82,7 @@ export const ProporsiSection = ({ growthPhaseData }: ProporsiSectionProps) => {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  
                   data={growthPhaseData as any}
                   cx="50%"
                   cy="50%"

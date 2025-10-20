@@ -17,27 +17,27 @@ import { format } from 'date-fns';
 import { COMMODITY_OPTIONS } from './types/commodity';
 
 const KomoditasListPage = () => {
-  // State untuk commodity dan date range
+  
   const [selectedCommodity, setSelectedCommodity] = useState<string>('Padi');
   const [dateRange, setDateRange] = useState<{
     from: Date;
     to: Date;
   }>({
-    from: new Date(2024, 0, 1), // 1 Jan 2024
-    to: new Date(2025, 11, 31), // 31 Des 2024
+    from: new Date(2024, 0, 1), 
+    to: new Date(2024, 11, 31), 
   });
 
-  // API params
+  
   const apiParams = useMemo(() => ({
     commodity_name: selectedCommodity,
     start_date: format(dateRange.from, 'yyyy-MM-dd'),
     end_date: format(dateRange.to, 'yyyy-MM-dd'),
   }), [selectedCommodity, dateRange]);
 
-  // Fetch data menggunakan custom hook
+  
   const { data, loading, error, refetch } = useCommodityAnalysis(apiParams);
 
-  // Transform data untuk stats cards
+  
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
     
@@ -75,7 +75,7 @@ const KomoditasListPage = () => {
     ];
   }, [data]);
 
-  // Transform data untuk productivity chart
+  
   const productivityData: ProductivityData[] = useMemo(() => {
     if (!data?.productivity_trend) return [];
     
@@ -87,7 +87,7 @@ const KomoditasListPage = () => {
     }));
   }, [data]);
 
-  // Transform data untuk map - TAMBAHKAN INI
+  
   const mapData = useMemo(() => {
     if (!data?.production_distribution) return [];
     
@@ -97,14 +97,14 @@ const KomoditasListPage = () => {
       village: item.village,
       district: item.district,
       commodity: item.commodity,
-      commodity_type: item.commodity, // commodity_type sama dengan commodity
+      commodity_type: item.commodity, 
       land_area: item.land_area,
       estimated_production: item.estimated_production,
       farmer_name: item.farmer_name
     }));
   }, [data]);
 
-  // Key insights
+  
   const keyInsight: Key[] = [
     {
       id: 1,
@@ -159,7 +159,7 @@ const KomoditasListPage = () => {
     }
   ];
 
-  // Handler untuk perubahan commodity
+  
   const handleCommodityChange = (value: string) => {
     setSelectedCommodity(value);
     refetch({
@@ -168,7 +168,7 @@ const KomoditasListPage = () => {
     });
   };
 
-  // Handler untuk perubahan date range
+  
   const handleDateUpdate = (values: { range: { from: Date; to: Date | undefined } }) => {
     if (values.range.to) {
       setDateRange({
@@ -184,7 +184,7 @@ const KomoditasListPage = () => {
     }
   };
 
-  // Loading state
+  
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -200,7 +200,7 @@ const KomoditasListPage = () => {
     );
   }
 
-  // Error state
+  
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">

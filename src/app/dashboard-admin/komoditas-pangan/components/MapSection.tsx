@@ -3,7 +3,7 @@ import { Icon } from '@iconify/react';
 import React, { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 
-// Lazy load map components with loading state
+
 const MapContainer = dynamic(
   () => import('react-leaflet').then((mod) => mod.MapContainer),
   { 
@@ -51,7 +51,7 @@ interface MapSectionProps {
 export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  // Calculate center, group coordinates, and get commodity summary
+  
   const { mapCenter, groupedData, commoditySummary } = useMemo(() => {
     if (cropMapData.length === 0) {
       return { 
@@ -63,7 +63,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
 
     
     
-    // Group by lat/lng to combine duplicate locations
+    
     const grouped = cropMapData.reduce((acc, item) => {
       const key = `${item.latitude},${item.longitude}`;
       if (!acc[key]) {
@@ -79,7 +79,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
       return acc;
     }, {} as Record<string, FoodCropMapData & { count: number; totalArea: number }>);
 
-    // Count by commodity type
+    
     const summary = cropMapData.reduce((acc, item) => {
       const type = item.commodity_type;
       if (!acc[type]) {
@@ -101,7 +101,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
   }, [cropMapData]);
 
   const getMarkerColor = (commodityType: string) => {
-    // Normalize to uppercase for consistency
+    
     const type = commodityType?.toUpperCase();
     
     switch (type) {
@@ -109,14 +109,14 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
       case 'FOOD_CROPS':
       case 'FOOD CROPS':
       case 'PANGAN':
-        return '#22c55e'; // green-500 untuk tanaman pangan
+        return '#22c55e'; 
       case 'PLANTATION':
-        return '#84cc16'; // lime-500
+        return '#84cc16'; 
       case 'HORTICULTURE':
       case 'HORTIKULTURA':
-        return '#f97316'; // orange-500
+        return '#f97316'; 
       default:
-        return '#22c55e'; // default green
+        return '#22c55e'; 
     }
   };
 
@@ -158,7 +158,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
     }
   };
 
-  // Show loading if no data yet
+  
   if (cropMapData.length === 0) {
     return (
       <div className="bg-white col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">

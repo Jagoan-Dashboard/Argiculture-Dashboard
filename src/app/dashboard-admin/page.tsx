@@ -22,17 +22,17 @@ import {
 import { CommodityData } from "./types/comodity";
 
 export default function DashboardPage() {
-  // State untuk sector filter
+  
   const [selectedSector, setSelectedSector] = useState<string>('pangan');
 
-  // Fetch data menggunakan custom hook
+  
   const { data, loading, error, refetch } = useExecutiveDashboard({
     commodity_type: selectedSector,
   });
 
-  // Transform data untuk stats cards
+  
   const statsData: StatsType[] = useMemo(() => {
-    // ✅ Tambah null safety checks
+    
     if (!data || !data.total_land_area) return [];
 
     return [
@@ -69,7 +69,7 @@ export default function DashboardPage() {
     ];
   }, [data]);
 
-  // Transform data untuk commodity chart
+  
   const commodityData: CommodityData[] = useMemo(() => {
     if (!data || !data.commodity_by_sector) return [];
 
@@ -79,31 +79,31 @@ export default function DashboardPage() {
       ...(data.commodity_by_sector.plantation || []),
     ];
 
-    // 1. Buat map untuk mengelompokkan berdasarkan nama yang dinormalisasi
+    
     const grouped = new Map<string, { total: number; displayName: string }>();
 
     for (const item of allCommodities) {
       if (!item.name || item.count == null) continue;
 
-      // Normalisasi key: lowercase + trim
+      
       const normalizedKey = item.name.toLowerCase().trim();
 
-      // Dapatkan nama tampilan (gunakan COMMODITY_NAME_MAP jika tersedia)
+      
       const displayName = COMMODITY_NAME_MAP[item.name] || item.name;
 
       if (grouped.has(normalizedKey)) {
-        // Jika sudah ada, tambahkan count-nya
+        
         grouped.get(normalizedKey)!.total += item.count;
       } else {
-        // Jika belum ada, buat entri baru
+        
         grouped.set(normalizedKey, {
           total: item.count,
-          displayName, // Simpan nama tampilan dari entri pertama yang muncul
+          displayName, 
         });
       }
     }
 
-    // 2. Ubah kembali ke array
+    
     return Array.from(grouped.values()).map(({ total, displayName }) => ({
       name: displayName,
       fullName: displayName,
@@ -111,9 +111,9 @@ export default function DashboardPage() {
     }));
   }, [data]);
   console.log(commodityData)
-  // Transform data untuk status chart
+  
   const statusData = useMemo(() => {
-    // ✅ Tambah null safety checks
+    
     if (!data?.land_status_distribution || !Array.isArray(data.land_status_distribution)) return [];
 
     const colors = ['#4F46E5', '#33AD5C', '#F97316'];
@@ -125,14 +125,14 @@ export default function DashboardPage() {
     }));
   }, [data]);
 
-  // Transform data untuk aspirasi
+  
   const aspirasiData: AspirationsData = useMemo(() => {
-    // ✅ Tambah null safety checks
+    
     if (!data) return { categories: [] };
 
     const categories = [];
 
-    // Kendala Utama (hijau)
+    
     if (data.main_constraints && Array.isArray(data.main_constraints) && data.main_constraints.length > 0) {
       categories.push({
         title: "Kendala Utama",
@@ -147,7 +147,7 @@ export default function DashboardPage() {
       });
     }
 
-    // Harapan & Kebutuhan Petani (pink)
+    
     if (data.farmer_hopes_needs?.hopes && Array.isArray(data.farmer_hopes_needs.hopes) && data.farmer_hopes_needs.hopes.length > 0) {
       categories.push({
         title: "Harapan & Kebutuhan Petani",
@@ -167,7 +167,7 @@ export default function DashboardPage() {
 
   console.log(data)
 
-  // Handler untuk perubahan sector
+  
   const handleSectorChange = (value: string) => {
     setSelectedSector(value);
     refetch({
@@ -175,7 +175,7 @@ export default function DashboardPage() {
     });
   };
 
-  // Loading state
+  
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -191,7 +191,7 @@ export default function DashboardPage() {
     );
   }
 
-  // Error state
+  
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
