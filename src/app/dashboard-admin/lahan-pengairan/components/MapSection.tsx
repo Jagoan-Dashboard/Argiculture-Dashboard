@@ -171,7 +171,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">
-            Peta Distribusi Lahan dan Akses Air
+            Peta Persebaran Lahan Sawah Tiap Kecamatan
           </h2>
         </div>
         
@@ -187,7 +187,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
       <div className="flex items-center gap-2 mb-4">
         <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">
-          Peta Distribusi Lahan dan Akses Air
+          Peta Persebaran Lahan Sawah Tiap Kecamatan
         </h2>
       </div>
 
@@ -274,7 +274,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
         {/* Access Summary */}
         {accessSummary.length > 0 && (
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-2">Ringkasan Akses Air</h3>
+            <h3 className="text-sm font-medium text-gray-900 mb-2">Ringkasan Persebaran Sawah</h3>
             <div className="flex flex-wrap gap-2">
               {accessSummary.map((item, index) => (
                 <div
