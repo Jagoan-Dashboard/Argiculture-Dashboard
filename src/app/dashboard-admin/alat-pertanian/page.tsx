@@ -13,6 +13,8 @@ import { JumlahPompaData } from './types/pompa';
 import { useEquipmentStats } from './hooks/useEquipmentStats';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
+import { EQUIPMENT_EQUIPMENT } from './types/equipment_map';
+import { createCommodityLabelGetter } from '@/lib/color-mapping-helper';
 
 const AlatPertanianPage = () => {
 
@@ -84,6 +86,10 @@ const AlatPertanianPage = () => {
   const mapData = useMemo(() => {
     if (!data?.individual_distribution) return [];
 
+    // const displayName = COMODITY_EQUIPMENT[item.commodity] || item.commodity;
+    const getCommodityLabel = createCommodityLabelGetter(EQUIPMENT_EQUIPMENT);
+
+
     return data.individual_distribution.map(item => ({
       latitude: item.latitude,
       longitude: item.longitude,
@@ -91,7 +97,7 @@ const AlatPertanianPage = () => {
       district: item.district,
       farmer_name: item.farmer_name,
       technology_type: item.technology_type,
-      commodity: item.commodity,
+      commodity: getCommodityLabel(item.commodity),
       visit_date: item.visit_date
     }));
   }, [data]);
@@ -256,13 +262,28 @@ const AlatPertanianPage = () => {
             </div>
           </div>
 
+
           {/* stats cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <CardStats statsData={statsData} />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
+          {/* Mobile layout: Stack components in desired order */}
+          <div className="space-y-6 sm:hidden">
+            <div>
+              <MapSection equipmentMapData={mapData} />
+            </div>
+            <div>
+              <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />
+            </div>
+            <div>
+              <KeyComponent data={keyStrategy} title="Key Strategy" description="Strategi penting untuk pertanian" />
+            </div>
+          </div>
+
+          <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
             {/* Map Section - key insight */}
+
             <div className="lg:col-span-2 flex flex-col gap-6">
               <MapSection equipmentMapData={mapData} />
             </div>

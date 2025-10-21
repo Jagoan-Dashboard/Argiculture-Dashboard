@@ -6,7 +6,6 @@ import { Home } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 import { StatsType } from '../types/stats';
 import CardStats from '../components/CardStats';
-import { MapSection } from '../components/MapSection';
 import { KeyComponent } from './components/KeyComponents';
 import { Key } from './types/key';
 import { ProductivityChartSection } from './components/ProductivityChartSection';
@@ -15,6 +14,7 @@ import { useCommodityAnalysis } from './hooks/useCommodityAnalysis';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 import { COMMODITY_OPTIONS } from './types/commodity';
+import { MapSection } from '../components/MapSection';
 
 const KomoditasListPage = () => {
   

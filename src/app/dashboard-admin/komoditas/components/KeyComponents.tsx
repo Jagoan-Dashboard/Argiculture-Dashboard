@@ -19,10 +19,10 @@ const InsightCard = ({ insight }: { insight: Key }) => {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-gray-900 text-lg mb-2 leading-tight">
+          <h3 className="font-semibold text-gray-900 text-sm mb-2 leading-tight">
             {insight.title}
           </h3>
-          <p className="text-gray-600 text-sm leading-relaxed">
+          <p className="text-gray-600 text-xs leading-relaxed">
             {insight.description}
           </p>
         </div>

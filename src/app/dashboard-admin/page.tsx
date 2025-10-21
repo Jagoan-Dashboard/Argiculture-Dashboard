@@ -110,7 +110,6 @@ export default function DashboardPage() {
       value: total,
     }));
   }, [data]);
-  console.log(commodityData)
   
   const statusData = useMemo(() => {
     
@@ -164,8 +163,6 @@ export default function DashboardPage() {
 
     return { categories };
   }, [data]);
-
-  console.log(data)
 
   
   const handleSectorChange = (value: string) => {

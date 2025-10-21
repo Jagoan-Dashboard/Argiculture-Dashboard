@@ -15,28 +15,28 @@ import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 
 const LahanPengairanPage = () => {
-  
+
   const [dateRange, setDateRange] = useState<{
     from: Date;
     to: Date;
   }>({
-    from: new Date(2024, 0, 1), 
-    to: new Date(2025, 11, 31), 
+    from: new Date(2024, 0, 1),
+    to: new Date(2025, 11, 31),
   });
 
-  
+
   const formattedParams = useMemo(() => ({
     start_date: format(dateRange.from, 'yyyy-MM-dd'),
     end_date: format(dateRange.to, 'yyyy-MM-dd'),
   }), [dateRange]);
 
-  
+
   const { data, loading, error, refetch } = useLandIrrigation(formattedParams);
 
-  
+
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
-    
+
     return [
       {
         id: 1,
@@ -72,10 +72,10 @@ const LahanPengairanPage = () => {
   }, [data]);
   console.log('data', data)
 
-  
+
   const distribusiData: DistribusiLahanData[] = useMemo(() => {
     if (!data?.land_distribution) return [];
-    
+
     return data.land_distribution.map(item => ({
       kecamatan: item.district,
       sawah: item.food_crop_area,
@@ -86,24 +86,24 @@ const LahanPengairanPage = () => {
   console.log('distribusiData', distribusiData)
 
   const mapData = useMemo(() => {
-  if (!data?.individual_points) return [];
-  
-  return data.individual_points.map(item => ({
-    latitude: item.latitude,
-    longitude: item.longitude,
-    village: item.village,
-    district: item.district,
-    farmer_name: item.farmer_name,
-    total_land_area: item.total_land_area,
-    food_land_area: item.food_land_area,
-    horti_land_area: item.horti_land_area,
-    plantation_land_area: item.plantation_land_area,
-    water_access: item.water_access,
-    has_good_water_access: item.has_good_water_access,
-    primary_commodity: item.primary_commodity,
-    visit_date: item.visit_date
-  }));
-}, [data]);
+    if (!data?.individual_points) return [];
+
+    return data.individual_points.map(item => ({
+      latitude: item.latitude,
+      longitude: item.longitude,
+      village: item.village,
+      district: item.district,
+      farmer_name: item.farmer_name,
+      total_land_area: item.total_land_area,
+      food_land_area: item.food_land_area,
+      horti_land_area: item.horti_land_area,
+      plantation_land_area: item.plantation_land_area,
+      water_access: item.water_access,
+      has_good_water_access: item.has_good_water_access,
+      primary_commodity: item.primary_commodity,
+      visit_date: item.visit_date
+    }));
+  }, [data]);
 
   const keyInsight: Key[] = [
     {
@@ -159,14 +159,14 @@ const LahanPengairanPage = () => {
     }
   ];
 
-  
+
   const handleDateUpdate = (values: { range: { from: Date; to: Date | undefined } }) => {
     if (values.range.to) {
       setDateRange({
         from: values.range.from,
         to: values.range.to,
       });
-      
+
       refetch({
         start_date: format(values.range.from, 'yyyy-MM-dd'),
         end_date: format(values.range.to, 'yyyy-MM-dd'),
@@ -174,7 +174,7 @@ const LahanPengairanPage = () => {
     }
   };
 
-  
+
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -190,7 +190,7 @@ const LahanPengairanPage = () => {
     );
   }
 
-  
+
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -235,7 +235,7 @@ const LahanPengairanPage = () => {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          
+
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
               <p className="text-sm text-gray-600">Kabupaten Ngawi</p>
@@ -254,13 +254,29 @@ const LahanPengairanPage = () => {
               />
             </div>
           </div>
-          
+
           {/* stats cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CardStats statsData={statsData} />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grid-auto-flow-dense">
+          {/* Mobile layout: Stack components in desired order */}
+          <div className="space-y-6 sm:hidden">
+            <div>
+              <MapSection individualPointsData={mapData} />
+            </div>
+            <div className="">
+              <DistribusiLahanSection distribusiData={distribusiData} />
+            </div>
+            <div>
+              <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />
+            </div>
+            <div>
+              <KeyComponent data={keyStrategy} title="Key Strategy" description="Strategi penting untuk pertanian" />
+            </div>
+          </div>
+
+          <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grid-auto-flow-dense">
             {/* Map Section - key insight */}
             <div className="lg:col-span-2 flex flex-col gap-6">
               <MapSection individualPointsData={mapData} />

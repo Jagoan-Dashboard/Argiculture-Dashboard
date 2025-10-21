@@ -2,7 +2,7 @@
 
 import { apiClient } from "@/lib/api-client";
 import { ENDPOINTS } from "@/lib/api-endpoints";
-import { LoginResponse } from "@/types/user";
+import { LoginResponse, User } from "@/types/user";
 
 interface LoginCredentials {
   identifier: string;
@@ -84,7 +84,7 @@ export class AuthService {
   /**
    * Save auth data to localStorage
    */
-  static saveAuthData(token: string, user: any, expiresIn: number): void {
+  static saveAuthData(token: string, user: User, expiresIn: number): void {
     const expiryTime = Date.now() + expiresIn * 1000; 
     
     localStorage.setItem("token", token);

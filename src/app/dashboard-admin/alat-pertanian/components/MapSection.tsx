@@ -2,6 +2,7 @@
 import { Icon } from '@iconify/react';
 import React, { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { getMarkerColor, getSoftBgColor } from '@/lib/color-mapping-helper';
 
 const MapContainer = dynamic(
   () => import('react-leaflet').then((mod) => mod.MapContainer),
@@ -44,17 +45,6 @@ interface EquipmentMapData {
   visit_date: string;
 }
 
-interface CommodityMapData {
-  latitude: number;
-  longitude: number;
-  village: string;
-  district: string;
-  commodity: string;
-  commodity_type: string;
-  land_area: number;
-  estimated_production?: number;
-  farmer_name?: string;
-}
 
 interface MapSectionProps {
   equipmentMapData?: EquipmentMapData[];
@@ -79,7 +69,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
     const grouped = equipmentMapData.reduce((acc, item) => {
       // Create a unique key using lat, lng, and commodity
       const key = `${item.latitude.toFixed(5)},${item.longitude.toFixed(5)},${item.commodity}`;
-      
+
       if (!acc[key]) {
         acc[key] = {
           ...item,
@@ -133,81 +123,9 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
     return Math.max(minRadius, minRadius + normalized * (maxRadius - minRadius));
   };
 
-  // Get marker color based on commodity
-  const getMarkerColor = (commodity: string) => {
-    // Normalize to uppercase for consistency
-    const comp = commodity?.toUpperCase();
-
-    switch (comp) {
-      case 'PADI_SAWAH':
-      case 'PADI':
-        return '#eab308'; // yellow-500
-      case 'JAGUNG':
-        return '#f97316'; // orange-500
-      case 'KEDELAI':
-        return '#a3a3a3'; // gray-500
-      case 'SAYURAN':
-      case 'SAYUR':
-        return '#22c55e'; // green-500
-      case 'BUAH':
-      case 'BUAH-BUAHAN':
-        return '#f43f5e'; // red-500
-      default:
-        return '#6b7280'; // gray-500
-    }
-  };
-
-  const getCommodityLabel = (commodity: string) => {
-    const compMap: Record<string, string> = {
-      'PADI_SAWAH': 'Padi Sawah',
-      'PADI': 'Padi',
-      'JAGUNG': 'Jagung',
-      'KEDELAI': 'Kedelai',
-      'SAYURAN': 'Sayuran',
-      'SAYUR': 'Sayur',
-      'BUAH': 'Buah-buahan',
-      'BUAH-BUAHAN': 'Buah-buahan',
-    };
-    return compMap[commodity] || commodity;
-  };
-
-  const getCommodityTypeLabel = (commodity: string) => {
-    const normalized = commodity?.toUpperCase();
-
-    switch (normalized) {
-      case 'PADI_SAWAH':
-      case 'PADI':
-      case 'JAGUNG':
-      case 'KEDELAI':
-        return 'Tanaman Pangan';
-      case 'SAYURAN':
-      case 'SAYUR':
-        return 'Hortikultura';
-      case 'BUAH':
-      case 'BUAH-BUAHAN':
-        return 'Hortikultura';
-      default:
-        return 'Lainnya';
-    }
-  };
-
-  const getCommodityTypeColor = (commodity: string) => {
-    const type = getCommodityTypeLabel(commodity);
-    const normalized = type?.toUpperCase();
-
-    switch (normalized) {
-      case 'TANAMAN PANGAN':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-300';
-      case 'HORTIKULTURA':
-        return 'bg-green-100 text-green-700 border-green-300';
-      default:
-        return 'bg-gray-100 text-gray-700 border-gray-300';
-    }
-  };
-
   if (equipmentMapData.length === 0) {
     return (
-      <div className="bg-white col-span-2 p-6 rounded-xl min-h-[32rem] shadow-sm border border-gray-100">
+      <div className="bg-white h-[32rem] col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">
@@ -223,7 +141,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
   }
 
   return (
-    <div className="bg-white col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
+    <div className="bg-white h-[32rem] col-span-2 p-6 rounded-xl shadow-sm border border-gray-100">
       <div className="flex items-center gap-2 mb-4">
         <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">
@@ -232,7 +150,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
       </div>
 
       {/* Real Map */}
-      <div className="relative mb-4 h-64 lg:h-80 rounded-lg overflow-hidden border border-gray-200">
+      <div className="relative mb-4 h-[17rem]  rounded-lg overflow-hidden border border-gray-200">
         {typeof window !== 'undefined' && (
           <MapContainer
             center={mapCenter}
@@ -267,12 +185,12 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
               >
                 <Popup maxWidth={250}>
                   <div className="text-sm p-1">
-                    <p className="font-semibold text-base mb-2 text-green-700">{getCommodityLabel(item.commodity)}</p>
+                    <p className="font-semibold text-base mb-2 text-green-700">{item.commodity}</p>
                     <div className="space-y-1 text-gray-700">
                       <p>📍 <span className="font-medium">Desa:</span> {item.village}</p>
                       <p>🏘️ <span className="font-medium">Kecamatan:</span> {item.district}</p>
                       <p>👨‍🌾 <span className="font-medium">Petani:</span> {item.farmer_name}</p>
-                      <p>🌾 <span className="font-medium">Jenis:</span> {getCommodityTypeLabel(item.commodity)}</p>
+                      <p>🌾 <span className="font-medium">Jenis:</span> {item.commodity}</p>
                       <p>🛠️ <span className="font-medium">Jumlah Alat:</span> {item.count}</p>
                       {item.count > 1 && (
                         <div className="mt-2 pt-2 border-t border-gray-200">
@@ -295,27 +213,32 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
         {/* Commodity Summary */}
         {commoditySummary.length > 0 && (
           <div>
-            <h3 className="text-sm font-medium text-gray-900 mb-2">Ringkasan Berdasarkan Komoditas</h3>
-            <div className="flex flex-wrap gap-2">
-              {commoditySummary.map((item, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getCommodityTypeColor(item.commodity)}`}
-                >
+            <h3 className="text-sm font-medium text-gray-900 mb-2">
+              Ringkasan Berdasarkan Komoditas
+            </h3>
+
+            {/* 👇 ini yang bisa discroll */}
+            <div className="max-h-24 overflow-y-auto pr-2">
+              <div className="flex flex-wrap gap-2">
+                {commoditySummary.map((item, index) => (
                   <div
-                    className="w-3 h-3 rounded-full flex-shrink-0"
-                    style={{ backgroundColor: getMarkerColor(item.commodity) }}
-                  ></div>
-                  <div className="text-sm">
-                    <span className="font-semibold">{getCommodityLabel(item.commodity)}</span>
-                    <span className="mx-1.5">•</span>
-                    <span className="font-medium">{item.count}</span>
-                    <span className="text-xs ml-1">
-                      ({item.totalArea} alat)
-                    </span>
+                    key={index}
+                    className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200"
+                    style={{ backgroundColor: getSoftBgColor(item.commodity) }}
+                  >
+                    <div
+                      className="w-3 h-3 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: getMarkerColor(item.commodity) }}
+                    />
+                    <div className="text-sm">
+                      <span className="font-semibold">{item.commodity}</span>
+                      <span className="mx-1.5">•</span>
+                      <span className="font-medium">{item.count}</span>
+                      <span className="text-xs ml-1">({item.totalArea} alat)</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}

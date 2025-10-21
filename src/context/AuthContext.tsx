@@ -47,10 +47,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             AuthService.clearAuthData();
             setUser(null);
             
-            
-            if (pathname?.startsWith("/dashboard-admin")) {
-              router.push("/login");
-            }
+            // TEMPORARILY DISABLED: Redirect to login if token is expired
+            // if (pathname?.startsWith("/dashboard-admin")) {
+            //   router.push("/login");
+            // }
           } else {
             
             const parsedUser = JSON.parse(storedUser);
@@ -60,19 +60,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           
           setUser(null);
           
-          
-          if (pathname?.startsWith("/dashboard-admin")) {
-            router.push("/login");
-          }
+          // TEMPORARILY DISABLED: Redirect to login if no user/token
+          // if (pathname?.startsWith("/dashboard-admin")) {
+          //   router.push("/login");
+          // }
         }
       } catch (error) {
         console.error("AuthContext: Error checking auth:", error);
         AuthService.clearAuthData();
         setUser(null);
         
-        if (pathname?.startsWith("/dashboard-admin")) {
-          router.push("/login");
-        }
+        // TEMPORARILY DISABLED: Redirect to login on error
+        // if (pathname?.startsWith("/dashboard-admin")) {
+        //   router.push("/login");
+        // }
       } finally {
         setIsLoading(false);
       }
@@ -85,7 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = useCallback(
     (userData: User, token: string) => {
       setUser(userData);
-      
+      AuthService.saveAuthData(token, userData, 3600);
     },
     []
   );

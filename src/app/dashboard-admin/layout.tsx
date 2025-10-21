@@ -1,7 +1,7 @@
 
 
 import DashboardAdminLayout from "@/components/DashboardLayout";
-import ProtectedRoute from "@/components/ProtectedRoute";
+// import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function DashboardLayout({
   children,
@@ -9,8 +9,8 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute>
       <DashboardAdminLayout>{children}</DashboardAdminLayout>
-    </ProtectedRoute>
+    // </ProtectedRoute>
   );
 }

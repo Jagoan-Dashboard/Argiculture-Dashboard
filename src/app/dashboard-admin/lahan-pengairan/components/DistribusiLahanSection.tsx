@@ -38,7 +38,7 @@ export const DistribusiLahanSection = ({ distribusiData }: DistribusiLahanSectio
   // console.log('distribusiData', distribusiData)
 
   return (
-    <div className="bg-white rounded-2xl min-h-[10rem] max-h-[32rem] h-full shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl min-h-[10rem] max-h-[32rem] h-full shadow-sm border border-gray-100">
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center gap-3">

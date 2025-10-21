@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 
 const MapContainer = dynamic(
   () => import('react-leaflet').then((mod) => mod.MapContainer),
-  { 
+  {
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center h-full bg-gray-100">
@@ -58,14 +58,14 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
 
   const { mapCenter, groupedData, accessSummary } = useMemo(() => {
     if (individualPointsData.length === 0) {
-      return { 
+      return {
         mapCenter: [-7.4098, 111.4461] as [number, number],
         groupedData: [],
         accessSummary: []
       };
     }
-    
-    
+
+
     const grouped = individualPointsData.reduce((acc, item) => {
       const key = `${item.latitude},${item.longitude}`;
       if (!acc[key]) {
@@ -87,7 +87,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
       return acc;
     }, {} as Record<string, IndividualPointData & { count: number; totalLandArea: number; totalFoodArea: number; totalHortiArea: number; totalPlantationArea: number }>);
 
-    
+
     const summary = individualPointsData.reduce((acc, item) => {
       const access = item.water_access;
       if (!acc[access]) {
@@ -100,7 +100,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
 
     const avgLat = individualPointsData.reduce((sum, item) => sum + item.latitude, 0) / individualPointsData.length;
     const avgLng = individualPointsData.reduce((sum, item) => sum + item.longitude, 0) / individualPointsData.length;
-    
+
     return {
       mapCenter: [avgLat, avgLng] as [number, number],
       groupedData: Object.values(grouped),
@@ -109,24 +109,24 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
   }, [individualPointsData]);
 
   const getMarkerColor = (waterAccess: string, hasGoodAccess: boolean) => {
-    if (hasGoodAccess) return '#22c55e'; 
-    
+    if (hasGoodAccess) return '#22c55e';
+
     const access = waterAccess?.toUpperCase();
     switch (access) {
       case 'BAIK':
       case 'IRIGASI_TEKNIS':
-        return '#22c55e'; 
+        return '#22c55e';
       case 'IRIGASI_SEMI_TEKNIS':
       case 'CUKUP':
-        return '#84cc16'; 
+        return '#84cc16';
       case 'TERBATAS_MUSIMAN':
       case 'SEDANG':
-        return '#eab308'; 
+        return '#eab308';
       case 'TIDAK_ADA':
       case 'KURANG':
-        return '#ef4444'; 
+        return '#ef4444';
       default:
-        return '#f97316'; 
+        return '#f97316';
     }
   };
 
@@ -146,7 +146,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
 
   const getAccessColor = (access: string) => {
     const type = access?.toUpperCase();
-    
+
     switch (type) {
       case 'BAIK':
       case 'IRIGASI_TEKNIS':
@@ -174,8 +174,8 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
             Peta Persebaran Lahan Sawah Tiap Kecamatan
           </h2>
         </div>
-        
-        <div className="h-64 lg:h-[26rem] rounded-lg bg-gray-100 flex items-center justify-center">
+
+        <div className="mb-4 h-[17rem] rounded-lg bg-gray-100 flex items-center justify-center">
           <p className="text-gray-500">Tidak ada data lahan untuk ditampilkan</p>
         </div>
       </div>
@@ -207,7 +207,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               maxZoom={19}
             />
-            
+
             {mapLoaded && groupedData.map((item, index) => (
               <CircleMarker
                 key={index}
@@ -228,18 +228,18 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
                       <p>👨‍🌾 <span className="font-medium">Petani:</span> {item.farmer_name}</p>
                       <p>🌾 <span className="font-medium">Komoditas Utama:</span> {item.primary_commodity}</p>
                       <p>🏞️ <span className="font-medium">Total Luas:</span> {item.totalLandArea.toLocaleString('id-ID')} Ha</p>
-                      
+
                       <div className="mt-2 pt-2 border-t border-gray-200">
                         <p className="font-semibold text-sm mb-1">Distribusi Lahan:</p>
                         <p className="text-xs">• Tanaman Pangan: {item.totalFoodArea.toLocaleString('id-ID')} Ha</p>
                         <p className="text-xs">• Hortikultura: {item.totalHortiArea.toLocaleString('id-ID')} Ha</p>
                         <p className="text-xs">• Perkebunan: {item.totalPlantationArea.toLocaleString('id-ID')} Ha</p>
                       </div>
-                      
+
                       <div className="mt-2 pt-2 border-t border-gray-200">
                         <p className="text-sm">
                           <span className="font-medium">Akses Air:</span>{' '}
-                          <span 
+                          <span
                             className="font-semibold"
                             style={{ color: getMarkerColor(item.water_access, item.has_good_water_access) }}
                           >
@@ -257,7 +257,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
                             📊 {item.count} lahan di titik ini
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            Rata-rata: {(item.totalLandArea / item.count).toLocaleString('id-ID', {maximumFractionDigits: 1})} Ha per lahan
+                            Rata-rata: {(item.totalLandArea / item.count).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Ha per lahan
                           </p>
                         </div>
                       )}
@@ -275,31 +275,32 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
         {accessSummary.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-gray-900 mb-2">Ringkasan Persebaran Sawah</h3>
-            <div className="flex flex-wrap gap-2">
-              {accessSummary.map((item, index) => (
-                <div
-                  key={index}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getAccessColor(item.type)}`}
-                >
-                  <div 
-                    className="w-3 h-3 rounded-full flex-shrink-0" 
-                    style={{ backgroundColor: getMarkerColor(item.type, false) }}
-                  ></div>
-                  <div className="text-sm">
-                    <span className="font-semibold">{getWaterAccessLabel(item.type)}</span>
-                    <span className="mx-1.5">•</span>
-                    <span className="font-medium">{item.count}</span>
-                    <span className="text-xs ml-1">
-                      ({item.totalArea.toLocaleString('id-ID')} Ha)
-                    </span>
+            <div className="max-h-24 overflow-y-auto pr-2">
+              <div className="flex flex-wrap gap-2">
+
+                {accessSummary.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getAccessColor(item.type)}`}
+                  >
+                    <div
+                      className="w-3 h-3 rounded-full flex-shrink-0"
+                      style={{ backgroundColor: getMarkerColor(item.type, false) }}
+                    ></div>
+                    <div className="text-sm">
+                      <span className="font-semibold">{getWaterAccessLabel(item.type)}</span>
+                      <span className="mx-1.5">•</span>
+                      <span className="font-medium">{item.count}</span>
+                      <span className="text-xs ml-1">
+                        ({item.totalArea.toLocaleString('id-ID')} Ha)
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}
-
-       
       </div>
     </div>
   );
