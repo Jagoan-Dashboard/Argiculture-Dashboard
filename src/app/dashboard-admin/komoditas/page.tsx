@@ -24,7 +24,7 @@ const KomoditasListPage = () => {
     to: Date;
   }>({
     from: new Date(2024, 0, 1), 
-    to: new Date(2024, 11, 31), 
+    to: new Date(2025, 11, 31), 
   });
 
   

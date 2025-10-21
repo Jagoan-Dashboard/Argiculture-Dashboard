@@ -228,7 +228,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
   // Show loading if no data yet
   if (commodityMapData.length === 0) {
     return (
-      <div className="bg-white col-span-2 p-6 rounded-xl min-h-[32rem] shadow-sm border border-gray-100">
+      <div className="bg-white col-span-2 p-6 rounded-xl h-[32rem] shadow-sm border border-gray-100">
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">
@@ -236,7 +236,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
           </h2>
         </div>
 
-        <div className="min-h-[27rem] rounded-lg bg-gray-100 flex items-center justify-center">
+        <div className="min-h-[26rem] rounded-lg bg-gray-100 flex items-center justify-center">
           <p className="text-gray-500 h-full">Tidak ada data komoditas untuk ditampilkan</p>
         </div>
       </div>
@@ -253,7 +253,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
       </div>
 
       {/* Real Map */}
-      <div className="relative mb-4 h-64 lg:h-80 rounded-lg overflow-hidden border border-gray-200">
+      <div className="relative mb-4 h-[17rem] rounded-lg overflow-hidden border border-gray-200">
         {typeof window !== 'undefined' && (
           <MapContainer
             center={mapCenter}
