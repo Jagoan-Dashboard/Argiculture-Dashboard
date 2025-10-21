@@ -83,12 +83,12 @@ interface SortConfig {
 }
 
 interface UniversalTableProps<T = Record<string, unknown>> {
-  
+
   data: T[]
   columns: Column<T>[]
   loading?: boolean
 
-  
+
   searchable?: boolean
   searchPlaceholder?: string
   onSearch?: (query: string) => void
@@ -102,30 +102,30 @@ interface UniversalTableProps<T = Record<string, unknown>> {
   filters?: Record<string, unknown>
   onFilter?: (filters: Record<string, unknown>) => void
 
-  
+
   pagination?: PaginationConfig
   onPaginationChange?: (page: number, pageSize: number) => void
 
-  
+
   headerActions?: HeaderAction[]
   headerTitle?: string
   headerDescription?: string
 
-  
+
   rowActions?: RowAction<T>[]
 
-  
+
   scrollable?: boolean
   scrollHeight?: string | number
 
-  
+
   className?: string
   tableClassName?: string
   headerClassName?: string
   emptyStateMessage?: string
   emptyStateIcon?: React.ReactNode
 
-  
+
   selectable?: boolean
   selectedRows?: string[]
   onSelectionChange?: (selectedIds: string[]) => void
@@ -136,37 +136,37 @@ export function UniversalTable<T = Record<string, unknown>>({
   data,
   columns,
   loading = false,
-  
+
   searchable = false,
   searchPlaceholder = "Cari...",
   onSearch,
-  
+
   sortable = false,
   sortConfig,
   onSort,
-  
+
   filterable = false,
   filterOptions = [],
   filters = {},
   onFilter,
-  
+
   pagination,
   onPaginationChange,
-  
+
   headerActions = [],
   headerTitle,
   headerDescription,
-  
+
   rowActions = [],
-  
+
   scrollHeight,
-  
+
   className = "",
   tableClassName = "",
   headerClassName = "",
   emptyStateMessage = "Tidak ada data yang ditemukan",
   emptyStateIcon,
-  
+
   selectable = false,
   selectedRows = [],
   onSelectionChange,
@@ -176,7 +176,7 @@ export function UniversalTable<T = Record<string, unknown>>({
   const [localFilters, setLocalFilters] = useState<Record<string, unknown>>(filters)
   const [showFilters, setShowFilters] = useState(false)
 
-  
+
   const handleSearch = useCallback((query: string) => {
     setSearchQuery(query)
     if (searchable && onSearch) {
@@ -184,7 +184,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     }
   }, [searchable, onSearch])
 
-  
+
   const handleSort = useCallback((key: string) => {
     if (!sortable || !onSort) return
 
@@ -193,7 +193,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     onSort({ key, direction })
   }, [sortable, sortConfig, onSort])
 
-  
+
   const handleFilterChange = useCallback((key: string, value: unknown) => {
     if (!filterable || !onFilter) return
 
@@ -202,7 +202,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     onFilter(newFilters)
   }, [filterable, localFilters, onFilter])
 
-  
+
   const handleRowSelection = useCallback((rowId: string, selected: boolean) => {
     if (!selectable || !onSelectionChange) return
 
@@ -220,7 +220,7 @@ export function UniversalTable<T = Record<string, unknown>>({
     onSelectionChange(selected ? allIds : [])
   }, [selectable, data, getRowId, onSelectionChange])
 
-  
+
   const hasActions = rowActions && rowActions.length > 0
   const hasHeaderContent = headerTitle || headerDescription || (headerActions && headerActions.length > 0)
   const isAllSelected = selectable && data.length > 0 && selectedRows.length === data.length
@@ -325,166 +325,159 @@ export function UniversalTable<T = Record<string, unknown>>({
       )}
 
       {/* Table Section - core table yang selalu ada dengan scrollable wrapper conditional */}
-      <div className="rounded-md border flex flex-col">
+      <div
+        className="overflow-auto rounded-md border"
+        style={{
+          maxHeight: typeof scrollHeight === 'number' ? `${scrollHeight}px` : scrollHeight || 'auto'
+        }}
+      >
         {/* Table Header - tetap di luar scroll */}
-        <div className="overflow-hidden">
-          <Table className={tableClassName}>
-            <TableHeader>
+
+        <Table className={`${tableClassName} min-w-max`}>
+          <TableHeader>
+            <TableRow>
+              {/* Selection Header */}
+              {selectable && (
+                <TableHead className="w-12">
+                  <input
+                    type="checkbox"
+                    checked={isAllSelected}
+                    ref={(input) => {
+                      if (input) input.indeterminate = isSomeSelected
+                    }}
+                    onChange={(e) => handleSelectAll(e.target.checked)}
+                    className="rounded border-gray-300"
+                  />
+                </TableHead>
+              )}
+
+              {/* Column Headers */}
+              {columns.map((column) => (
+                <TableHead
+                  key={column.key}
+                  className={`${column.headerClassName || ''} ${sortable && column.sortable ? 'cursor-pointer select-none' : ''
+                    } whitespace-nowrap`}
+                  onClick={() => sortable && column.sortable && handleSort(column.key)}
+                >
+                  <div className="flex items-center space-x-2">
+                    <span>{column.label}</span>
+                    {sortable && column.sortable && (
+                      <div className="flex flex-col">
+                        <ChevronUp
+                          className={`h-3 w-3 ${sortConfig?.key === column.key && sortConfig.direction === 'asc'
+                            ? 'text-foreground'
+                            : 'text-muted-foreground'
+                            }`}
+                        />
+                        <ChevronDown
+                          className={`h-3 w-3 -mt-1 ${sortConfig?.key === column.key && sortConfig.direction === 'desc'
+                            ? 'text-foreground'
+                            : 'text-muted-foreground'
+                            }`}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </TableHead>
+              ))}
+
+              {/* Actions Header */}
+              {hasActions && (
+                <TableHead className="w-20 text-right whitespace-nowrap">Aksi</TableHead>
+              )}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {loading ? (
+
+              Array.from({ length: 5 }).map((_, index) => (
+                <TableRow key={index}>
+                  {selectable && <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>}
+                  {columns.map((column) => (
+                    <TableCell key={column.key} className="whitespace-nowrap">
+                      <div className="h-4 bg-muted animate-pulse rounded" />
+                    </TableCell>
+                  ))}
+                  {hasActions && (
+                    <TableCell className="whitespace-nowrap">
+                      <div className="h-4 bg-muted animate-pulse rounded" />
+                    </TableCell>
+                  )}
+                </TableRow>
+              ))
+            ) : data.length === 0 ? (
+
               <TableRow>
-                {/* Selection Header */}
-                {selectable && (
-                  <TableHead className="w-12">
-                    <input
-                      type="checkbox"
-                      checked={isAllSelected}
-                      ref={(input) => {
-                        if (input) input.indeterminate = isSomeSelected
-                      }}
-                      onChange={(e) => handleSelectAll(e.target.checked)}
-                      className="rounded border-gray-300"
-                    />
-                  </TableHead>
-                )}
-
-                {/* Column Headers */}
-                {columns.map((column) => (
-                  <TableHead
-                    key={column.key}
-                    className={`${column.headerClassName || ''} ${sortable && column.sortable ? 'cursor-pointer select-none' : ''
-                      } whitespace-nowrap`}
-                    onClick={() => sortable && column.sortable && handleSort(column.key)}
-                  >
-                    <div className="flex items-center space-x-2">
-                      <span>{column.label}</span>
-                      {sortable && column.sortable && (
-                        <div className="flex flex-col">
-                          <ChevronUp
-                            className={`h-3 w-3 ${sortConfig?.key === column.key && sortConfig.direction === 'asc'
-                                ? 'text-foreground'
-                                : 'text-muted-foreground'
-                              }`}
-                          />
-                          <ChevronDown
-                            className={`h-3 w-3 -mt-1 ${sortConfig?.key === column.key && sortConfig.direction === 'desc'
-                                ? 'text-foreground'
-                                : 'text-muted-foreground'
-                              }`}
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </TableHead>
-                ))}
-
-                {/* Actions Header */}
-                {hasActions && (
-                  <TableHead className="w-20 text-right whitespace-nowrap">Aksi</TableHead>
-                )}
+                <TableCell
+                  colSpan={columns.length + (selectable ? 1 : 0) + (hasActions ? 1 : 0)}
+                  className=" h-[12rem] text-center"
+                >
+                  <div className="flex flex-col items-center justify-center space-y-2">
+                    {emptyStateIcon}
+                    <p className="text-muted-foreground text-lg">{emptyStateMessage}</p>
+                  </div>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-          </Table>
-        </div>
+            ) : (
 
-        {/* Table Body - scrollable */}
-        <div
-          className="overflow-auto flex-1 "
-          style={{
-            maxHeight: typeof scrollHeight === 'number' ? `${scrollHeight}px` : scrollHeight || 'auto'
-          }}
-        >
-          <Table className={`${tableClassName} min-w-max`}>
-            <TableBody>
-              {loading ? (
-                
-                Array.from({ length: 5 }).map((_, index) => (
-                  <TableRow key={index}>
-                    {selectable && <TableCell><div className="h-4 bg-muted animate-pulse rounded" /></TableCell>}
+              data.map((row) => {
+                const rowId = getRowId(row)
+                const isSelected = selectable && selectedRows.includes(rowId)
+
+                return (
+                  <TableRow key={rowId} className={isSelected ? 'bg-muted/50' : ''}>
+                    {selectable && (
+                      <TableCell className="whitespace-nowrap">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={(e) => handleRowSelection(rowId, e.target.checked)}
+                          className="rounded border-gray-300"
+                        />
+                      </TableCell>
+                    )}
+
                     {columns.map((column) => (
-                      <TableCell key={column.key} className="whitespace-nowrap">
-                        <div className="h-4 bg-muted animate-pulse rounded" />
+                      <TableCell
+                        key={column.key}
+                        className={`${column.className || ''} whitespace-nowrap`}
+                      >
+                        {column.render
+                          ? column.render((row as Record<string, unknown>)[column.key], row) as React.ReactNode
+                          : String((row as Record<string, unknown>)[column.key])
+                        }
                       </TableCell>
                     ))}
+
                     {hasActions && (
-                      <TableCell className="whitespace-nowrap">
-                        <div className="h-4 bg-muted animate-pulse rounded" />
+                      <TableCell className="text-right whitespace-nowrap">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            {rowActions?.map((action, actionIndex) => (
+                              <button
+                                key={actionIndex}
+                                onClick={() => action.onClick(row)}
+                                className={`flex w-full items-center px-2 py-1.5 text-sm hover:bg-muted ${action.className || ''}`}
+                              >
+                                {action.icon}
+                                {action.label}
+                              </button>
+                            ))}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
                       </TableCell>
                     )}
                   </TableRow>
-                ))
-              ) : data.length === 0 ? (
-                
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length + (selectable ? 1 : 0) + (hasActions ? 1 : 0)}
-                    className=" h-[32rem] text-center"
-                  >
-                    <div className="flex flex-col items-center justify-center space-y-2">
-                      {emptyStateIcon}
-                      <p className="text-muted-foreground text-lg">{emptyStateMessage}</p>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : (
-                
-                data.map((row) => {
-                  const rowId = getRowId(row)
-                  const isSelected = selectable && selectedRows.includes(rowId)
-
-                  return (
-                    <TableRow key={rowId} className={isSelected ? 'bg-muted/50' : ''}>
-                      {selectable && (
-                        <TableCell className="whitespace-nowrap">
-                          <input
-                            type="checkbox"
-                            checked={isSelected}
-                            onChange={(e) => handleRowSelection(rowId, e.target.checked)}
-                            className="rounded border-gray-300"
-                          />
-                        </TableCell>
-                      )}
-
-                      {columns.map((column) => (
-                        <TableCell
-                          key={column.key}
-                          className={`${column.className || ''} whitespace-nowrap`}
-                        >
-                          {column.render
-                            ? column.render((row as Record<string, unknown>)[column.key], row) as React.ReactNode
-                            : String((row as Record<string, unknown>)[column.key])
-                          }
-                        </TableCell>
-                      ))}
-
-                      {hasActions && (
-                        <TableCell className="text-right whitespace-nowrap">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              {rowActions?.map((action, actionIndex) => (
-                                <button
-                                  key={actionIndex}
-                                  onClick={() => action.onClick(row)}
-                                  className={`flex w-full items-center px-2 py-1.5 text-sm hover:bg-muted ${action.className || ''}`}
-                                >
-                                  {action.icon}
-                                  {action.label}
-                                </button>
-                              ))}
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      )}
-                    </TableRow>
-                  )
-                })
-              )}
-            </TableBody>
-          </Table>
-        </div>
+                )
+              })
+            )}
+          </TableBody>
+        </Table>
       </div>
 
       {/* Pagination Section - hanya tampil jika pagination dan onPaginationChange ada */}

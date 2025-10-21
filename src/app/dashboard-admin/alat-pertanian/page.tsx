@@ -13,7 +13,7 @@ import { JumlahPompaData } from './types/pompa';
 import { useEquipmentStats } from './hooks/useEquipmentStats';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
-import { EQUIPMENT_EQUIPMENT } from './types/equipment_map';
+import { COMMODITY } from '@/constant/commodity';
 import { createCommodityLabelGetter } from '@/lib/color-mapping-helper';
 
 const AlatPertanianPage = () => {
@@ -87,7 +87,7 @@ const AlatPertanianPage = () => {
     if (!data?.individual_distribution) return [];
 
     // const displayName = COMODITY_EQUIPMENT[item.commodity] || item.commodity;
-    const getCommodityLabel = createCommodityLabelGetter(EQUIPMENT_EQUIPMENT);
+    const getCommodityLabel = createCommodityLabelGetter(COMMODITY);
 
 
     return data.individual_distribution.map(item => ({

@@ -13,13 +13,13 @@ import { Spinner } from "@/components/ui/shadcn-io/spinner";
 import { useState, useMemo } from "react";
 import {
   SECTOR_OPTIONS,
-  COMMODITY_NAME_MAP,
-  LAND_STATUS_MAP,
-  CONSTRAINT_MAP,
-  HOPE_MAP,
   AspirationsData
 } from "./types/executive";
 import { CommodityData } from "./types/comodity";
+import { LAND_STATUS_MAP } from "@/constant/land-status-map";
+import { CONSTRAINT_MAP } from "@/constant/constraint";
+import { HOPE_MAP } from "@/constant/hope";
+import { COMMODITY } from "@/constant/commodity";
 
 export default function DashboardPage() {
   
@@ -89,7 +89,7 @@ export default function DashboardPage() {
       const normalizedKey = item.name.toLowerCase().trim();
 
       
-      const displayName = COMMODITY_NAME_MAP[item.name] || item.name;
+      const displayName = COMMODITY[item.name] || item.name;
 
       if (grouped.has(normalizedKey)) {
         

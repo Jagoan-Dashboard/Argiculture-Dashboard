@@ -1,6 +1,6 @@
 import React from 'react'
 import { DominasiHamaSectionProps, HamaData } from '../types/dominasi';
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { Icon } from '@iconify/react';
 
 
@@ -22,20 +22,6 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<
   return null;
 };
 
-
-const CustomLegendItem = ({ item }: { item: HamaData }) => {
-  return (
-    <div className="flex items-center gap-3 mb-3">
-      <div
-        className="w-3 h-3 rounded-full flex-shrink-0"
-        style={{ backgroundColor: item.color }}
-      />
-      <span className="text-sm text-gray-700 leading-relaxed">
-        {item.fullName}
-      </span>
-    </div>
-  );
-};
 
 
 
@@ -96,15 +82,14 @@ export const DominasiHamaSection = ({ hamaData }: DominasiHamaSectionProps) => {
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  verticalAlign="bottom"
+                  formatter={(value, entry) => (
+                    <span className="text-sm text-gray-700 leading-relaxed" style={{ color: entry.color }}>{value}</span>
+                  )}
+                />
               </PieChart>
             </ResponsiveContainer>
-          </div>
-
-          {/* Legend */}
-          <div className="space-y-1">
-            {hamaData?.map((item: HamaData, index: number) => (
-              <CustomLegendItem key={index} item={item} />
-            ))}
           </div>
         </div>
       </div>

@@ -1,9 +1,7 @@
 import { Icon } from '@iconify/react'
 import React from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts'
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
 import { GrowthPhaseData, ProporsiSectionProps } from '../types/proparsi'
-
-
 
 
 
@@ -22,21 +20,6 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<
     );
   }
   return null;
-};
-
-
-const CustomLegendItem = ({ item }: { item: GrowthPhaseData }) => {
-  return (
-    <div className="flex items-center gap-3 mb-3">
-      <div
-        className="w-3 h-3 rounded-full flex-shrink-0"
-        style={{ backgroundColor: item.color }}
-      />
-      <span className="text-sm text-gray-700 leading-relaxed">
-        {item.fullName}
-      </span>
-    </div>
-  );
 };
 
 
@@ -78,7 +61,7 @@ export const ProporsiSection = ({ growthPhaseData }: ProporsiSectionProps) => {
       <div className="p-6">
         <div className="grid gap-8 items-center">
           {/* Pie Chart */}
-          <div className="h-80 flex justify-center">
+          <div className="h-[20rem] flex justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -88,8 +71,8 @@ export const ProporsiSection = ({ growthPhaseData }: ProporsiSectionProps) => {
                   cy="50%"
                   labelLine={false}
                   label={renderCustomizedLabel}
-                  outerRadius={120}
-                  innerRadius={60}
+                  outerRadius={100}
+                  innerRadius={50}
                   fill="#8884d8"
                   dataKey="value"
                   startAngle={90}
@@ -100,15 +83,14 @@ export const ProporsiSection = ({ growthPhaseData }: ProporsiSectionProps) => {
                   ))}
                 </Pie>
                 <Tooltip content={<CustomTooltip />} />
+                <Legend
+                  verticalAlign="bottom"
+                  formatter={(value, entry) => (
+                    <span className="text-sm text-gray-700 leading-relaxed" style={{ color: entry.color }}>{value}</span>
+                  )}
+                />
               </PieChart>
             </ResponsiveContainer>
-          </div>
-
-          {/* Legend */}
-          <div className="space-y-1">
-            {growthPhaseData?.map((item, index) => (
-              <CustomLegendItem key={index} item={item} />
-            ))}
           </div>
         </div>
       </div>

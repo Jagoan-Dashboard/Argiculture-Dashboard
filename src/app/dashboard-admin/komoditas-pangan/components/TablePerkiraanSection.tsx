@@ -4,6 +4,8 @@ import { UniversalTable } from '@/components/Table/TableComponent'
 import { Icon } from '@iconify/react'
 import { Calendar } from 'lucide-react'
 import { KomoditasData, TablePerkiraanSectionProps } from '../types/table-perkiraan'
+import { createCommodityLabelGetter } from '@/lib/color-mapping-helper'
+import { COMMODITY } from '@/constant/commodity'
 
 export const TablePerkiraanSection = ({
   data,
@@ -47,7 +49,7 @@ export const TablePerkiraanSection = ({
       
       render: (value: any) => (
         <div className="flex items-center gap-2">
-          <span className="font-medium text-gray-900">{value}</span>
+          <span className="font-medium text-gray-900">{createCommodityLabelGetter(COMMODITY)(value)}</span>
         </div>
       )
     },
@@ -96,7 +98,7 @@ export const TablePerkiraanSection = ({
 
 
   return (
-    <div className="bg-white rounded-2xl  shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl h-[32rem] shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r p-6 border-b border-gray-100">
         <div className="flex items-center gap-3">
@@ -113,8 +115,7 @@ export const TablePerkiraanSection = ({
       {/* Table Content */}
       <div className="p-6">
         <UniversalTable
-          scrollable={true}
-          scrollHeight={"32rem"}  
+          scrollable={true}  
           data={paginatedData || []}
           columns={columns}
           loading={loading}
