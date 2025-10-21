@@ -48,9 +48,10 @@ interface CommodityMapData {
 
 interface MapSectionProps {
   commodityMapData?: CommodityMapData[];
+  title?: string;
 }
 
-export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] }) => {
+export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [],title }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
   // Calculate center, group coordinates, and get commodity summary
@@ -232,7 +233,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">
-            Peta Persebaran Komoditas Pertanian
+            {title ?? 'Peta Persebaran Komoditas Pertanian'}
           </h2>
         </div>
 
@@ -248,7 +249,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
       <div className="flex items-center gap-2 mb-4">
         <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">
-          Peta Persebaran Komoditas Pertanian
+          {title ?? 'Peta Persebaran Komoditas Pertanian'}
         </h2>
       </div>
 
@@ -270,7 +271,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [] })
               maxZoom={19}
             />
 
-            {mapLoaded && groupedData.map((item, index) => (
+            {mapLoaded && groupedData.map((item) => (
               <CircleMarker
                 key={`${item.latitude.toFixed(5)}-${item.longitude.toFixed(5)}`}
                 center={[item.latitude, item.longitude]}

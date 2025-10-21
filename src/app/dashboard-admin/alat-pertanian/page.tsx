@@ -116,8 +116,8 @@ const AlatPertanianPage = () => {
     {
       id: 1,
       icon: "material-symbols:trending-up",
-      title: "Peningkatan Jumlah Mesin Pertanian",
-      description: "Mekanisasi pertanian tersedia dengan baik",
+      title: "Peningkatan Jumlah Mesin Pertanian Secara Konsisten",
+      description: "Infrastruktur pertanian tersedia dengan baik",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     },
@@ -198,6 +198,7 @@ const AlatPertanianPage = () => {
   }
 
 
+
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -272,6 +273,9 @@ const AlatPertanianPage = () => {
           <div className="space-y-6 sm:hidden">
             <div>
               <MapSection equipmentMapData={mapData} />
+            </div>
+            <div >
+              <JumlahPompaSection jumlahPompaData={jumlahPompaData} />
             </div>
             <div>
               <KeyComponent data={keyInsight} title="Key Insight" description="Wawasan penting dari data pertanian" />

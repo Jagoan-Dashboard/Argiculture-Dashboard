@@ -109,24 +109,24 @@ const LahanPengairanPage = () => {
     {
       id: 1,
       icon: "material-symbols:trending-up",
-      title: "Luas Lahan Sawah Dominan",
-      description: "Lahan sawah mendominasi distribusi lahan pertanian",
+      title: "Luas Lahan Sawah Mendominasi",
+      description: "Tingkatkan upaya produktivitas sawah",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     },
     {
       id: 2,
       icon: "icon-park-outline:water",
-      title: "Sistem Irigasi Berkembang",
-      description: "Infrastruktur irigasi terus ditingkatkan",
+      title: "Luas Lahan Bukan Sawah Cukup Besar",
+      description: "Ada potensi besar untuk diversifikasi komoditas pertanian",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     },
     {
       id: 3,
       icon: "material-symbols:agriculture",
-      title: "Diversifikasi Lahan Pertanian",
-      description: "Pengembangan berbagai jenis lahan pertanian",
+      title: "Lahan Ladang/Huma dan Kebun/Tegal Masih Terbatas",
+      description: "Tanam komoditas dengan permintaan tinggi",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     }
@@ -136,24 +136,24 @@ const LahanPengairanPage = () => {
     {
       id: 1,
       icon: "material-symbols:water-pump",
-      title: "Optimalisasi Sistem Irigasi",
-      description: "Peningkatan efisiensi penggunaan air",
+      title: "Optimalisasi Pengelolaan Lahan Sawah",
+      description: "Implementasi pertanian presisi",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     },
     {
       id: 2,
       icon: "material-symbols:landscape",
-      title: "Konservasi Lahan Pertanian",
-      description: "Menjaga keberlanjutan lahan produktif",
+      title: "Diversifikasi Tanaman pada Lahan Bukan Sawah",
+      description: "Lakukan penanaman buah dan sayur",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     },
     {
       id: 3,
       icon: "material-symbols:share",
-      title: "Distribusi Air yang Merata",
-      description: "Akses irigasi untuk semua wilayah",
+      title: "Peningkatan Produktivitas Lahan Ladang dan Tegal",
+      description: "Gunakan untuk menanam tanaman bernilai ekonomi tinggi",
       bgColor: "bg-green-50",
       iconColor: "text-green-600"
     }

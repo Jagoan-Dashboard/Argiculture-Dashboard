@@ -266,7 +266,7 @@ const KomoditasHorticulturaPage = () => {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Map Section - PASS mapData */}
-            <MapSection commodityMapData={mapData} />
+            <MapSection commodityMapData={mapData} title='Peta Persebaran Komoditas Hortikultura'/>
 
             {/* Proporsi Fase Pertumbuhan Section */}
             <ProporsiSection growthPhaseData={proparsiData} />

@@ -165,7 +165,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
         <div className="flex items-center gap-2 mb-4">
           <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">
-            Peta Persebaran Komoditas Pertanian
+            Peta Persebaran Komoditas Perkebunan
           </h2>
         </div>
         
@@ -181,7 +181,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ cropMapData = [] }) => {
       <div className="flex items-center gap-2 mb-4">
         <Icon icon="bxs:map" className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">
-          Peta Persebaran Komoditas Pertanian
+          Peta Persebaran Komoditas Perkebunan
         </h2>
       </div>
 
