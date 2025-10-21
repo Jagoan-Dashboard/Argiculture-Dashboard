@@ -167,7 +167,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
               maxZoom={19}
             />
 
-            {mapLoaded && groupedData.map((item, index) => (
+            {mapLoaded && groupedData.map((item) => (
               <CircleMarker
                 key={`${item.latitude.toFixed(5)}-${item.longitude.toFixed(5)}-${item.commodity}`}
                 center={[item.latitude, item.longitude]}
@@ -220,9 +220,9 @@ export const MapSection: React.FC<MapSectionProps> = ({ equipmentMapData = [] })
             {/* 👇 ini yang bisa discroll */}
             <div className="max-h-24 overflow-y-auto pr-2">
               <div className="flex flex-wrap gap-2">
-                {commoditySummary.map((item, index) => (
+                {commoditySummary.map((item) => (
                   <div
-                    key={index}
+                    key={item.commodity}
                     className="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200"
                     style={{ backgroundColor: getSoftBgColor(item.commodity) }}
                   >

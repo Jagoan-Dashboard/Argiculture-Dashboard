@@ -62,6 +62,7 @@ export const useLogin = () => {
           description: response.message || "Terjadi kesalahan saat login",
         });
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Login error:", error);
 
