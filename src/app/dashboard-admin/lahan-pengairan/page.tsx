@@ -86,22 +86,29 @@ const LahanPengairanPage = () => {
   console.log('distribusiData', distribusiData)
 
   const mapData = useMemo(() => {
+    /**
+     *   latitude: number;
+  longitude: number;
+  village: string; // Diisi dengan district
+  district: string;
+  rainfed_rice_fields: number;
+  irrigated_rice_fields: number;
+  total_rice_field_area: number;
+  date: string; // Sudah diganti dari visit_date
+  data_source: string;
+     */
     if (!data?.individual_points) return [];
 
     return data.individual_points.map(item => ({
       latitude: item.latitude,
       longitude: item.longitude,
-      village: item.village,
+      village: item.district,
       district: item.district,
-      farmer_name: item.farmer_name,
-      total_land_area: item.total_land_area,
-      food_land_area: item.food_land_area,
-      horti_land_area: item.horti_land_area,
-      plantation_land_area: item.plantation_land_area,
-      water_access: item.water_access,
-      has_good_water_access: item.has_good_water_access,
-      primary_commodity: item.primary_commodity,
-      visit_date: item.visit_date
+      rainfed_rice_fields: item.rainfed_rice_fields,
+      irrigated_rice_fields: item.irrigated_rice_fields,
+      total_rice_field_area: item.total_rice_field_area,
+      date: item.date,
+      data_source: item.data_source
     }));
   }, [data]);
 

@@ -1,3 +1,4 @@
+// components/MapSection.tsx
 'use client';
 import { Icon } from '@iconify/react';
 import React, { useMemo, useState } from 'react';
@@ -33,136 +34,103 @@ const Popup = dynamic(
   { ssr: false }
 );
 
-interface IndividualPointData {
+// Interface untuk data titik sawah
+interface RiceFieldIndividualPoint {
   latitude: number;
   longitude: number;
-  village: string;
+  village: string; // Diisi dengan district
   district: string;
-  farmer_name: string;
-  total_land_area: number;
-  food_land_area: number;
-  horti_land_area: number;
-  plantation_land_area: number;
-  water_access: string;
-  has_good_water_access: boolean;
-  primary_commodity: string;
-  visit_date: string;
+  rainfed_rice_fields: number;
+  irrigated_rice_fields: number;
+  total_rice_field_area: number;
+  date: string; // Sudah diganti dari visit_date
+  data_source: string;
 }
 
 interface MapSectionProps {
-  individualPointsData?: IndividualPointData[];
+  individualPointsData?: RiceFieldIndividualPoint[];
 }
 
 export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [] }) => {
   const [mapLoaded, setMapLoaded] = useState(false);
 
-  const { mapCenter, groupedData, accessSummary } = useMemo(() => {
+  const { mapCenter, groupedData, areaSummary } = useMemo(() => {
     if (individualPointsData.length === 0) {
       return {
         mapCenter: [-7.4098, 111.4461] as [number, number],
         groupedData: [],
-        accessSummary: []
+        areaSummary: []
       };
     }
 
-
+    // Kelompokkan data berdasarkan lokasi (latitude, longitude)
     const grouped = individualPointsData.reduce((acc, item) => {
       const key = `${item.latitude},${item.longitude}`;
       if (!acc[key]) {
         acc[key] = {
           ...item,
           count: 1,
-          totalLandArea: item.total_land_area,
-          totalFoodArea: item.food_land_area,
-          totalHortiArea: item.horti_land_area,
-          totalPlantationArea: item.plantation_land_area
+          totalRainfed: item.rainfed_rice_fields,
+          totalIrrigated: item.irrigated_rice_fields,
+          totalRiceFieldArea: item.total_rice_field_area,
         };
       } else {
         acc[key].count += 1;
-        acc[key].totalLandArea += item.total_land_area;
-        acc[key].totalFoodArea += item.food_land_area;
-        acc[key].totalHortiArea += item.horti_land_area;
-        acc[key].totalPlantationArea += item.plantation_land_area;
+        acc[key].totalRainfed += item.rainfed_rice_fields;
+        acc[key].totalIrrigated += item.irrigated_rice_fields;
+        acc[key].totalRiceFieldArea += item.total_rice_field_area;
       }
       return acc;
-    }, {} as Record<string, IndividualPointData & { count: number; totalLandArea: number; totalFoodArea: number; totalHortiArea: number; totalPlantationArea: number }>);
+    }, {} as Record<string, RiceFieldIndividualPoint & { count: number; totalRainfed: number; totalIrrigated: number; totalRiceFieldArea: number }>);
 
-
+    // Ringkasan berdasarkan tipe lahan (irigasi vs tadah hujan)
     const summary = individualPointsData.reduce((acc, item) => {
-      const access = item.water_access;
-      if (!acc[access]) {
-        acc[access] = { type: access, count: 0, totalArea: 0 };
+      // Jika keduanya nol, abaikan atau masukkan ke kategori default
+      if (item.irrigated_rice_fields === 0 && item.rainfed_rice_fields === 0) {
+          return acc; // Lewati item dengan luas 0
       }
-      acc[access].count += 1;
-      acc[access].totalArea += item.total_land_area;
+
+      if (item.irrigated_rice_fields > 0) {
+        if (!acc['irrigated']) {
+          acc['irrigated'] = { type: 'Sawah Irigasi', count: 0, totalArea: 0 };
+        }
+        acc['irrigated'].count += 1;
+        acc['irrigated'].totalArea += item.irrigated_rice_fields;
+      }
+      if (item.rainfed_rice_fields > 0) {
+        if (!acc['rainfed']) {
+          acc['rainfed'] = { type: 'Sawah Tadah Hujan', count: 0, totalArea: 0 };
+        }
+        acc['rainfed'].count += 1;
+        acc['rainfed'].totalArea += item.rainfed_rice_fields;
+      }
       return acc;
     }, {} as Record<string, { type: string; count: number; totalArea: number }>);
 
+    // Hitung pusat peta
     const avgLat = individualPointsData.reduce((sum, item) => sum + item.latitude, 0) / individualPointsData.length;
     const avgLng = individualPointsData.reduce((sum, item) => sum + item.longitude, 0) / individualPointsData.length;
 
     return {
       mapCenter: [avgLat, avgLng] as [number, number],
       groupedData: Object.values(grouped),
-      accessSummary: Object.values(summary)
+      areaSummary: Object.values(summary)
     };
   }, [individualPointsData]);
 
-  const getMarkerColor = (waterAccess: string, hasGoodAccess: boolean) => {
-    if (hasGoodAccess) return '#22c55e';
-
-    const access = waterAccess?.toUpperCase();
-    switch (access) {
-      case 'BAIK':
-      case 'IRIGASI_TEKNIS':
-        return '#22c55e';
-      case 'IRIGASI_SEMI_TEKNIS':
-      case 'CUKUP':
-        return '#84cc16';
-      case 'TERBATAS_MUSIMAN':
-      case 'SEDANG':
-        return '#eab308';
-      case 'TIDAK_ADA':
-      case 'KURANG':
-        return '#ef4444';
-      default:
-        return '#f97316';
-    }
+  // Fungsi untuk menentukan warna marker berdasarkan dominasi lahan
+  const getMarkerColor = (rainfed: number, irrigated: number) => {
+    if (irrigated > 0 && rainfed === 0) return '#22c55e'; // Hanya irigasi
+    if (rainfed > 0 && irrigated === 0) return '#84cc16'; // Hanya tadah hujan
+    if (irrigated > 0 && rainfed > 0) return '#eab308'; // Keduanya ada
+    return '#f97316'; // Tidak ada lahan (seharusnya tidak terjadi karena filter di repo)
   };
 
-  const getWaterAccessLabel = (access: string) => {
-    const accessMap: Record<string, string> = {
-      'BAIK': 'Baik',
-      'IRIGASI_TEKNIS': 'Irigasi Teknis',
-      'IRIGASI_SEMI_TEKNIS': 'Irigasi Semi Teknis',
-      'TERBATAS_MUSIMAN': 'Terbatas Musiman',
-      'TIDAK_ADA': 'Tidak Ada',
-      'CUKUP': 'Cukup',
-      'SEDANG': 'Sedang',
-      'KURANG': 'Kurang',
-    };
-    return accessMap[access] || access;
-  };
-
-  const getAccessColor = (access: string) => {
-    const type = access?.toUpperCase();
-
-    switch (type) {
-      case 'BAIK':
-      case 'IRIGASI_TEKNIS':
-        return 'bg-green-100 text-green-700 border-green-300';
-      case 'IRIGASI_SEMI_TEKNIS':
-      case 'CUKUP':
-        return 'bg-lime-100 text-lime-700 border-lime-300';
-      case 'TERBATAS_MUSIMAN':
-      case 'SEDANG':
-        return 'bg-yellow-100 text-yellow-700 border-yellow-300';
-      case 'TIDAK_ADA':
-      case 'KURANG':
-        return 'bg-red-100 text-red-700 border-red-300';
-      default:
-        return 'bg-orange-100 text-orange-700 border-orange-300';
-    }
+  // Fungsi untuk menentukan warna badge ringkasan
+  const getAreaTypeColor = (type: string) => {
+    if (type.includes('Irigasi')) return 'bg-green-100 text-green-700 border-green-300';
+    if (type.includes('Tadah Hujan')) return 'bg-lime-100 text-lime-700 border-lime-300';
+    return 'bg-yellow-100 text-yellow-700 border-yellow-300';
   };
 
   if (individualPointsData.length === 0) {
@@ -176,7 +144,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
         </div>
 
         <div className="mb-4 h-[17rem] rounded-lg bg-gray-100 flex items-center justify-center">
-          <p className="text-gray-500">Tidak ada data lahan untuk ditampilkan</p>
+          <p className="text-gray-500">Tidak ada data lahan sawah untuk ditampilkan</p>
         </div>
       </div>
     );
@@ -213,7 +181,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
                 key={index}
                 center={[item.latitude, item.longitude]}
                 radius={item.count > 1 ? 12 : 8}
-                fillColor={getMarkerColor(item.water_access, item.has_good_water_access)}
+                fillColor={getMarkerColor(item.rainfed_rice_fields, item.irrigated_rice_fields)}
                 color="#fff"
                 weight={item.count > 1 ? 3 : 2}
                 opacity={1}
@@ -225,39 +193,22 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
                       {item.village}, {item.district}
                     </p>
                     <div className="space-y-1 text-gray-700">
-                      <p>👨‍🌾 <span className="font-medium">Petani:</span> {item.farmer_name}</p>
-                      <p>🌾 <span className="font-medium">Komoditas Utama:</span> {item.primary_commodity}</p>
-                      <p>🏞️ <span className="font-medium">Total Luas:</span> {item.totalLandArea.toLocaleString('id-ID')} Ha</p>
+                      <p>🌾 <span className="font-medium">Tanggal:</span> {item.date}</p>
+                      <p>🏞️ <span className="font-medium">Total Luas:</span> {item.totalRiceFieldArea.toLocaleString('id-ID')} Ha</p>
 
                       <div className="mt-2 pt-2 border-t border-gray-200">
-                        <p className="font-semibold text-sm mb-1">Distribusi Lahan:</p>
-                        <p className="text-xs">• Tanaman Pangan: {item.totalFoodArea.toLocaleString('id-ID')} Ha</p>
-                        <p className="text-xs">• Hortikultura: {item.totalHortiArea.toLocaleString('id-ID')} Ha</p>
-                        <p className="text-xs">• Perkebunan: {item.totalPlantationArea.toLocaleString('id-ID')} Ha</p>
-                      </div>
-
-                      <div className="mt-2 pt-2 border-t border-gray-200">
-                        <p className="text-sm">
-                          <span className="font-medium">Akses Air:</span>{' '}
-                          <span
-                            className="font-semibold"
-                            style={{ color: getMarkerColor(item.water_access, item.has_good_water_access) }}
-                          >
-                            {getWaterAccessLabel(item.water_access)}
-                          </span>
-                        </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          Status: {item.has_good_water_access ? '✅ Akses Baik' : '⚠️ Perlu Perhatian'}
-                        </p>
+                        <p className="font-semibold text-sm mb-1">Distribusi Lahan Sawah:</p>
+                        <p className="text-xs">• Irigasi: {item.totalIrrigated.toLocaleString('id-ID')} Ha</p>
+                        <p className="text-xs">• Tadah Hujan: {item.totalRainfed.toLocaleString('id-ID')} Ha</p>
                       </div>
 
                       {item.count > 1 && (
                         <div className="mt-2 pt-2 border-t border-gray-200">
                           <p className="text-green-600 font-semibold text-base">
-                            📊 {item.count} lahan di titik ini
+                            📊 {item.count} titik lahan di koordinat ini
                           </p>
                           <p className="text-xs text-gray-500 mt-1">
-                            Rata-rata: {(item.totalLandArea / item.count).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Ha per lahan
+                            Rata-rata: {(item.totalRiceFieldArea / item.count).toLocaleString('id-ID', { maximumFractionDigits: 1 })} Ha per titik
                           </p>
                         </div>
                       )}
@@ -271,24 +222,23 @@ export const MapSection: React.FC<MapSectionProps> = ({ individualPointsData = [
       </div>
 
       <div className="space-y-4">
-        {/* Access Summary */}
-        {accessSummary.length > 0 && (
+        {/* Area Type Summary */}
+        {areaSummary.length > 0 && (
           <div>
             <h3 className="text-sm font-medium text-gray-900 mb-2">Ringkasan Persebaran Sawah</h3>
             <div className="max-h-24 overflow-y-auto pr-2">
               <div className="flex flex-wrap gap-2">
-
-                {accessSummary.map((item, index) => (
+                {areaSummary.map((item, index) => (
                   <div
                     key={index}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getAccessColor(item.type)}`}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${getAreaTypeColor(item.type)}`}
                   >
                     <div
                       className="w-3 h-3 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: getMarkerColor(item.type, false) }}
+                      style={{ backgroundColor: getMarkerColor(item.type.includes('Tadah') ? item.totalArea : 0, item.type.includes('Irigasi') ? item.totalArea : 0) }}
                     ></div>
                     <div className="text-sm">
-                      <span className="font-semibold">{getWaterAccessLabel(item.type)}</span>
+                      <span className="font-semibold">{item.type}</span>
                       <span className="mx-1.5">•</span>
                       <span className="font-medium">{item.count}</span>
                       <span className="text-xs ml-1">

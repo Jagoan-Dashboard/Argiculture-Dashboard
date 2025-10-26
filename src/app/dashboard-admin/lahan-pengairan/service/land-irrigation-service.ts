@@ -30,19 +30,18 @@ export interface LandIrrigationStatsResponse {
     }> | null;
     // TAMBAHKAN FIELD INI ⬇️
     individual_points: Array<{
+      /**
+
+       */
       latitude: number;
       longitude: number;
       village: string;
       district: string;
-      farmer_name: string;
-      total_land_area: number;
-      food_land_area: number;
-      horti_land_area: number;
-      plantation_land_area: number;
-      water_access: string;
-      has_good_water_access: boolean;
-      primary_commodity: string;
-      visit_date: string;
+      rainfed_rice_fields: number;
+      irrigated_rice_fields: number;
+      total_rice_field_area: number;
+      date: string;
+      data_source: string;
     }>;
   };
 }
