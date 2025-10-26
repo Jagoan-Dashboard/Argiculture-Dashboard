@@ -40,17 +40,6 @@ export const GROWTH_PHASE_MAP: Record<string, string> = {
 };
 
 
-export const TECHNOLOGY_MAP: Record<string, string> = {
-  'JAJAR_LEGOWO': 'Jajar Legowo',
-  'IRIGASI_POMPA': 'Irigasi Pompa',
-  'IRIGASI_TETES': 'Irigasi Tetes/Sprinkler',
-  'MULSA_PLASTIK': 'Mulsa Plastik',
-  'GREENHOUSE': 'Greenhouse',
-  'PUPUK_ORGANIK': 'Pupuk Organik',
-  'SENSOR_IOT': 'Sensor/IoT',
-  'TIDAK_ADA': 'Tidak Ada',
-};
-
 
 export const PEST_MAP: Record<string, string> = {
   'WERENG_COKLAT': 'Wereng Coklat',

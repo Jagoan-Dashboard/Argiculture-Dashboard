@@ -18,6 +18,7 @@ import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
 import { HORTICULTURE_COMMODITY_OPTIONS, HarvestScheduleData } from './types/horticulture-types';
+import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 const KomoditasHorticulturaPage = () => {
   
@@ -141,9 +142,9 @@ const KomoditasHorticulturaPage = () => {
     if (!data?.technology_used) return [];
     
     return data.technology_used.map(tech => ({
-      name: tech.technology,
+      name: TECHNOLOGY_MAP[tech.technology] || tech.technology,
       value: tech.count,
-      fullName: tech.technology
+      fullName: TECHNOLOGY_MAP[tech.technology] || tech.technology
     }));
   }, [data]);
 

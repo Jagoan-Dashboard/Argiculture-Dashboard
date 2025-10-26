@@ -18,6 +18,7 @@ import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale'; 
 import { COMMODITY_OPTIONS, HarvestScheduleData } from './types/plantation-types';
 import { MapSection } from '../components/MapSection';
+import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 const KomoditasPerkebunanPage = () => {
   
@@ -137,9 +138,9 @@ const KomoditasPerkebunanPage = () => {
     if (!data?.technology_used) return [];
     
     return data.technology_used.map(tech => ({
-      name: tech.technology,
+      name: TECHNOLOGY_MAP[tech.technology] || tech.technology,
       value: tech.count,
-      fullName: tech.technology
+      fullName: TECHNOLOGY_MAP[tech.technology] || tech.technology
     }));
   }, [data]);
 

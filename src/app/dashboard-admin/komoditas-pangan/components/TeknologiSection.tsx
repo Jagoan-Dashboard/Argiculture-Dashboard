@@ -2,13 +2,15 @@ import { Icon } from '@iconify/react'
 import React from 'react'
 import { BarChart, Bar, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis, Cell } from 'recharts'
 import { TeknologiSectionProps } from '../types/teknologi';
+import { createCommodityLabelGetter } from '@/lib/color-mapping-helper';
+import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 
 const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?: Array<{ value: number }>; label?: string }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-medium text-gray-900">{label}</p>
+        <p className="font-medium text-gray-900">{createCommodityLabelGetter(TECHNOLOGY_MAP)(label ?? '')}</p>
         <p className="text-green-600">
           <span className="font-semibold">{payload[0].value}</span> komoditas
         </p>

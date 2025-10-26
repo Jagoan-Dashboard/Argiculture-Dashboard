@@ -21,9 +21,9 @@ import {
   FOOD_CROP_COMMODITY_OPTIONS, 
   HarvestScheduleData,
   GROWTH_PHASE_MAP,
-  TECHNOLOGY_MAP,
   PEST_MAP
 } from './types/food-crop';
+import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 const KomoditasPanganPage = () => {
   
