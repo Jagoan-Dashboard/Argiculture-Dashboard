@@ -21,7 +21,7 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
             <span className="inline-block w-3 h-3 rounded mr-2" style={{ backgroundColor: entry.color }} />
             <span className="font-medium" style={{ color: entry.color }}>
               {entry.dataKey === 'sawah' ? 'Lahan Sawah' :
-                entry.dataKey === 'perkebunan' ? 'Perkebunan/Tegal' : 'Ladang/Hutan'}: {entry.value} Ha
+                entry.dataKey === 'perkebunan' ? 'Perkebunan/Tegal' : 'Ladang/Hutan'}: {entry.value.toFixed(2)} Ha
             </span>
           </p>
         ))}
