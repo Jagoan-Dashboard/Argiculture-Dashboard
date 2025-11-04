@@ -5,13 +5,22 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaChevronDown } from "react-icons/fa6";
-// import { confirmDialog } from "primereact/confirmdialog";
 import { HiDotsHorizontal } from "react-icons/hi";
-// import { useAuth } from "@/context/AuthContext";
 import { useSidebar } from "@/context/SidebarContext";
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 import { assets } from "@/assets/assets";
+import { useAuth } from "@/context/AuthContext";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type SubMenuItem = {
   name: string;
@@ -94,7 +103,7 @@ const navItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
-  // const { logout } = useAuth();
+  const { logout } = useAuth();
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: "main" | "others";
     index: number;
@@ -102,6 +111,7 @@ const AppSidebar: React.FC = () => {
   const [subMenuHeight, setSubMenuHeight] = useState<Record<string, number>>(
     {},
   );
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
   const subMenuRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const isActive = useCallback(
@@ -112,24 +122,19 @@ const AppSidebar: React.FC = () => {
   const handleLogout = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
-      // confirmDialog({
-      //   message: "Apakah kamu yakin ingin logout?",
-      //   header: "Konfirmasi Logout",
-      //   icon: "pi pi-exclamation-triangle",
-      //   acceptLabel: "Ya, Logout",
-      //   rejectLabel: "Batal",
-      //   acceptClassName: "p-button-danger",
-      //   accept: async () => {
-      //     try {
-      //       await logout();
-      //     } catch (error) {
-      //       console.error("Logout gagal", error);
-      //     }
-      //   },
-      // });
+      setShowLogoutDialog(true);
     },
     [],
   );
+
+  const handleConfirmLogout = async () => {
+    try {
+      await logout();
+      setShowLogoutDialog(false);
+    } catch (error) {
+      console.error("Logout gagal", error);
+    }
+  };
 
   useEffect(() => {
     if (openSubmenu !== null) {
@@ -312,73 +317,96 @@ const AppSidebar: React.FC = () => {
 
 
   return (
-    <div className={`fixed h-full top-0 p-5 z-50  lg:translate-x-0 ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}`} onMouseEnter={() => !isExpanded && setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}>
-      <aside
-        className={`  bg-white flex flex-col lg:mt-0  px-5 left-0  h-[calc(100vh-45px)] text-gray-900  overflow-y-auto transition-all duration-300 ease-in-out z-50 rounded-xl
-        ${isExpanded || isMobileOpen
-            ? "w-[290px]"
-            : isHovered
+    <>
+      <div className={`fixed h-full top-0 p-5 z-50  lg:translate-x-0 ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}`} onMouseEnter={() => !isExpanded && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}>
+        <aside
+          className={`  bg-white flex flex-col lg:mt-0  px-5 left-0  h-[calc(100vh-45px)] text-gray-900  overflow-y-auto transition-all duration-300 ease-in-out z-50 rounded-xl
+          ${isExpanded || isMobileOpen
               ? "w-[290px]"
-              : "w-[80px]"
-          }
-        lg:translate-x-0`}
-      >
-        <div
-          className={`py-8 flex ${!isExpanded && !isHovered && !isMobileOpen ? "lg:justify-center" : "justify-start"
-            }`}
+              : isHovered
+                ? "w-[290px]"
+                : "w-[80px]"
+            }
+          lg:translate-x-0`}
         >
-          <Link href="/">
-            {isExpanded || isHovered || isMobileOpen ? (
-              <>
-                <div className=" flex justify-center items-center gap-2">
-                  <Image
-                    src={assets.imageLogoNgawi}
-                    alt="Logo Ngawi"
-                    width={30}
-                    height={30}
-                  />
-                  <Image
-                    src={assets.imageLogo}
-                    alt="Logo Jagoan Satu Data"
-                    width={120}
-                    height={120}
-                  />
+          <div
+            className={`py-8 flex ${!isExpanded && !isHovered && !isMobileOpen ? "lg:justify-center" : "justify-start"
+              }`}
+          >
+            <Link href="/">
+              {isExpanded || isHovered || isMobileOpen ? (
+                <>
+                  <div className=" flex justify-center items-center gap-2">
+                    <Image
+                      src={assets.imageLogoNgawi}
+                      alt="Logo Ngawi"
+                      width={30}
+                      height={30}
+                    />
+                    <Image
+                      src={assets.imageLogo}
+                      alt="Logo Jagoan Satu Data"
+                      width={120}
+                      height={120}
+                    />
+                  </div>
+                </>
+              ) : (
+                <Image
+                  src={assets.imageLogoNgawi}
+                  alt="Logo Ngawi"
+                  width={30}
+                  height={30}
+                />
+              )}
+            </Link>
+          </div>
+          <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
+            <nav className="mb-6">
+              <div className="flex flex-col gap-4">
+                <div>
+                  <h2
+                    className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered && !isMobileOpen
+                      ? "lg:justify-center"
+                      : "justify-start"
+                      }`}
+                  >
+                    {isExpanded || isHovered || isMobileOpen ? (
+                      "Menu"
+                    ) : (
+                      <HiDotsHorizontal className="size-6" />
+                    )}
+                  </h2>
+                  {renderMenuItems(navItems, "main")}
                 </div>
-              </>
-            ) : (
-              <Image
-                src={assets.imageLogoNgawi}
-                alt="Logo Ngawi"
-                width={30}
-                height={30}
-              />
-            )}
-          </Link>
-        </div>
-        <div className="flex flex-col overflow-y-auto duration-300 ease-linear no-scrollbar">
-          <nav className="mb-6">
-            <div className="flex flex-col gap-4">
-              <div>
-                <h2
-                  className={`mb-4 text-xs uppercase flex leading-[20px] text-gray-400 ${!isExpanded && !isHovered && !isMobileOpen
-                    ? "lg:justify-center"
-                    : "justify-start"
-                    }`}
-                >
-                  {isExpanded || isHovered || isMobileOpen ? (
-                    "Menu"
-                  ) : (
-                    <HiDotsHorizontal className="size-6" />
-                  )}
-                </h2>
-                {renderMenuItems(navItems, "main")}
               </div>
-            </div>
-          </nav>
-        </div>
-      </aside>
-    </div>
+            </nav>
+          </div>
+        </aside>
+      </div>
+
+      {/* Alert Dialog untuk Logout */}
+      <AlertDialog open={showLogoutDialog} onOpenChange={setShowLogoutDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Konfirmasi Logout</AlertDialogTitle>
+            <AlertDialogDescription>
+              Apakah kamu yakin ingin logout? Anda akan keluar dari akun dan perlu login kembali untuk mengakses sistem.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Batal</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleConfirmLogout}
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              Ya, Logout
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 

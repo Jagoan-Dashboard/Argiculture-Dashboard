@@ -21,10 +21,10 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
     
     // TEMPORARILY DISABLED: Redirect to login if not authenticated
-    // if (!isAuthenticated && pathname?.startsWith("/dashboard-admin")) {
-    //   console.log("User not authenticated, redirecting to login...");
-    //   router.push("/login");
-    // }
+    if (!isAuthenticated && pathname?.startsWith("/dashboard-admin")) {
+      console.log("User not authenticated, redirecting to login...");
+      router.push("/login");
+    }
 
     
     if (isAuthenticated && pathname === "/login") {
@@ -48,9 +48,9 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   
   if (pathname?.startsWith("/dashboard-admin")) {
     // TEMPORARILY DISABLED: Check for authentication before rendering
-    // if (!isAuthenticated) {
-    //   return null; 
-    // }
+    if (!isAuthenticated) {
+      return null; 
+    }
     return <>{children}</>;
   }
 

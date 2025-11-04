@@ -3,7 +3,7 @@
 export class ENDPOINTS {
   
   static LOGIN = "/api/v1/auth/login";
-  static LOGOUT = "/api/v1/auth/logout";
+  // static LOGOUT = "/api/v1/auth/logout";
   static REFRESH_TOKEN = "/api/v1/auth/refresh";
   static ME = "/api/v1/auth/me";
   

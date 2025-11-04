@@ -32,13 +32,14 @@ export class AuthService {
    */
   static async logout(): Promise<void> {
     try {
-      await apiClient.post(ENDPOINTS.LOGOUT);
+      // AuthService.clearAuthData();
+      console.log("Logout");
     } catch (error) {
       console.error("Logout error:", error);
       
     } finally {
       
-      this.clearAuthData();
+      AuthService.clearAuthData();
     }
   }
 
