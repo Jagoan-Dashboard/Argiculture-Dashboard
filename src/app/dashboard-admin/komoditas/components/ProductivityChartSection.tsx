@@ -22,12 +22,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
 };
 // Custom bar colors - highlight the highest value
 // Custom bar colors - highlight the highest value
-const getBarColor = (value: number, maxValue: number) => {
-  if (value === maxValue) {
-    return '#22C55E'; // Darker green for highest value (2019)
-  }
-  return '#86EFAC'; // Lighter green for other values
-};
 
 // Custom label component untuk menampilkan nilai di atas bar
 const CustomLabel = (props: unknown) => {
@@ -128,7 +122,7 @@ export const ProductivityChartSection = ({ productivityData = [] }: Productivity
                 {productivityData?.map((entry: ProductivityData, index: number) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={getBarColor(entry.value, maxValue)}
+                    fill="#22C55E"
                   />
                 ))}
               </Bar>

@@ -20,15 +20,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
   return null;
 };
 
-
-const getBarColor = (value: number, maxValue: number) => {
-  if (value === maxValue) {
-    return '#22C55E'; 
-  }
-  return '#86EFAC'; 
-};
-
-
 const CustomLabel = (props: unknown) => {
   const { x, y, width, value } = props as CostumeLabelProps 
   return (
@@ -144,7 +135,7 @@ export const JumlahPompaSection = ({ jumlahPompaData = [] }: JumlahPompaSectionP
                 {filteredData?.map((entry: JumlahPompaData, index: number) => (
                   <Cell
                     key={`cell-${index}`}
-                    fill={getBarColor(entry.value, maxValue)}
+                    fill="#22C55E"
                   />
                 ))}
               </Bar>

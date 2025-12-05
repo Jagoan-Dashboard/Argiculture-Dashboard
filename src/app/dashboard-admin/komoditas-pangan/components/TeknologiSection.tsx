@@ -20,14 +20,6 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
   return null;
 };
 
-
-const getBarColor = (value: number, maxValue: number) => {
-  if (value === maxValue) {
-    return '#33AD5C'; 
-  }
-  return '#99D6AD'; 
-};
-
 export const TeknologiSection = ({ teknologiData }: TeknologiSectionProps) => {
   const maxValue = Math.max(...teknologiData?.map(item => item.value) || []);
 
@@ -93,7 +85,7 @@ export const TeknologiSection = ({ teknologiData }: TeknologiSectionProps) => {
                 {teknologiData?.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
-                    fill={getBarColor(entry.value, maxValue)}
+                    fill="#33AD5C"
                   />
                 ))}
               </Bar>

@@ -19,14 +19,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
   return null;
 };
 
-
-const getBarColor = (value: number, maxValue: number) => {
-  if (value === maxValue) {
-    return '#33AD5C'; 
-  }
-  return '#99D6AD'; 
-};
-
 export const CommodityChartSection = ({ commodityData }: CommodityChartSectionProps) => {
   const maxValue = Math.max(...commodityData?.map(item => item.value) || []);
 
@@ -92,7 +84,7 @@ export const CommodityChartSection = ({ commodityData }: CommodityChartSectionPr
                 {commodityData?.map((entry, index) => (
                   <Cell 
                     key={`cell-${index}`} 
-                    fill={getBarColor(entry.value, maxValue)}
+                    fill="#33AD5C"
                   />
                 ))}
               </Bar>
