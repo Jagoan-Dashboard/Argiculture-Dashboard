@@ -21,7 +21,6 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
 };
 
 export const TeknologiSection = ({ teknologiData }: TeknologiSectionProps) => {
-  const maxValue = Math.max(...teknologiData?.map(item => item.value) || []);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

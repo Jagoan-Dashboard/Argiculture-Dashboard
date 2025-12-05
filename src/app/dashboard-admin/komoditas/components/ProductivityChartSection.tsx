@@ -50,10 +50,6 @@ export const ProductivityChartSection = ({ productivityData = [] }: Productivity
     );
   }
 
-  // Safely calculate max, min, and average values
-  const values = productivityData.map((item: ProductivityData) => item.value);
-  const maxValue = Math.max(...values);
-
   return (
     <div className="bg-white rounded-2xl shadow-sm h-full min-h-[10rem] max-h-[32rem] border border-gray-100 overflow-hidden">
       {/* Header */}

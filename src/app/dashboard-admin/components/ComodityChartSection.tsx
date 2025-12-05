@@ -20,7 +20,6 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
 };
 
 export const CommodityChartSection = ({ commodityData }: CommodityChartSectionProps) => {
-  const maxValue = Math.max(...commodityData?.map(item => item.value) || []);
 
   return (
     <div className="bg-white h-fit md:h-[39.5rem] rounded-2xl shadow-sm border border-gray-100 overflow-hidden">

@@ -86,6 +86,12 @@ const navItems: NavItem[] = [
     // permission: PERMISSIONS.DASHBOARD_INDEX,
   },
   {
+    icon: <Icon icon="icon-park-outline:user" width="20" height="20" color="#009933" />,
+    name: "Manajemen Pengguna",
+    path: "/dashboard-admin/user-management",
+    // permission: PERMISSIONS.DASHBOARD_INDEX,
+  },
+  {
     
     name: "Bantuan",
     isHelp: true, // Menandai sebagai menu bantuan
@@ -103,7 +109,8 @@ const navItems: NavItem[] = [
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+
   const [openSubmenu, setOpenSubmenu] = useState<{
     type: "main" | "others";
     index: number;
@@ -315,7 +322,6 @@ const AppSidebar: React.FC = () => {
     </ul>
   );
 
-
   return (
     <>
       <div className={`fixed h-full top-0 p-5 z-50  lg:translate-x-0 ${isMobileOpen ? "translate-x-0" : "-translate-x-full"}`} onMouseEnter={() => !isExpanded && setIsHovered(true)}
@@ -378,7 +384,15 @@ const AppSidebar: React.FC = () => {
                       <HiDotsHorizontal className="size-6" />
                     )}
                   </h2>
-                  {renderMenuItems(navItems, "main")}
+                  {renderMenuItems(
+                    navItems.filter((nav) => {
+                      if (nav.path === "/dashboard-admin/user-management") {
+                        return user?.role === "SUPERADMIN";
+                      }
+                      return true;
+                    }),
+                    "main"
+                  )}
                 </div>
               </div>
             </nav>
