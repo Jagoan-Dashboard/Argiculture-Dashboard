@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "sonner";
 import { LeafletLoader } from './leaflet-loader';
+import { ReactQueryProvider } from "@/context/ReactQueryProvider";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -46,18 +47,20 @@ export default function RootLayout({
       <body className={`${poppins.variable} antialiased`}
         style={{ fontFamily: "var(--font-poppins), ui-sans-serif, system-ui, sans-serif" }}>
         <LeafletLoader />
-        <ThemeProvider>
-          <AuthProvider>
-            {children}
-            <Toaster 
-              position="top-right" 
-              richColors 
-              closeButton 
-              expand={false}
-              duration={4000}
-            />
-          </AuthProvider>
-        </ThemeProvider>
+        <ReactQueryProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              {children}
+              <Toaster 
+                position="top-right" 
+                richColors 
+                closeButton 
+                expand={false}
+                duration={4000}
+              />
+            </AuthProvider>
+          </ThemeProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
