@@ -262,7 +262,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [],ti
             style={{ height: '100%', width: '100%' }}
             className="z-0"
             whenReady={() => setMapLoaded(true)}
-            scrollWheelZoom={false}
+            scrollWheelZoom={true}
             zoomControl={true}
           >
             <TileLayer
