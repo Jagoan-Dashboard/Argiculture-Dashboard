@@ -161,7 +161,7 @@ const ImportLandIrrigationFile: React.FC<ImportLandIrrigationFileProps> = ({ onS
   return (
     <>
       <Button
-        className="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2"
+        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded flex items-center gap-2"
         type="button"
         onClick={openModal}
       >

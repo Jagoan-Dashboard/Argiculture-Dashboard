@@ -20,6 +20,7 @@ import { Button } from '@/components/ui/button';
 import ImportEquipmentFile from './components/ImportEquipmentFile';
 
 const AlatPertanianPage = () => {
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const [dateRange, setDateRange] = useState<{
     from: Date;
@@ -185,13 +186,16 @@ const AlatPertanianPage = () => {
   };
 
   // Handler untuk download template
+  // Handler untuk download template
   const handleDownloadTemplate = () => {
+    setIsDownloading(true);
     const link = document.createElement('a');
     link.href = '/template_excel/alat_pertanian.xlsx';
     link.download = 'alat_pertanian.xlsx';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setTimeout(() => setIsDownloading(false), 2000);
   };
 
 
@@ -266,8 +270,18 @@ const AlatPertanianPage = () => {
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-3">
               <ImportEquipmentFile onSuccess={() => refetch(formattedParams)} />
-              <Button onClick={handleDownloadTemplate} className="bg-pink-500 text-white px-4 py-2 rounded">
-                <DownloadIcon className="w-4 h-4" />Download Template
+              <Button onClick={handleDownloadTemplate} className="bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded" disabled={isDownloading}>
+                {isDownloading ? (
+                  <>
+                    <Spinner className="mr-2 h-4 w-4 text-white" />
+                    Downloading...
+                  </>
+                ) : (
+                  <>
+                    <DownloadIcon className="w-4 h-4 mr-2" />
+                    Download Template
+                  </>
+                )}
               </Button>
 
               <DateRangePicker
