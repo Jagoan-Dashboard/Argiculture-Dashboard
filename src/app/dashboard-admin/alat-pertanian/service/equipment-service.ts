@@ -51,12 +51,39 @@ export interface EquipmentStatsParams {
   end_date?: string;
 }
 
+export interface EquipmentImportResponse {
+  success: boolean;
+  message: string;
+  data: {
+    total_rows: number;
+    success_count: number;
+    failed_count: number;
+    skipped_count: number;
+  };
+}
+
 export const equipmentService = {
   getStats: async (params?: EquipmentStatsParams): Promise<EquipmentStatsResponse> => {
     const response = await apiClient.get<EquipmentStatsResponse>(
       ENDPOINTS.EQUIPMENT_STATS,
       { params }
     );
+    return response.data;
+  },
+  importData: async (file: File): Promise<EquipmentImportResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await apiClient.post<EquipmentImportResponse>(
+      ENDPOINTS.IMPORT_ALAT_PERTANIAN,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
     return response.data;
   },
 };

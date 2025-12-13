@@ -1,7 +1,8 @@
 "use client"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
-import { Home } from 'lucide-react';
+import { DownloadIcon, Home } from 'lucide-react';
+
 import React, { useState, useMemo } from 'react';
 import CardStats from '../components/CardStats';
 import { StatsType } from '../types/stats';
@@ -13,6 +14,8 @@ import { DistribusiLahanSection } from './components/DistribusiLahanSection';
 import { useLandIrrigation } from './hooks/useLandIrrigation';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
+import { Button } from '@/components/ui/button';
+import ImportLandIrrigationFile from './components/ImportLandIrrigationFile';
 
 const LahanPengairanPage = () => {
 
@@ -181,6 +184,16 @@ const LahanPengairanPage = () => {
     }
   };
 
+  // Handler untuk download template
+  const handleDownloadTemplate = () => {
+    const link = document.createElement('a');
+    link.href = '/template_excel/lahan_pengairan.xlsx';
+    link.download = 'lahan_pengairan.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   if (loading) {
     return (
@@ -251,6 +264,11 @@ const LahanPengairanPage = () => {
 
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-3">
+              <ImportLandIrrigationFile onSuccess={() => refetch(formattedParams)} />
+              <Button onClick={handleDownloadTemplate} className="bg-pink-500 text-white px-4 py-2 rounded">
+                <DownloadIcon className="w-4 h-4" />Download Template
+              </Button>
+
               <DateRangePicker
                 onUpdate={handleDateUpdate}
                 initialDateFrom={dateRange.from}

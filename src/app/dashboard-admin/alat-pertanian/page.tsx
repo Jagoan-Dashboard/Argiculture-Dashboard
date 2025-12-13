@@ -1,7 +1,8 @@
 "use client"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
-import { Home } from 'lucide-react';
+import { DownloadIcon, Home } from 'lucide-react';
+
 import React, { useState, useMemo } from 'react';
 import { StatsType } from '../types/stats';
 import CardStats from '../components/CardStats';
@@ -15,6 +16,8 @@ import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 import { COMMODITY } from '@/constant/commodity';
 import { createCommodityLabelGetter } from '@/lib/color-mapping-helper';
+import { Button } from '@/components/ui/button';
+import ImportEquipmentFile from './components/ImportEquipmentFile';
 
 const AlatPertanianPage = () => {
 
@@ -86,7 +89,7 @@ const AlatPertanianPage = () => {
   const mapData = useMemo(() => {
     if (!data?.individual_distribution) return [];
 
-    // const displayName = COMODITY_EQUIPMENT[item.commodity] || item.commodity;
+    // const displayName = COMMODITY_EQUIPMENT[item.commodity] || item.commodity;
     const getCommodityLabel = createCommodityLabelGetter(COMMODITY);
 
 
@@ -181,6 +184,16 @@ const AlatPertanianPage = () => {
     }
   };
 
+  // Handler untuk download template
+  const handleDownloadTemplate = () => {
+    const link = document.createElement('a');
+    link.href = '/template_excel/alat_pertanian.xlsx';
+    link.download = 'alat_pertanian.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   if (loading) {
     return (
@@ -252,6 +265,11 @@ const AlatPertanianPage = () => {
 
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-3">
+              <ImportEquipmentFile onSuccess={() => refetch(formattedParams)} />
+              <Button onClick={handleDownloadTemplate} className="bg-pink-500 text-white px-4 py-2 rounded">
+                <DownloadIcon className="w-4 h-4" />Download Template
+              </Button>
+
               <DateRangePicker
                 onUpdate={handleDateUpdate}
                 initialDateFrom={dateRange.from}
@@ -261,6 +279,8 @@ const AlatPertanianPage = () => {
                 showCompare={false}
               />
             </div>
+
+
           </div>
 
 

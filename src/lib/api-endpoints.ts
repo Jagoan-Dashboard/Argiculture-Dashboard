@@ -14,4 +14,7 @@ export class ENDPOINTS {
   static FOOD_CROP_STATS = "/api/v1/agriculture/food-crop/stats";
   static COMMODITY_ANALYSIS = "/api/v1/agriculture/commodity/analysis";
   static EXECUTIVE_DASHBOARD = "/api/v1/agriculture/executive/dashboard";
+  static IMPORT_KOMODITAS = "/api/v1/agriculture/import/komoditas";
+  static IMPORT_ALAT_PERTANIAN = "/api/v1/agriculture/import/alat-pertanian";
+  static IMPORT_LAHAN_PENGAIRAN = "/api/v1/rice-fields/import/lahan-pengairan";
 }

@@ -2,8 +2,9 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbLink } from '@/components/ui/breadcrumb';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Home } from 'lucide-react';
+import { DownloadIcon, Home } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
+
 import { StatsType } from '../types/stats';
 import CardStats from '../components/CardStats';
 import { KeyComponent } from './components/KeyComponents';
@@ -12,35 +13,36 @@ import { ProductivityChartSection } from './components/ProductivityChartSection'
 import { ProductivityData } from './types/productivity';
 import { useCommodityAnalysis } from './hooks/useCommodityAnalysis';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
+
 import { format } from 'date-fns';
 import { COMMODITY_OPTIONS } from './types/commodity';
 import { MapSection } from '../components/MapSection';
+import { Button } from '@/components/ui/button';
+import ImportCommodityFile from './components/ImportCommodityFile';
 
 const KomoditasListPage = () => {
-  
+
   const [selectedCommodity, setSelectedCommodity] = useState<string>('Padi');
+
   const [dateRange, setDateRange] = useState<{
     from: Date;
     to: Date;
   }>({
-    from: new Date(2024, 0, 1), 
-    to: new Date(2025, 11, 31), 
+    from: new Date(2024, 0, 1),
+    to: new Date(2025, 11, 31),
   });
 
-  
   const apiParams = useMemo(() => ({
     commodity_name: selectedCommodity,
     start_date: format(dateRange.from, 'yyyy-MM-dd'),
     end_date: format(dateRange.to, 'yyyy-MM-dd'),
   }), [selectedCommodity, dateRange]);
 
-  
   const { data, loading, error, refetch } = useCommodityAnalysis(apiParams);
 
-  
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
-    
+
     return [
       {
         id: 1,
@@ -75,10 +77,9 @@ const KomoditasListPage = () => {
     ];
   }, [data]);
 
-  
   const productivityData: ProductivityData[] = useMemo(() => {
     if (!data?.productivity_trend) return [];
-    
+
     return data.productivity_trend.map(item => ({
       year: item.year,
       value: item.productivity,
@@ -87,24 +88,22 @@ const KomoditasListPage = () => {
     }));
   }, [data]);
 
-  
   const mapData = useMemo(() => {
     if (!data?.production_distribution) return [];
-    
+
     return data.production_distribution.map(item => ({
       latitude: item.latitude,
       longitude: item.longitude,
       village: item.village,
       district: item.district,
       commodity: item.commodity,
-      commodity_type: item.commodity, 
+      commodity_type: item.commodity,
       land_area: item.land_area,
       estimated_production: item.estimated_production,
       farmer_name: item.farmer_name
     }));
   }, [data]);
 
-  
   const keyInsight: Key[] = [
     {
       id: 1,
@@ -159,7 +158,6 @@ const KomoditasListPage = () => {
     }
   ];
 
-  
   const handleCommodityChange = (value: string) => {
     setSelectedCommodity(value);
     refetch({
@@ -168,14 +166,13 @@ const KomoditasListPage = () => {
     });
   };
 
-  
   const handleDateUpdate = (values: { range: { from: Date; to: Date | undefined } }) => {
     if (values.range.to) {
       setDateRange({
         from: values.range.from,
         to: values.range.to,
       });
-      
+
       refetch({
         commodity_name: selectedCommodity,
         start_date: format(values.range.from, 'yyyy-MM-dd'),
@@ -184,7 +181,16 @@ const KomoditasListPage = () => {
     }
   };
 
-  
+  // Handler untuk download template
+  const handleDownloadTemplate = () => {
+    const link = document.createElement('a');
+    link.href = '/template_excel/komoditas.xlsx';
+    link.download = 'komoditas.xlsx';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -200,7 +206,6 @@ const KomoditasListPage = () => {
     );
   }
 
-  
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -255,6 +260,11 @@ const KomoditasListPage = () => {
 
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-3">
+              <ImportCommodityFile onSuccess={() => refetch(apiParams)} />
+              <Button onClick={handleDownloadTemplate} className="bg-pink-500 text-white px-4 py-2 rounded">
+                <DownloadIcon className="w-4 h-4" />Download Template
+              </Button>
+
               <DateRangePicker
                 onUpdate={handleDateUpdate}
                 initialDateFrom={dateRange.from}

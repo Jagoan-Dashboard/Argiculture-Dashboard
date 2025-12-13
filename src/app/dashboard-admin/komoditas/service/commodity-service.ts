@@ -42,12 +42,39 @@ export interface CommodityAnalysisParams {
   end_date?: string;
 }
 
+export interface CommodityImportResponse {
+  success: boolean;
+  message: string;
+  data: {
+    total_rows: number;
+    success_count: number;
+    failed_count: number;
+    skipped_count: number;
+  };
+}
+
 export const commodityService = {
   getAnalysis: async (params?: CommodityAnalysisParams): Promise<CommodityAnalysisResponse> => {
     const response = await apiClient.get<CommodityAnalysisResponse>(
       ENDPOINTS.COMMODITY_ANALYSIS,
       { params }
     );
+    return response.data;
+  },
+  importData: async (file: File): Promise<CommodityImportResponse> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await apiClient.post<CommodityImportResponse>(
+      ENDPOINTS.IMPORT_KOMODITAS,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
     return response.data;
   },
 };
