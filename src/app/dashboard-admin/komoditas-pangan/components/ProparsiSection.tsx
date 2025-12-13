@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Icon } from '@iconify/react'
 import React from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts'
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, PieLabelRenderProps } from 'recharts'
 import { GrowthPhaseData, ProporsiSectionProps } from '../types/proparsi'
 
 
@@ -23,21 +23,14 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<
   return null;
 };
 
-
-
-const renderCustomizedLabel = (props: any) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
-  const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
-  const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
-
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${((percent ?? 1) * 100).toFixed(0)}%`}
-    </text>
-  );
+const formatTitle = (text: string): string => {
+  return text
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
 };
+
+
 
 export const ProporsiSection = ({ growthPhaseData }: ProporsiSectionProps) => {
 
@@ -66,14 +59,16 @@ export const ProporsiSection = ({ growthPhaseData }: ProporsiSectionProps) => {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  
                   data={growthPhaseData as any}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={100}
-                  innerRadius={50}
+                  label={(props: PieLabelRenderProps) => {
+                    const percent = typeof props.percent === 'number' ? props.percent : 0;
+                    return `${(percent * 100).toFixed(1)}%`;
+                  }}
+                  outerRadius={80}
+                  innerRadius={40}
                   fill="#8884d8"
                   dataKey="value"
                   startAngle={90}
@@ -87,7 +82,7 @@ export const ProporsiSection = ({ growthPhaseData }: ProporsiSectionProps) => {
                 <Legend
                   verticalAlign="bottom"
                   formatter={(value, entry) => (
-                    <span className="text-sm text-gray-700 leading-relaxed" style={{ color: entry.color }}>{value}</span>
+                    <span className="text-sm text-gray-700 leading-relaxed" style={{ color: entry.color }}>{formatTitle(value)}</span>
                   )}
                 />
               </PieChart>

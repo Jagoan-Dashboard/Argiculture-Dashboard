@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React from 'react'
 import { DominasiHamaSectionProps, HamaData } from '../types/dominasi';
-import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
+import { Cell, Legend, Pie, PieChart, PieLabelRenderProps, ResponsiveContainer, Tooltip } from 'recharts';
 import { Icon } from '@iconify/react';
 
 
@@ -26,19 +26,19 @@ const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<
 
 
 
-const renderCustomizedLabel = (props: any) => {
-  const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
-  const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
-  const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
+// const renderCustomizedLabel = (props: any) => {
+//   const { cx, cy, midAngle, innerRadius, outerRadius, percent } = props;
+//   const RADIAN = Math.PI / 180;
+//   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+//   const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
+//   const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
 
-  return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-      {`${((percent ?? 1) * 100).toFixed(0)}%`}
-    </text>
-  );
-};
+//   return (
+//     <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+//       {`${((percent ?? 1) * 100).toFixed(0)}%`}
+//     </text>
+//   );
+// };
 
 export const DominasiHamaSection = ({ hamaData }: DominasiHamaSectionProps) => {
 
@@ -70,9 +70,12 @@ export const DominasiHamaSection = ({ hamaData }: DominasiHamaSectionProps) => {
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={renderCustomizedLabel}
-                  outerRadius={120}
-                  innerRadius={60}
+                  label={(props: PieLabelRenderProps) => {
+                    const percent = typeof props.percent === 'number' ? props.percent : 0;
+                    return `${(percent * 100).toFixed(1)}%`;
+                  }}
+                  outerRadius={80}
+                  innerRadius={40}
                   fill="#8884d8"
                   dataKey="value"
                   startAngle={90}

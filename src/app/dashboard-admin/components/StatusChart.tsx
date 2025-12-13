@@ -8,6 +8,13 @@ interface StatusChartProps {
   }[];
 }
 
+const formatTitle = (text: string): string => {
+  return text
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+};
+
 export const StatusChart = ({ statusData }: StatusChartProps) => {
   
   if (!statusData || statusData.length === 0) {
@@ -68,7 +75,7 @@ export const StatusChart = ({ statusData }: StatusChartProps) => {
             <Legend
               verticalAlign="bottom"
               formatter={(value, entry) => (
-                <span style={{ color: entry.color }}>{value}</span>
+                <span style={{ color: entry.color }}>{formatTitle(value)}</span>
               )}
             />
           </PieChart>

@@ -27,11 +27,11 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
 const CustomLabel = (props: unknown) => {
   const { x, y, width, value } = props as unknown as CostumeLabelProps;
   return (
-    <text 
-      x={x + width / 2} 
-      y={y - 5} 
-      fill="#22C55E" 
-      textAnchor="middle" 
+    <text
+      x={x + width / 2}
+      y={y - 5}
+      fill="#22C55E"
+      textAnchor="middle"
       fontSize="12"
       fontWeight="500"
     >
@@ -98,8 +98,8 @@ export const ProductivityChartSection = ({ productivityData = [] }: Productivity
               />
               <YAxis
                 domain={[6.2, 6.7]}
-                tick={{ 
-                  fontSize: 11, 
+                tick={{
+                  fontSize: 11,
                   fill: '#6B7280',
                   fontWeight: '400'
                 }}
