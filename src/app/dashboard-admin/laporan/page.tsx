@@ -17,7 +17,6 @@ export default function ReportsPage() {
     const { reports, loading } = useReports();
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [commodityFilter, setCommodityFilter] = useState<string>('all');
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [selectedReport, setSelectedReport] = useState<Report | null>(null);
@@ -25,7 +24,7 @@ export default function ReportsPage() {
     // Reset pagination when filters change
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchQuery, commodityFilter]);
+    }, [searchQuery]);
 
     const filtered = useMemo(() => {
         let arr = reports || []; // Ensure arr is an array
@@ -39,17 +38,8 @@ export default function ReportsPage() {
             );
         }
 
-        if (commodityFilter !== 'all') {
-            arr = arr.filter(r => {
-                if (commodityFilter === 'pangan') return r.food_commodity;
-                if (commodityFilter === 'hortikultura') return r.horti_commodity;
-                if (commodityFilter === 'perkebunan') return r.plantation_commodity;
-                return true;
-            });
-        }
-
         return arr;
-    }, [reports, searchQuery, commodityFilter]);
+    }, [reports, searchQuery]);
 
     const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
     const safePage = Math.min(currentPage, totalPages);
@@ -114,17 +104,6 @@ export default function ReportsPage() {
                                 onChange={(e) => setSearchQuery(e.target.value)}
                             />
                         </div>
-                        <Select value={commodityFilter} onValueChange={setCommodityFilter}>
-                            <SelectTrigger className="w-full sm:w-[180px]">
-                                <SelectValue placeholder="Filter Komoditas" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="all">Semua Komoditas</SelectItem>
-                                <SelectItem value="pangan">Tanaman Pangan</SelectItem>
-                                <SelectItem value="hortikultura">Hortikultura</SelectItem>
-                                <SelectItem value="perkebunan">Perkebunan</SelectItem>
-                            </SelectContent>
-                        </Select>
                     </div>
 
                     {/* Table Section */}
