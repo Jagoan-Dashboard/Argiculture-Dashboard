@@ -86,13 +86,19 @@ const navItems: NavItem[] = [
     // permission: PERMISSIONS.DASHBOARD_INDEX,
   },
   {
+    icon: <Icon icon="tabler:file-text" width="20" height="20" color="#009933" />,
+    name: "Laporan",
+    path: "/dashboard-admin/laporan",
+    // permission: PERMISSIONS.DASHBOARD_INDEX,
+  },
+  {
     icon: <Icon icon="icon-park-outline:user" width="20" height="20" color="#009933" />,
     name: "Manajemen Pengguna",
     path: "/dashboard-admin/user-management",
     // permission: PERMISSIONS.DASHBOARD_INDEX,
   },
   {
-    
+
     name: "Bantuan",
     isHelp: true, // Menandai sebagai menu bantuan
   },
