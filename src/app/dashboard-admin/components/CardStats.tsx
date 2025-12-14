@@ -21,11 +21,10 @@ const CardStats = ({ statsData }: CardStatsProps) => {
                   <Icon icon={stat.icon} className={`w-5 h-5 ${stat.color}`} />
                 </div>
                 <span
-                  className={`text-sm font-medium px-2 py-1 rounded-full ${
-                    stat.isPositive
-                      ? 'text-green-700 bg-green-100'
-                      : 'text-red-700 bg-red-100'
-                  }`}
+                  className={`text-sm font-medium px-2 py-1 rounded-full ${stat.isPositive
+                    ? 'text-green-700 bg-green-100'
+                    : 'text-red-700 bg-red-100'
+                    }`}
                 >
                   {stat.change}
                 </span>

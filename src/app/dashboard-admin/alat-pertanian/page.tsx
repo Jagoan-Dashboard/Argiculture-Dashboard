@@ -49,7 +49,7 @@ const AlatPertanianPage = () => {
         title: "Jumlah Alat Pengolah Gabah",
         value: data.grain_processor.count.toString(),
         unit: "Unit",
-        change: `${data.grain_processor.growth_percent >= 0 ? '+' : ''}${data.grain_processor.growth_percent}%`,
+        change: `${data.grain_processor.growth_percent >= 0 ? '+' : ''}${data.grain_processor.growth_percent.toFixed(2)}%`,
         isPositive: data.grain_processor.growth_percent >= 0,
         icon: "material-symbols:agriculture",
         color: "text-green-600"
@@ -59,7 +59,7 @@ const AlatPertanianPage = () => {
         title: "Jumlah Alat Perontok Multiguna",
         value: data.multipurpose_thresher.count.toString(),
         unit: "Unit",
-        change: `${data.multipurpose_thresher.growth_percent >= 0 ? '+' : ''}${data.multipurpose_thresher.growth_percent}%`,
+        change: `${data.multipurpose_thresher.growth_percent >= 0 ? '+' : ''}${data.multipurpose_thresher.growth_percent.toFixed(2)}%`,
         isPositive: data.multipurpose_thresher.growth_percent >= 0,
         icon: "mdi:grain",
         color: "text-green-500"
@@ -69,7 +69,7 @@ const AlatPertanianPage = () => {
         title: "Jumlah Mesin/Peralatan Pertanian",
         value: data.farm_machinery.count.toString(),
         unit: "Unit",
-        change: `${data.farm_machinery.growth_percent >= 0 ? '+' : ''}${data.farm_machinery.growth_percent}%`,
+        change: `${data.farm_machinery.growth_percent >= 0 ? '+' : ''}${data.farm_machinery.growth_percent.toFixed(2)}%`,
         isPositive: data.farm_machinery.growth_percent >= 0,
         icon: "mdi:tractor",
         color: "text-green-600"
@@ -79,7 +79,7 @@ const AlatPertanianPage = () => {
         title: "Jumlah Pompa Air",
         value: data.water_pump.count.toString(),
         unit: "Unit",
-        change: `${data.water_pump.growth_percent >= 0 ? '+' : ''}${data.water_pump.growth_percent}%`,
+        change: `${data.water_pump.growth_percent >= 0 ? '+' : ''}${data.water_pump.growth_percent.toFixed(2)}%`,
         isPositive: data.water_pump.growth_percent >= 0,
         icon: "mdi:water-pump",
         color: "text-green-600"
