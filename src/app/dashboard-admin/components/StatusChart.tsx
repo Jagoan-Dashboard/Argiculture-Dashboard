@@ -15,11 +15,11 @@ const formatTitle = (text: string): string => {
     .join(' ');
 };
 
-export const StatusChart = ({ statusData }: StatusChartProps) => {
-  
+export const StatusChart = ({ statusData, className }: StatusChartProps & { className?: string }) => {
+
   if (!statusData || statusData.length === 0) {
     return (
-      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+      <div className={`bg-white p-6 rounded-xl shadow-sm border border-gray-100 ${className}`}>
         <div className="flex items-center gap-2 mb-6">
           <Icon icon={"mdi:check-circle-outline"} className="w-5 h-5 text-green-600" />
           <h2 className="text-lg font-semibold text-gray-900">Status Lahan</h2>
@@ -36,7 +36,7 @@ export const StatusChart = ({ statusData }: StatusChartProps) => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <div className={`bg-white p-6 rounded-xl shadow-sm border border-gray-100 ${className}`}>
       <div className="flex items-center gap-2 mb-6">
         <Icon icon={"mdi:check-circle-outline"} className="w-5 h-5 text-green-600" />
         <h2 className="text-lg font-semibold text-gray-900">Status Lahan</h2>

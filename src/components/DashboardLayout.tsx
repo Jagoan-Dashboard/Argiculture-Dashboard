@@ -15,13 +15,31 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
   const { isExpanded, isHovered, isMobileOpen } = useSidebar();
 
   useEffect(() => {
-    // Load CSS
+    const style = document.createElement('style');
+    style.innerHTML = `
+      :root {
+        --chat--message--font-size: 12px !important;
+        --chat--input--font-size: 12px !important;
+        --chat--heading--font-size: 14px !important;
+        --chat--subtitle--font-size: 12px !important;
+      }
+      .chat-message-markdown {
+        font-size: 12px !important;
+      }
+      .n8n-chat-ui-bot-message ol {
+        list-style-type: decimal !important;
+        list-style-position: outside !important;
+        padding-left: 20px !important;
+      }
+    `;
+    document.head.appendChild(style);
+
     const link = document.createElement('link');
     link.href = 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 
-    // Load Script
+
     const script = document.createElement('script');
     script.type = 'module';
     script.innerHTML = `
@@ -30,33 +48,34 @@ const LayoutContent: React.FC<LayoutContentProps> = ({ children }) => {
     createChat({
         webhookUrl: 'https://dev-n8n.ub.ac.id/webhook/b0580c04-2832-42e3-a844-2ab70449d6f4/chat',
         initialMessages: [
-            // Pesan awal yang disesuaikan
             'Selamat datang, **Bapak/Ibu Eksekutif**.\\n\\nSaya Asisten Data AI Kab. Ngawi, siap menyediakan informasi cepat untuk data pertanian.'
         ],
         i18n: {
-            en: { // Menggunakan 'en' namun isinya Bahasa Indonesia
-                title: 'Jagoan Bot AI', // Judul yang fokus pada data
-                subtitle: '', // Subtitle institusi
+            en: {
+                title: 'Jagoan Bot AI',
+                subtitle: '',
                 footer: '',
-                getStarted: 'Mulai Sesi Percakapan dengan AI', // Lebih profesional
-                inputPlaceholder: 'Input pertanyaan data Anda...', // Lebih ringkas
+                getStarted: 'Mulai Sesi Percakapan dengan AI',
+                inputPlaceholder: 'Input pertanyaan data Anda...',
             },
         },
         showWelcomeScreen: true,
         theme: {
-            primaryColor: '#FF4B99',      // Rose/Pink: Warna Aksen Utama Dashboard
-            backgroundColor: '#FFFFFF',   // Putih: Bersih dan formal
-            textColor: '#333333',         // Warna teks gelap
-            chatBubbleColor: '#FFEDED'    // Warna bubble bot Light Pink
+            primaryColor: '#FF4B99',
+            backgroundColor: '#FFFFFF',
+            textColor: '#333333',
+            chatBubbleColor: '#FFEDED'
         },
     });
     `;
     document.body.appendChild(script);
 
-    // Cleanup
     return () => {
       if (document.head.contains(link)) {
         document.head.removeChild(link);
+      }
+      if (document.head.contains(style)) {
+        document.head.removeChild(style);
       }
       if (document.body.contains(script)) {
         document.body.removeChild(script);

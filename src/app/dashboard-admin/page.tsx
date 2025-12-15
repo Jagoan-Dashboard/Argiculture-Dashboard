@@ -22,17 +22,17 @@ import { HOPE_MAP } from "@/constant/hope";
 import { COMMODITY } from "@/constant/commodity";
 
 export default function DashboardPage() {
-  
+
   const [selectedSector, setSelectedSector] = useState<string>('pangan');
 
-  
+
   const { data, loading, error, refetch } = useExecutiveDashboard({
     commodity_type: selectedSector,
   });
 
-  
+
   const statsData: StatsType[] = useMemo(() => {
-    
+
     if (!data || !data.total_land_area) return [];
 
     return [
@@ -69,7 +69,7 @@ export default function DashboardPage() {
     ];
   }, [data]);
 
-  
+
   const commodityData: CommodityData[] = useMemo(() => {
     if (!data || !data.commodity_by_sector) return [];
 
@@ -79,40 +79,40 @@ export default function DashboardPage() {
       ...(data.commodity_by_sector.plantation || []),
     ];
 
-    
+
     const grouped = new Map<string, { total: number; displayName: string }>();
 
     for (const item of allCommodities) {
       if (!item.name || item.count == null) continue;
 
-      
+
       const normalizedKey = item.name.toLowerCase().trim();
 
-      
+
       const displayName = COMMODITY[item.name] || item.name;
 
       if (grouped.has(normalizedKey)) {
-        
+
         grouped.get(normalizedKey)!.total += item.count;
       } else {
-        
+
         grouped.set(normalizedKey, {
           total: item.count,
-          displayName, 
+          displayName,
         });
       }
     }
 
-    
+
     return Array.from(grouped.values()).map(({ total, displayName }) => ({
       name: displayName,
       fullName: displayName,
       value: total,
     }));
   }, [data]);
-  
+
   const statusData = useMemo(() => {
-    
+
     if (!data?.land_status_distribution || !Array.isArray(data.land_status_distribution)) return [];
 
     const colors = ['#4F46E5', '#33AD5C', '#F97316'];
@@ -124,14 +124,14 @@ export default function DashboardPage() {
     }));
   }, [data]);
 
-  
+
   const aspirasiData: AspirationsData = useMemo(() => {
-    
+
     if (!data) return { categories: [] };
 
     const categories = [];
 
-    
+
     if (data.main_constraints && Array.isArray(data.main_constraints) && data.main_constraints.length > 0) {
       categories.push({
         title: "Kendala Utama",
@@ -146,7 +146,7 @@ export default function DashboardPage() {
       });
     }
 
-    
+
     if (data.farmer_hopes_needs?.hopes && Array.isArray(data.farmer_hopes_needs.hopes) && data.farmer_hopes_needs.hopes.length > 0) {
       categories.push({
         title: "Harapan & Kebutuhan Petani",
@@ -164,7 +164,7 @@ export default function DashboardPage() {
     return { categories };
   }, [data]);
 
-  
+
   const handleSectorChange = (value: string) => {
     setSelectedSector(value);
     refetch({
@@ -172,7 +172,7 @@ export default function DashboardPage() {
     });
   };
 
-  
+
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -188,7 +188,7 @@ export default function DashboardPage() {
     );
   }
 
-  
+
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -278,17 +278,22 @@ export default function DashboardPage() {
           </div>
 
           {/* Main Content Grid  */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 grid-auto-flow-dense">
-            {/* Map Section - Bisa tinggi besar */}
-            <div className="lg:col-span-2 flex flex-col gap-6">
-              <MapSection commodityMapData={data?.commodity_map || []} />
-              <CommodityChartSection commodityData={commodityData} />
+          {/* Main Content Grid  */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Row 1: Map (2/3) & Aspirations (1/3) */}
+            <div className="lg:col-span-2">
+              <MapSection commodityMapData={data?.commodity_map || []} className="h-[32rem]" />
+            </div>
+            <div className="lg:col-span-1">
+              <AspirationsSection data={aspirasiData} className="h-[32rem]" />
             </div>
 
-            {/* Aspirations Section - Tinggi normal */}
-            <div className="flex flex-col gap-6">
-              <AspirationsSection data={aspirasiData} />
-              <StatusChart statusData={statusData} />
+            {/* Row 2: Commodity Chart (2/3) & Status (1/3) */}
+            <div className="lg:col-span-2">
+              <CommodityChartSection commodityData={commodityData} className="h-[40rem]" />
+            </div>
+            <div className="lg:col-span-1">
+              <StatusChart statusData={statusData} className="h-[40rem]" />
             </div>
           </div>
         </div>

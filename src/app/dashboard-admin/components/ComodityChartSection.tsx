@@ -19,10 +19,10 @@ const CustomTooltip = ({ active, payload, label }: TooltipData) => {
   return null;
 };
 
-export const CommodityChartSection = ({ commodityData }: CommodityChartSectionProps) => {
+export const CommodityChartSection = ({ commodityData, className }: CommodityChartSectionProps & { className?: string }) => {
 
   return (
-    <div className="bg-white h-fit md:h-[39.5rem] rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div className={`bg-white h-fit min-h-[39.5rem] md:h-full rounded-2xl shadow-sm border border-gray-100 overflow-hidden ${className}`}>
       {/* Header */}
       <div className=" p-6 ">
         <div className="flex items-center gap-3">
@@ -49,16 +49,16 @@ export const CommodityChartSection = ({ commodityData }: CommodityChartSectionPr
               }}
               barCategoryGap="20%"
             >
-              <CartesianGrid 
-                strokeDasharray="3 3" 
-                stroke="#E5E7EB" 
+              <CartesianGrid
+                strokeDasharray="3 3"
+                stroke="#E5E7EB"
                 horizontal={true}
                 vertical={false}
               />
               <XAxis
                 dataKey="name"
-                tick={{ 
-                  fontSize: 11, 
+                tick={{
+                  fontSize: 11,
                   fill: '#6B7280',
                   textAnchor: 'end'
                 }}
@@ -81,8 +81,8 @@ export const CommodityChartSection = ({ commodityData }: CommodityChartSectionPr
                 maxBarSize={60}
               >
                 {commodityData?.map((entry, index) => (
-                  <Cell 
-                    key={`cell-${index}`} 
+                  <Cell
+                    key={`cell-${index}`}
                     fill="#33AD5C"
                   />
                 ))}

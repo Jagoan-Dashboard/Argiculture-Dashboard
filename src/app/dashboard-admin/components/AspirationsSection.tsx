@@ -2,10 +2,10 @@ import { Icon } from '@iconify/react';
 import { AspirationCard } from './AspirationCard';
 import { AspirationsData } from '../types/aspiration';
 
-export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
+export const AspirationsSection = ({ data, className }: { data: AspirationsData; className?: string }) => {
   if (!data.categories || data.categories.length === 0) {
     return (
-      <div className="bg-white rounded-2xl min-h-[32rem] max-h-[80vh] h-full shadow-sm border border-gray-100 overflow-hidden">
+      <div className={`bg-white rounded-2xl min-h-[32rem] max-h-[80vh] h-full shadow-sm border border-gray-100 overflow-hidden ${className}`}>
         <div className="p-6 h-full">
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-green-50 p-2 rounded-xl">
@@ -27,7 +27,7 @@ export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
   }
 
   return (
-    <div className="bg-white rounded-2xl min-h-[32rem] h-full max-h-[80vh] shadow-sm border border-gray-100 overflow-hidden">
+    <div className={`bg-white rounded-2xl min-h-[32rem] h-full max-h-[80vh] shadow-sm border border-gray-100 overflow-hidden flex flex-col ${className}`}>
       {/* Header */}
       <div className="p-6">
         <div className="flex items-center gap-3">
@@ -41,17 +41,15 @@ export const AspirationsSection = ({ data }: { data: AspirationsData }) => {
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-8 max-h-[32rem] overflow-y-auto">
+      <div className="p-6 space-y-8 flex-1 overflow-y-auto min-h-0">
         {data.categories.map((category, categoryIndex) => (
           <div key={categoryIndex} className="space-y-4">
             {/* Category Title */}
             <div className="flex items-center gap-2">
-              <div className={`w-1 h-6 rounded-full ${
-                category.color === 'green' ? 'bg-green-500' : 'bg-pink-500'
-              }`} />
-              <h3 className={`font-semibold text-lg ${
-                category.color === 'green' ? 'text-green-600' : 'text-pink-600'
-              }`}>
+              <div className={`w-1 h-6 rounded-full ${category.color === 'green' ? 'bg-green-500' : 'bg-pink-500'
+                }`} />
+              <h3 className={`font-semibold text-lg ${category.color === 'green' ? 'text-green-600' : 'text-pink-600'
+                }`}>
                 {category.title}
               </h3>
             </div>
