@@ -13,6 +13,6 @@ export class ENDPOINTS {
   static EXECUTIVE_DASHBOARD = "/api/v1/agriculture/executive/dashboard";
   static IMPORT_KOMODITAS = "/api/v1/agriculture/komoditas/import";
   static IMPORT_ALAT_PERTANIAN = "/api/v1/agriculture/alat-pertanian/import";
-  static IMPORT_LAHAN_PENGAIRAN = "/api/v1/rice-fields/import/lahan-pengairan";
+  static IMPORT_LAHAN_PENGAIRAN = "/api/v1/rice-fields/lahan-pengairan/import";
   static LAPORAN = "/api/v1/agriculture?limit=100";
 }
