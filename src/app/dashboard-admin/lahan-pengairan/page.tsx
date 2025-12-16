@@ -177,11 +177,6 @@ const LahanPengairanPage = () => {
         from: values.range.from,
         to: values.range.to,
       });
-
-      refetch({
-        start_date: format(values.range.from, 'yyyy-MM-dd'),
-        end_date: format(values.range.to, 'yyyy-MM-dd'),
-      });
     }
   };
 

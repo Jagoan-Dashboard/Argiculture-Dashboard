@@ -1,6 +1,7 @@
 "use client"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { Home } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 import CardStats from './components/CardStats';
@@ -17,8 +18,8 @@ import { useFoodCrop } from './hooks/useFoodCrop';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
-import { 
-  FOOD_CROP_COMMODITY_OPTIONS, 
+import {
+  FOOD_CROP_COMMODITY_OPTIONS,
   HarvestScheduleData,
   GROWTH_PHASE_MAP,
   PEST_MAP
@@ -26,23 +27,31 @@ import {
 import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 const KomoditasPanganPage = () => {
-  
+
   const [selectedCommodity, setSelectedCommodity] = useState<string>('padi sawah');
 
-  
-  const apiParams = useMemo(() => ({
-    start_date: format(new Date(2024, 0, 1), 'yyyy-MM-dd'),
-    end_date: format(new Date(2024, 11, 31), 'yyyy-MM-dd'),
-    commodity_name: selectedCommodity,
-  }), [selectedCommodity]);
+  const [dateRange, setDateRange] = useState<{
+    from: Date;
+    to: Date;
+  }>({
+    from: new Date(2024, 0, 1),
+    to: new Date(2025, 11, 31),
+  });
 
-  
+
+  const apiParams = useMemo(() => ({
+    start_date: format(dateRange.from, 'yyyy-MM-dd'),
+    end_date: format(dateRange.to, 'yyyy-MM-dd'),
+    commodity_name: selectedCommodity,
+  }), [selectedCommodity, dateRange]);
+
+
   const { data, loading, error, refetch } = useFoodCrop(apiParams);
 
-  
+
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
-    
+
     return [
       {
         id: 1,
@@ -83,10 +92,10 @@ const KomoditasPanganPage = () => {
     ];
   }, [data]);
 
-  
+
   const mapData = useMemo(() => {
     if (!data?.distribution_map) return [];
-    
+
     return data.distribution_map.map(item => ({
       latitude: item.latitude,
       longitude: item.longitude,
@@ -98,12 +107,12 @@ const KomoditasPanganPage = () => {
     }));
   }, [data]);
 
-  
+
   const proparsiData: GrowthPhaseData[] = useMemo(() => {
     if (!data?.growth_phases) return [];
-    
+
     const colors = ['#EC4899', '#22C55E', '#FB923C', '#FBBF24', '#8B5CF6'];
-    
+
     return data.growth_phases.map((phase, index) => ({
       name: GROWTH_PHASE_MAP[phase.phase] || phase.phase,
       value: phase.percentage,
@@ -113,12 +122,12 @@ const KomoditasPanganPage = () => {
     }));
   }, [data]);
 
-  
+
   const hamaData: HamaData[] = useMemo(() => {
     if (!data?.pest_dominance) return [];
-    
+
     const colors = ['#22C55E', '#FB923C', '#FBBF24', '#EC4899', '#8B5CF6'];
-    
+
     return data.pest_dominance.map((pest, index) => ({
       name: PEST_MAP[pest.pest_type] || pest.pest_type,
       value: pest.percentage,
@@ -128,10 +137,10 @@ const KomoditasPanganPage = () => {
     }));
   }, [data]);
 
-  
+
   const teknologiData: TeknologiData[] = useMemo(() => {
     if (!data?.technology_used) return [];
-    
+
     return data.technology_used.map(tech => ({
       name: TECHNOLOGY_MAP[tech.technology] || tech.technology,
       value: tech.count,
@@ -139,10 +148,10 @@ const KomoditasPanganPage = () => {
     }));
   }, [data]);
 
-  
+
   const harvestScheduleData: HarvestScheduleData[] = useMemo(() => {
     if (!data?.harvest_schedule || data.harvest_schedule.length === 0) return [];
-    
+
     return data.harvest_schedule.map((item, index) => ({
       id: `harvest-${index}`,
       no: index + 1,
@@ -154,16 +163,21 @@ const KomoditasPanganPage = () => {
     }));
   }, [data]);
 
-  
+
   const handleCommodityChange = (value: string) => {
     setSelectedCommodity(value);
-    refetch({
-      ...apiParams,
-      commodity_name: value,
-    });
   };
 
-  
+  const handleDateUpdate = (values: { range: { from: Date; to: Date | undefined } }) => {
+    if (values.range.to) {
+      setDateRange({
+        from: values.range.from,
+        to: values.range.to,
+      });
+    }
+  };
+
+
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -179,7 +193,7 @@ const KomoditasPanganPage = () => {
     );
   }
 
-  
+
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -246,6 +260,15 @@ const KomoditasPanganPage = () => {
                   ))}
                 </SelectContent>
               </Select>
+
+              <DateRangePicker
+                onUpdate={handleDateUpdate}
+                initialDateFrom={dateRange.from}
+                initialDateTo={dateRange.to}
+                align="center"
+                locale="id-ID"
+                showCompare={false}
+              />
             </div>
           </div>
 
@@ -262,20 +285,20 @@ const KomoditasPanganPage = () => {
             {/* Proporsi Fase Pertumbuhan Section */}
             <ProporsiSection growthPhaseData={proparsiData} />
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Table Section */}
             <div className="lg:col-span-2">
-              <TablePerkiraanSection 
+              <TablePerkiraanSection
                 data={harvestScheduleData}
                 loading={loading}
               />
             </div>
-            
+
             {/* Dominasi Hama Section */}
             <DominasiHamaSection hamaData={hamaData} />
           </div>
-          
+
           <div className="">
             <TeknologiSection teknologiData={teknologiData} />
           </div>
