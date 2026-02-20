@@ -17,6 +17,17 @@ export const HORTICULTURE_COMMODITY_OPTIONS = [
   { value: 'kol', label: 'Kol' },
   { value: 'kentang', label: 'Kentang' },
   { value: 'bawang merah', label: 'Bawang Merah' },
+  { value: 'pisang', label: 'Pisang' },
+  { value: 'mangga', label: 'Mangga' },
+  { value: 'jeruk', label: 'Jeruk' },
+  { value: 'semangka', label: 'Semangka' },
+  { value: 'melon', label: 'Melon' },
+  { value: 'pepaya', label: 'Pepaya' },
+  { value: 'nanas', label: 'Nanas' },
+  { value: 'durian', label: 'Durian' },
+  { value: 'anggrek', label: 'Anggrek' },
+  { value: 'krisan', label: 'Krisan' },
+  { value: 'mawar', label: 'Mawar' },
 ] as const;
 
 export type HorticultureCommodityType = typeof HORTICULTURE_COMMODITY_OPTIONS[number]['value'];
