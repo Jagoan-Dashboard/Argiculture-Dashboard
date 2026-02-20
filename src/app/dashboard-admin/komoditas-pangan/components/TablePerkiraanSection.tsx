@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 import React, { useState } from 'react'
-import { UniversalTable } from '@/components/Table/TableComponent' 
+import { UniversalTable } from '@/components/Table/TableComponent'
 import { Icon } from '@iconify/react'
 import { Calendar } from 'lucide-react'
 import { KomoditasData, TablePerkiraanSectionProps } from '../types/table-perkiraan'
@@ -15,10 +15,10 @@ export const TablePerkiraanSection = ({
   pagination = true
 }: TablePerkiraanSectionProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
 
-  
+
   const filteredData = data?.filter(item => {
     const matchesSearch = !searchQuery ||
       item.komoditas.toLowerCase().includes(searchQuery.toLowerCase())
@@ -26,7 +26,7 @@ export const TablePerkiraanSection = ({
     return matchesSearch;
   });
 
-  
+
   const totalItems = filteredData?.length || 0;
   const startIndex = (currentPage - 1) * pageSize;
   const paginatedData = pagination
@@ -39,7 +39,7 @@ export const TablePerkiraanSection = ({
       label: 'No',
       className: 'w-16 text-center font-medium',
       headerClassName: 'text-center',
-      
+
       render: (value: any) => <span className="font-medium">{value}</span>
     },
     {
@@ -47,7 +47,7 @@ export const TablePerkiraanSection = ({
       label: 'Komoditas',
       sortable: true,
       className: 'font-medium',
-      
+
       render: (value: any) => (
         <div className="flex items-center gap-2">
           <span className="font-medium text-gray-900">{createCommodityLabelGetter(COMMODITY)(value)}</span>
@@ -58,7 +58,7 @@ export const TablePerkiraanSection = ({
       key: 'estimasiPanen',
       label: 'Estimasi Panen',
       sortable: true,
-      
+
       render: (value: any) => (
         <div className="flex items-center gap-2">
           <Calendar className="w-4 h-4 text-blue-500" />
@@ -70,7 +70,7 @@ export const TablePerkiraanSection = ({
       key: 'petani',
       label: 'Petani',
       sortable: true,
-      
+
       render: (value: any) => (
         <span className="text-gray-700">{value || '-'}</span>
       )
@@ -79,7 +79,7 @@ export const TablePerkiraanSection = ({
       key: 'desa',
       label: 'Desa',
       sortable: true,
-      
+
       render: (value: any) => (
         <span className="text-gray-700">{value || '-'}</span>
       )
@@ -88,7 +88,7 @@ export const TablePerkiraanSection = ({
       key: 'luasLahan',
       label: 'Luas Lahan (Ha)',
       sortable: true,
-      
+
       render: (value: any) => (
         <span className="text-gray-700">{value || '-'}</span>
       )
@@ -99,7 +99,7 @@ export const TablePerkiraanSection = ({
 
 
   return (
-    <div className="bg-white rounded-2xl h-[32rem] shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-r p-6 border-b border-gray-100">
         <div className="flex items-center gap-3">
@@ -116,14 +116,14 @@ export const TablePerkiraanSection = ({
       {/* Table Content */}
       <div className="p-6">
         <UniversalTable
-          scrollable={true}  
+          scrollable={true}
           data={paginatedData || []}
           columns={columns}
           loading={loading}
           searchable={searchable}
           searchPlaceholder="Cari komoditas atau lokasi..."
           onSearch={setSearchQuery}
-          pagination={pagination ? {
+          pagination={(pagination && totalItems > pageSize) ? {
             page: currentPage,
             pageSize: pageSize,
             total: totalItems,
@@ -137,7 +137,7 @@ export const TablePerkiraanSection = ({
           emptyStateIcon={
             <Icon icon="material-symbols:agriculture-outline" className="w-12 h-12 text-gray-400" />
           }
-          className="mt-0 h-full min-h-[32rem]"
+          className="mt-0 h-full min-h-[20rem]"
         />
       </div>
 
