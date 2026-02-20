@@ -2,8 +2,8 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Home, Trash2, UserCog, ChevronLeft, ChevronRight, Search, Filter, Mail, UserCircle, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button"; 
-import { Input } from "@/components/ui/input"; 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useMemo, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
@@ -19,12 +19,12 @@ export default function UserManagementPage() {
   const router = useRouter();
   const { users, total, loading } = useUserManagement();
   const { setModalOpen } = useUserManagementStore();
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState<string | undefined>(undefined);
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  
+
   const [selectedUserForRole, setSelectedUserForRole] = useState<User | null>(null);
   const [selectedUserForDelete, setSelectedUserForDelete] = useState<User | null>(null);
 
@@ -48,7 +48,7 @@ export default function UserManagementPage() {
     let arr = users;
     if (q) {
       arr = arr.filter((u) =>
-        u.name.toLowerCase().includes(q) ||
+        u.username.toLowerCase().includes(q) ||
         u.email.toLowerCase().includes(q)
       );
     }
@@ -64,7 +64,7 @@ export default function UserManagementPage() {
   const pageItems = filtered.slice(startIdx, startIdx + rowsPerPage);
 
   const getRoleColor = (role: string) => {
-    switch(role) {
+    switch (role) {
       case 'SUPERADMIN': return 'bg-green-100 text-green-700 border-green-200';
       case 'USER': return 'bg-green-100 text-green-700 border-green-200';
       default: return 'bg-gray-100 text-gray-700 border-gray-200';
@@ -101,7 +101,7 @@ export default function UserManagementPage() {
               <h1 className="text-xl lg:text-2xl font-bold text-green-600">User Management</h1>
             </div>
 
-            <Button 
+            <Button
               onClick={() => setModalOpen(true)}
               className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 shadow-lg shadow-green-200 transition-all"
             >
@@ -125,7 +125,7 @@ export default function UserManagementPage() {
                 </div>
               </CardContent>
             </Card>
-            
+
             <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
@@ -172,7 +172,7 @@ export default function UserManagementPage() {
                     className="pl-10 border-gray-200 focus:border-green-400 focus:ring-green-400"
                   />
                 </div>
-                
+
                 <Select onValueChange={(v) => { setRoleFilter(v); setCurrentPage(1); }}>
                   <SelectTrigger className="w-full sm:w-[200px] border-gray-200">
                     <Filter className="w-4 h-4 mr-2" />
@@ -201,7 +201,7 @@ export default function UserManagementPage() {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">Nama</th>
+                        <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">Username</th>
                         <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">Email</th>
                         <th className="text-left py-4 px-6 font-semibold text-gray-700 text-sm">Role</th>
                         <th className="text-right py-4 px-6 font-semibold text-gray-700 text-sm">Actions</th>
@@ -223,7 +223,7 @@ export default function UserManagementPage() {
                             <td className="py-4 px-6">
                               <div className="flex items-center gap-3">
                                 <div>
-                                  <p className="font-medium text-gray-900">{u.name}</p>
+                                  <p className="font-medium text-gray-900">{u.username}</p>
                                 </div>
                               </div>
                             </td>
@@ -240,19 +240,19 @@ export default function UserManagementPage() {
                             </td>
                             <td className="py-4 px-6 text-right">
                               <div className="flex justify-end gap-2">
-                                <Button 
-                                  size="icon" 
-                                  variant="ghost" 
-                                  className="h-8 w-8 hover:bg-green-50 hover:text-green-600" 
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="h-8 w-8 hover:bg-green-50 hover:text-green-600"
                                   aria-label="Change Role"
                                   onClick={() => setSelectedUserForRole(u)}
                                 >
                                   <UserCog className="h-4 w-4" />
                                 </Button>
-                                <Button 
-                                  size="icon" 
-                                  variant="ghost" 
-                                  className="h-8 w-8 hover:bg-red-50 hover:text-red-600" 
+                                <Button
+                                  size="icon"
+                                  variant="ghost"
+                                  className="h-8 w-8 hover:bg-red-50 hover:text-red-600"
                                   aria-label="Delete"
                                   onClick={() => setSelectedUserForDelete(u)}
                                 >
@@ -274,7 +274,7 @@ export default function UserManagementPage() {
                 <div className="text-sm text-gray-600">
                   Menampilkan <span className="font-medium text-gray-900">{startIdx + 1}-{Math.min(startIdx + rowsPerPage, filtered.length)}</span> dari <span className="font-medium text-gray-900">{filtered.length}</span> pengguna
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <Select
                     value={String(rowsPerPage)}
@@ -296,7 +296,7 @@ export default function UserManagementPage() {
                       <SelectItem value="20">20/halaman</SelectItem>
                     </SelectContent>
                   </Select>
-                  
+
                   <div className="flex items-center gap-1">
                     <Button
                       variant="outline"
@@ -307,11 +307,11 @@ export default function UserManagementPage() {
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    
+
                     <div className="flex items-center px-3 text-sm font-medium text-gray-700">
                       {safePage} / {totalPages}
                     </div>
-                    
+
                     <Button
                       variant="outline"
                       size="icon"
@@ -328,17 +328,17 @@ export default function UserManagementPage() {
           </Card>
         </div>
       </div>
-      
+
       <CreateUserModal />
-      <ChangeRoleModal 
-        user={selectedUserForRole} 
-        open={!!selectedUserForRole} 
-        onClose={() => setSelectedUserForRole(null)} 
+      <ChangeRoleModal
+        user={selectedUserForRole}
+        open={!!selectedUserForRole}
+        onClose={() => setSelectedUserForRole(null)}
       />
-      <DeleteUserDialog 
-        user={selectedUserForDelete} 
-        open={!!selectedUserForDelete} 
-        onClose={() => setSelectedUserForDelete(null)} 
+      <DeleteUserDialog
+        user={selectedUserForDelete}
+        open={!!selectedUserForDelete}
+        onClose={() => setSelectedUserForDelete(null)}
       />
     </div>
   );

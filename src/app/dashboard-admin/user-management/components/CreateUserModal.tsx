@@ -14,9 +14,9 @@ import { CreateUserInput, UserRole } from '../types/user-management-types';
 export function CreateUserModal() {
   const { modalOpen, setModalOpen } = useUserManagementStore();
   const { createUser, isCreating } = useUserManagement();
-  
+
   const [formData, setFormData] = useState<CreateUserInput>({
-    name: '',
+    username: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -29,11 +29,11 @@ export function CreateUserModal() {
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
-    
-    if (!formData.name.trim()) {
-      newErrors.name = 'Nama wajib diisi';
+
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username wajib diisi';
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = 'Email wajib diisi';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
@@ -51,14 +51,14 @@ export function CreateUserModal() {
     } else if (formData.password_confirmation !== formData.password) {
       newErrors.password_confirmation = 'Konfirmasi password tidak sama';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -69,7 +69,7 @@ export function CreateUserModal() {
   const handleClose = () => {
     setModalOpen(false);
     setFormData({
-      name: '',
+      username: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -87,17 +87,17 @@ export function CreateUserModal() {
             Masukkan informasi pengguna baru. Klik simpan untuk menambahkan.
           </DialogDescription>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Nama</Label>
+            <Label htmlFor="username">Username</Label>
             <Input
-              id="name"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="Masukkan nama"
+              id="username"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+              placeholder="Masukkan username"
             />
-            {errors.name && <p className="text-sm text-red-500">{errors.name}</p>}
+            {errors.username && <p className="text-sm text-red-500">{errors.username}</p>}
           </div>
 
           <div className="space-y-2">
@@ -168,8 +168,8 @@ export function CreateUserModal() {
                 <SelectValue placeholder="Pilih role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="user">User</SelectItem>
-                <SelectItem value="admin">Admin</SelectItem>
+                <SelectItem value="USER">User</SelectItem>
+                <SelectItem value="SUPERADMIN">Super Admin</SelectItem>
               </SelectContent>
             </Select>
           </div>

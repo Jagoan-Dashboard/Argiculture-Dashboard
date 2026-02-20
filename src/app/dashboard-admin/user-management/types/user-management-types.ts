@@ -14,13 +14,13 @@ export interface ApiUser {
 // Bentuk user yang dipakai di UI
 export interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
   role: UserRole;
 }
 
 export interface CreateUserInput {
-  name: string;
+  username: string;
   email: string;
   password: string;
   password_confirmation: string;

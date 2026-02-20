@@ -26,12 +26,12 @@ export function ChangeRoleModal({ user, open, onClose }: ChangeRoleModalProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!user) return;
 
-    updateUser({ 
-      id: user.id, 
-      input: { role: selectedRole } 
+    updateUser({
+      id: user.id,
+      input: { role: selectedRole }
     });
   };
 
@@ -50,10 +50,10 @@ export function ChangeRoleModal({ user, open, onClose }: ChangeRoleModalProps) {
         <DialogHeader>
           <DialogTitle className="text-green-600">Ubah Role Pengguna</DialogTitle>
           <DialogDescription>
-            Ubah role untuk pengguna <span className="font-semibold">{user.name}</span>
+            Ubah role untuk pengguna <span className="font-semibold">{user.username}</span>
           </DialogDescription>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="role">Role Baru</Label>

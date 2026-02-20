@@ -17,7 +17,7 @@ export function DeleteUserDialog({ user, open, onClose }: DeleteUserDialogProps)
 
   const handleDelete = () => {
     if (!user) return;
-    
+
     deleteUser(user.id);
     onClose();
   };
@@ -40,11 +40,11 @@ export function DeleteUserDialog({ user, open, onClose }: DeleteUserDialogProps)
             </div>
           </div>
         </DialogHeader>
-        
+
         <div className="py-4">
           <p className="text-sm text-gray-600">
             Apakah Anda yakin ingin menghapus pengguna{' '}
-            <span className="font-semibold text-gray-900">{user.name}</span>?
+            <span className="font-semibold text-gray-900">{user.username}</span>?
             Semua data yang terkait dengan pengguna ini akan dihapus secara permanen.
           </p>
         </div>
