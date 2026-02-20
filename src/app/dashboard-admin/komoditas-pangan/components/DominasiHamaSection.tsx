@@ -6,12 +6,21 @@ import { Icon } from '@iconify/react';
 
 
 
+const formatHamaName = (name: string) => {
+  if (!name) return name;
+  return name
+    .toLowerCase()
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
 const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: HamaData }> }) => {
   if (active && payload && payload.length) {
     const data = payload[0].payload;
     return (
       <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="font-medium text-gray-900 mb-1">{data.fullName}</p>
+        <p className="font-medium text-gray-900 mb-1">{formatHamaName(data.fullName)}</p>
         <p className="text-sm">
           <span className="font-semibold" style={{ color: data.color }}>
             {data.percentage}%
@@ -89,7 +98,7 @@ export const DominasiHamaSection = ({ hamaData }: DominasiHamaSectionProps) => {
                 <Legend
                   verticalAlign="bottom"
                   formatter={(value, entry) => (
-                    <span className="text-sm text-gray-700 leading-relaxed" style={{ color: entry.color }}>{value}</span>
+                    <span className="text-sm text-gray-700 leading-relaxed" style={{ color: entry.color }}>{formatHamaName(value)}</span>
                   )}
                 />
               </PieChart>
