@@ -1,6 +1,7 @@
 "use client"
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { Home } from 'lucide-react';
 import React, { useState, useMemo } from 'react';
 import { StatsType } from '../komoditas-pangan/types/stats';
@@ -21,22 +22,31 @@ import { HORTICULTURE_COMMODITY_OPTIONS, HarvestScheduleData } from './types/hor
 import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 const KomoditasHorticulturaPage = () => {
-  
+
   const [selectedCommodity, setSelectedCommodity] = useState<string>('wortel');
 
-  
+  const [dateRange, setDateRange] = useState<{
+    from: Date;
+    to: Date;
+  }>({
+    from: new Date(2024, 0, 1),
+    to: new Date(2025, 11, 31),
+  });
+
   const apiParams = useMemo(() => ({
     commodity_name: selectedCommodity,
-  }), [selectedCommodity]);
+    start_date: format(dateRange.from, 'yyyy-MM-dd'),
+    end_date: format(dateRange.to, 'yyyy-MM-dd'),
+  }), [selectedCommodity, dateRange]);
 
-  
+
   const { data, loading, error, refetch } = useHorticulture(apiParams);
   console.log(data)
 
-  
+
   const statsData: StatsType[] = useMemo(() => {
     if (!data) return [];
-    
+
     return [
       {
         id: 1,
@@ -77,12 +87,12 @@ const KomoditasHorticulturaPage = () => {
     ];
   }, [data]);
 
-  
+
 
   // Transform data untuk map - TAMBAHKAN INI
   const mapData = useMemo(() => {
     if (!data?.distribution_map) return [];
-    
+
     return data.distribution_map.map(item => ({
       latitude: item.latitude,
       longitude: item.longitude,
@@ -94,13 +104,13 @@ const KomoditasHorticulturaPage = () => {
     }));
   }, [data]);
 
-  
+
   const proparsiData: GrowthPhaseData[] = useMemo(() => {
     if (!data?.growth_phases) return [];
-    
-    
+
+
     const colors = ['#EC4899', '#22C55E', '#FB923C', '#FBBF24', '#8B5CF6'];
-    
+
     return data.growth_phases.map((phase, index) => ({
       name: phase.phase,
       value: phase.percentage,
@@ -110,14 +120,14 @@ const KomoditasHorticulturaPage = () => {
     }));
   }, [data]);
 
-  
+
   const hamaData: HamaData[] = useMemo(() => {
     if (!data?.pest_dominance) return [];
-    
-    
+
+
     const colors = ['#22C55E', '#FB923C', '#FBBF24', '#EC4899', '#8B5CF6'];
-    
-    
+
+
     const pestNameMap: Record<string, string> = {
       'WERENG_COKLAT': 'Wereng Coklat',
       'TIKUS': 'Tikus',
@@ -127,7 +137,7 @@ const KomoditasHorticulturaPage = () => {
       'TRIPS': 'Trips',
       'ANTRAKNOSA': 'Antraknosa',
     };
-    
+
     return data.pest_dominance.map((pest, index) => ({
       name: pestNameMap[pest.pest_type] || pest.pest_type,
       value: pest.percentage,
@@ -137,10 +147,10 @@ const KomoditasHorticulturaPage = () => {
     }));
   }, [data]);
 
-  
+
   const teknologiData: TeknologiData[] = useMemo(() => {
     if (!data?.technology_used) return [];
-    
+
     return data.technology_used.map(tech => ({
       name: TECHNOLOGY_MAP[tech.technology] || tech.technology,
       value: tech.count,
@@ -148,10 +158,10 @@ const KomoditasHorticulturaPage = () => {
     }));
   }, [data]);
 
-  
+
   const harvestScheduleData: HarvestScheduleData[] = useMemo(() => {
     if (!data?.harvest_schedule) return [];
-    
+
     return data.harvest_schedule.map((item, index) => ({
       id: `harvest-${index}`,
       no: index + 1,
@@ -163,16 +173,21 @@ const KomoditasHorticulturaPage = () => {
     }));
   }, [data]);
 
-  
+
   const handleCommodityChange = (value: string) => {
     setSelectedCommodity(value);
-    refetch({
-      ...apiParams,
-      commodity_name: value,
-    });
   };
 
-  
+  const handleDateUpdate = (values: { range: { from: Date; to: Date | undefined } }) => {
+    if (values.range.to) {
+      setDateRange({
+        from: values.range.from,
+        to: values.range.to,
+      });
+    }
+  };
+
+
   if (loading) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -188,7 +203,7 @@ const KomoditasHorticulturaPage = () => {
     );
   }
 
-  
+
   if (error) {
     return (
       <div className="container mx-auto max-w-7xl">
@@ -234,7 +249,7 @@ const KomoditasHorticulturaPage = () => {
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
-          
+
           {/* Header */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
@@ -256,9 +271,18 @@ const KomoditasHorticulturaPage = () => {
                   ))}
                 </SelectContent>
               </Select>
+
+              <DateRangePicker
+                onUpdate={handleDateUpdate}
+                initialDateFrom={dateRange.from}
+                initialDateTo={dateRange.to}
+                align="center"
+                locale="id-ID"
+                showCompare={false}
+              />
             </div>
           </div>
-          
+
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <CardStats statsData={statsData} />
@@ -267,25 +291,25 @@ const KomoditasHorticulturaPage = () => {
           {/* Main Content Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Map Section - PASS mapData */}
-            <MapSection commodityMapData={mapData} title='Peta Persebaran Komoditas Hortikultura'/>
+            <MapSection commodityMapData={mapData} title='Peta Persebaran Komoditas Hortikultura' />
 
             {/* Proporsi Fase Pertumbuhan Section */}
             <ProporsiSection growthPhaseData={proparsiData} />
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Table Section */}
             <div className="lg:col-span-2">
-              <TablePerkiraanSection 
+              <TablePerkiraanSection
                 data={harvestScheduleData}
                 loading={loading}
               />
             </div>
-            
+
             {/* Dominasi Hama Section */}
             <DominasiHamaSection hamaData={hamaData} />
           </div>
-          
+
           <div className="">
             <TeknologiSection teknologiData={teknologiData} />
           </div>
