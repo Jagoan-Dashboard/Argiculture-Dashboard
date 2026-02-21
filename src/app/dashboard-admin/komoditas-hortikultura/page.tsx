@@ -18,12 +18,13 @@ import { useHorticulture } from './hooks/useHorticulture';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
-import { HORTICULTURE_COMMODITY_OPTIONS, HarvestScheduleData } from './types/horticulture-types';
+import { HORTICULTURE_COMMODITY_OPTIONS, HarvestScheduleData, HORTICULTURE_TYPE_OPTIONS, HorticultureType, COMMODITY_BY_TYPE } from './types/horticulture-types';
 import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 const KomoditasHorticulturaPage = () => {
 
-  const [selectedCommodity, setSelectedCommodity] = useState<string>('wortel');
+  const [selectedType, setSelectedType] = useState<HorticultureType>('sayuran');
+  const [selectedCommodity, setSelectedCommodity] = useState<string>('bawang merah');
 
   const [dateRange, setDateRange] = useState<{
     from: Date;
@@ -174,6 +175,12 @@ const KomoditasHorticulturaPage = () => {
   }, [data]);
 
 
+  const handleTypeChange = (value: HorticultureType) => {
+    setSelectedType(value);
+    const firstCommodity = COMMODITY_BY_TYPE[value][0].value;
+    setSelectedCommodity(firstCommodity);
+  };
+
   const handleCommodityChange = (value: string) => {
     setSelectedCommodity(value);
   };
@@ -259,12 +266,25 @@ const KomoditasHorticulturaPage = () => {
 
             {/* Filters */}
             <div className="flex flex-col sm:flex-row gap-3">
+              <Select value={selectedType} onValueChange={handleTypeChange}>
+                <SelectTrigger className="w-[200px]">
+                  <SelectValue placeholder="Pilih Jenis Komoditi" />
+                </SelectTrigger>
+                <SelectContent>
+                  {HORTICULTURE_TYPE_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               <Select value={selectedCommodity} onValueChange={handleCommodityChange}>
                 <SelectTrigger className="w-[200px]">
                   <SelectValue placeholder="Pilih Komoditas" />
                 </SelectTrigger>
                 <SelectContent>
-                  {HORTICULTURE_COMMODITY_OPTIONS.map((option) => (
+                  {COMMODITY_BY_TYPE[selectedType].map((option) => (
                     <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>

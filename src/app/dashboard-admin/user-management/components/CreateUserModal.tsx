@@ -44,6 +44,8 @@ export function CreateUserModal() {
       newErrors.password = 'Password wajib diisi';
     } else if (formData.password.length < 8) {
       newErrors.password = 'Password minimal 8 karakter';
+    } else if (!/[A-Z]/.test(formData.password) || !/[0-9]/.test(formData.password)) {
+      newErrors.password = 'Password harus mengandung minimal 1 huruf besar dan 1 angka';
     }
 
     if (!formData.password_confirmation.trim()) {
@@ -97,7 +99,7 @@ export function CreateUserModal() {
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
               placeholder="Masukkan username"
             />
-            {errors.username && <p className="text-sm text-red-500">{errors.username}</p>}
+            {errors.username && <p className="text-xs text-red-500">{errors.username}</p>}
           </div>
 
           <div className="space-y-2">
@@ -109,7 +111,7 @@ export function CreateUserModal() {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="Masukkan email"
             />
-            {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
+            {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
           </div>
 
           <div className="space-y-2">
@@ -131,7 +133,7 @@ export function CreateUserModal() {
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
-            {errors.password && <p className="text-sm text-red-500">{errors.password}</p>}
+            {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
           </div>
 
           <div className="space-y-2">
@@ -154,7 +156,7 @@ export function CreateUserModal() {
               </button>
             </div>
             {errors.password_confirmation && (
-              <p className="text-sm text-red-500">{errors.password_confirmation}</p>
+              <p className="text-xs text-red-500">{errors.password_confirmation}</p>
             )}
           </div>
 

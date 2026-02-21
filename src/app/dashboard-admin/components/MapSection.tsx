@@ -173,30 +173,29 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [], t
     }
   };
 
+  const formatLabel = (str: string) => {
+    if (!str) return '';
+    return str
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
+
   const getCommodityTypeLabel = (type: string) => {
-    const normalized = type?.toUpperCase();
+    const normalized = type?.toUpperCase().replace(/\s+/g, '_');
 
     switch (normalized) {
-      case 'PADI_LADANG':
-        return 'Padi Ladang';
-      case 'PADI_SAWAH':
-        return 'Padi Sawah';
-      case 'JAGUNG':
-        return 'Jagung';
-      case 'KEDELAI':
-        return 'Kedelai';
       case 'PLANTATION':
         return 'Perkebunan';
       case 'FOOD':
       case 'FOOD_CROPS':
-      case 'FOOD CROPS':
       case 'PANGAN':
         return 'Tanaman Pangan';
       case 'HORTICULTURE':
       case 'HORTIKULTURA':
         return 'Hortikultura';
       default:
-        return type;
+        return formatLabel(type);
     }
   };
 
@@ -294,7 +293,7 @@ export const MapSection: React.FC<MapSectionProps> = ({ commodityMapData = [], t
                     return null;
                   })()}
                   <div className="text-sm p-1">
-                    <p className="font-semibold text-base mb-2 text-green-700">{item.commodity}</p>
+                    <p className="font-semibold text-base mb-2 text-green-700">{formatLabel(item.commodity)}</p>
                     <div className="space-y-1 text-gray-700">
                       <p>📍 <span className="font-medium">Desa:</span> {item.village}</p>
                       <p>🏘️ <span className="font-medium">Kecamatan:</span> {item.district}</p>
