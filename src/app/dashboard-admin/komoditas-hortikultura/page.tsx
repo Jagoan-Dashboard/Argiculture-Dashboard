@@ -18,7 +18,7 @@ import { useHorticulture } from './hooks/useHorticulture';
 import { Spinner } from '@/components/ui/shadcn-io/spinner';
 import { format } from 'date-fns';
 import { id as localeId } from 'date-fns/locale';
-import { HORTICULTURE_COMMODITY_OPTIONS, HarvestScheduleData, HORTICULTURE_TYPE_OPTIONS, HorticultureType, COMMODITY_BY_TYPE } from './types/horticulture-types';
+import { HarvestScheduleData, HORTICULTURE_TYPE_OPTIONS, HorticultureType, COMMODITY_BY_TYPE } from './types/horticulture-types';
 import { TECHNOLOGY_MAP } from '@/constant/technology';
 
 const KomoditasHorticulturaPage = () => {

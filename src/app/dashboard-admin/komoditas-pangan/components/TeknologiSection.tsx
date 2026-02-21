@@ -29,8 +29,9 @@ const CustomTooltip = ({ active, payload, label }: { active?: boolean; payload?:
   return null;
 };
 
-const CustomXAxisTick = (props: any) => {
+const CustomXAxisTick = (props: { x?: number; y?: number; payload?: { value: string } }) => {
   const { x, y, payload } = props;
+  if (payload === undefined || x === undefined || y === undefined) return null;
   const formattedValue = formatLabel(payload.value);
   const words = formattedValue.split(' ');
 
